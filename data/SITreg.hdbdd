@@ -1,0 +1,71 @@
+/*
+
+   Copyright 2016 SAP Mentors
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+*/
+namespace com.sap.sapmentors.sitreg.data;
+@Schema: 'SITREG' 
+context SITreg {
+
+    type error {
+        HTTP_STATUS_CODE : Integer;
+        ERROR_MESSAGE    : String(100);
+        DETAIL           : String(100);
+    };
+    
+    type BusinessKey : Integer;
+    type UserT : String(256);
+    type SDate : LocalDate;
+    type STime : LocalTime;
+    type URL   : String(256);
+    
+    type HistoryT {
+        CreatedBy : UserT;
+        CreatedAt : SDate;
+        ChangedBy : UserT;
+        ChangedAt : SDate;
+    };
+    
+    entity Event {
+        key ID              : BusinessKey;
+            Location        : String(100);
+            EventDate       : SDate;
+            StartTime       : STime;
+            EndTime         : STime;
+            MaxParticipants : Integer;
+            HomepageURL     : URL;
+            History         : HistoryT;
+    };
+    
+    entity Participant {
+        key ID               : BusinessKey;
+            EventID          : BusinessKey;
+            RegistrationTime : UTCTimestamp;
+            FirstName        : String(100);
+            LastName         : String(100);
+            EMail            : String(256);
+            MobilePhone      : String(25);
+            BioURL           : URL;
+            Twitter          : String(15);
+            RSVP             : String(1); // Y = Yes / N = No
+            PreEveningEvent  : String(1); // Y = Yes / N = No / M = Maybe
+            PostEveningEvent : String(1); // Y = Yes / N = No / M = Maybe
+            RelationToSAP    : String(1); 
+            Receipt          : String(1); // Y = Yes / N = No
+            ReceiptCompany   : String(256);
+            ReceiptAddress   : LargeString;
+            History          : HistoryT;
+    };    
+};

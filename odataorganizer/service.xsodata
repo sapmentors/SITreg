@@ -18,12 +18,12 @@
 service  { 
 
     "com.sap.sapmentors.sitreg.data::SITreg.Event" as "Events"
-    navigates ("Events_Participants" as "Events_Participants")
+    navigates ("Events_Participants" as "Participants")
     create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate" 
     update using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUpdate"
     delete forbidden;
     
-    "com.sap.sapmentors.sitreg.data::SITreg.Participant" as "Participants"
+    "com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantsRead" as "Participants" key  ("ID")
     create forbidden
     update forbidden 
     delete forbidden;

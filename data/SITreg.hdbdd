@@ -39,9 +39,9 @@ context SITreg {
     };
     
     entity Event {
-        key ID              : BusinessKey;
-            Location        : String(100);
-            EventDate       : SDate;
+        key ID              : BusinessKey; 
+            Location        : String(100) not null;
+            EventDate       : SDate not null;
             StartTime       : STime;
             EndTime         : STime;
             MaxParticipants : Integer;

@@ -37,7 +37,14 @@ BEGIN
     DECLARE lv_CreatedAt       string;
     DECLARE lv_ChangedBy       string;
     DECLARE lv_ChangedAt       string;
-    DECLARE lv_EventID         string;
+
+    DECLARE lv_Location_tmp        string;
+    DECLARE lv_EventDate_tmp       string;
+    DECLARE lv_StartTime_tmp       string;
+    DECLARE lv_EndTime_tmp         string;
+    DECLARE lv_MaxParticipants_tmp INTEGER;
+    DECLARE lv_HomepageURL_tmp     string;
+
 
     SELECT * INTO lv_ID             
             , lv_Location       
@@ -50,7 +57,6 @@ BEGIN
             , lv_CreatedAt      
             , lv_ChangedBy      
             , lv_ChangedAt
-            , lv_EventID
         FROM :inrow;
     -- Don't trust the provided Username. We read it from the current user
     SELECT CURRENT_USER INTO lv_ChangedBy FROM DUMMY;
@@ -58,21 +64,56 @@ BEGIN
     SELECT COUNT(ID) INTO lv_Count 
       FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
       WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
+      
+    IF lv_Count = 1 THEN
+        SELECT "Location", "EventDate", "StartTime", "EndTime", "MaxParticipants", "HomepageURL"
+            INTO lv_Location_tmp      
+                , lv_EventDate_tmp      
+                , lv_StartTime_tmp      
+                , lv_EndTime_tmp        
+                , lv_MaxParticipants_tmp
+                , lv_HomepageURL_tmp    
+            FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
+            WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
+        -- OData call can also contain just single attributes. We have to preserve the data
+        if lv_Location = '' then
+            lv_Location = lv_Location_tmp;
+        end if;
+        if lv_EventDate = '' then
+            lv_EventDate = lv_EventDate_tmp;
+        end if;
+        if lv_StartTime = '' then
+            lv_StartTime = lv_StartTime_tmp;
+        end if;
+        if lv_EndTime = '' then
+            lv_EndTime = lv_EndTime_tmp;
+        end if;
+        if lv_MaxParticipants = '' then
+            lv_MaxParticipants = lv_MaxParticipants_tmp;
+        end if;
+        if lv_HomepageURL = '' then
+            lv_HomepageURL = lv_HomepageURL_tmp;
+        end if;
+        
+        UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Event"
+          SET   "Location"        = lv_Location
+              , "EventDate"       = lv_EventDate
+              , "StartTime"       = lv_StartTime
+              , "EndTime"         = lv_EndTime
+              , "MaxParticipants" = lv_MaxParticipants
+              , "HomepageURL"     = lv_HomepageURL
+              , "History.ChangedBy" = lv_ChangedBy
+              , "History.ChangedAt" = CURRENT_TIMESTAMP
+          WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
 
-    UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Event"
-      SET "Location" = lv_Location
-          , "EventDate" = lv_EventDate
-          , "StartTime" = lv_StartTime
-          , "EndTime" = lv_EndTime
-          , "MaxParticipants" = lv_MaxParticipants
-          , "HomepageURL" = lv_HomepageURL
-          , "History.ChangedBy" = lv_ChangedBy
-          , "History.ChangedAt" = CURRENT_TIMESTAMP
-      WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
-
-    if 1 = 2 then 
+        if 1 = 2 then 
+            error = select 400 as http_status_code, 
+                    'Update failed' error_message, 
+                    '' detail from dummy;
+        end if;
+    else
         error = select 400 as http_status_code, 
-                'Update failed' error_message, 
+                'Event does not exist' error_message, 
                 '' detail from dummy;
     end if;
 END

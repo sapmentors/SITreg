@@ -35,7 +35,6 @@ BEGIN
     DECLARE lv_CreatedAt       string;
     DECLARE lv_ChangedBy       string;
     DECLARE lv_ChangedAt       string;
-    DECLARE lv_EventID         string;
 
     SELECT * INTO lv_ID             
             , lv_Location       
@@ -47,8 +46,7 @@ BEGIN
             , lv_CreatedBy      
             , lv_CreatedAt      
             , lv_ChangedBy      
-            , lv_ChangedAt
-            , lv_EventID
+            , lv_ChangedAt 
         FROM :inrow;
     
     -- Don't trust the provided Username. we read it from the current user
@@ -70,9 +68,9 @@ BEGIN
 	    , lv_HomepageURL
 	    , lv_CreatedBy
 	    , CURRENT_TIMESTAMP
-	    , ''
-	    , ''
-	    , '');
+	    , lv_CreatedBy
+	    , CURRENT_TIMESTAMP
+	    );
 	    
 	IF (1 = 2) THEN
 		error = SELECT 400 AS http_status_code, 

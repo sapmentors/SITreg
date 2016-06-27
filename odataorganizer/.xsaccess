@@ -1,0 +1,6 @@
+{
+    "exposed":true,
+    "authorization": [
+        "com.sap.sapmentors.sitreg.odataorganizer::organizer"
+    ]
+}

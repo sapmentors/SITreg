@@ -40,6 +40,7 @@ context SITreg {
     
     entity Event {
         key ID              : BusinessKey;
+            Participants    : Association[0..*] to Participant { EventID };
             Location        : String(100);
             EventDate       : SDate;
             StartTime       : STime;

@@ -28,20 +28,20 @@ BEGIN
     DECLARE lv_Count INT;
     DECLARE lv_ID              string;
     DECLARE lv_Location        string;
-    DECLARE lv_EventDate       string;
-    DECLARE lv_StartTime       string;
-    DECLARE lv_EndTime         string;
+    DECLARE lv_EventDate       DATE;
+    DECLARE lv_StartTime       TIME;
+    DECLARE lv_EndTime         TIME;
     DECLARE lv_MaxParticipants INTEGER;
     DECLARE lv_HomepageURL     string;
     DECLARE lv_CreatedBy       string;
-    DECLARE lv_CreatedAt       string;
+    DECLARE lv_CreatedAt       DATE;
     DECLARE lv_ChangedBy       string;
-    DECLARE lv_ChangedAt       string;
+    DECLARE lv_ChangedAt       DATE;
 
     DECLARE lv_Location_tmp        string;
-    DECLARE lv_EventDate_tmp       string;
-    DECLARE lv_StartTime_tmp       string;
-    DECLARE lv_EndTime_tmp         string;
+    DECLARE lv_EventDate_tmp       DATE;
+    DECLARE lv_StartTime_tmp       TIME;
+    DECLARE lv_EndTime_tmp         TIME;
     DECLARE lv_MaxParticipants_tmp INTEGER;
     DECLARE lv_HomepageURL_tmp     string;
 
@@ -88,7 +88,7 @@ BEGIN
         if lv_EndTime = '' then
             lv_EndTime = lv_EndTime_tmp;
         end if;
-        if lv_MaxParticipants = '' then
+        if lv_MaxParticipants = 0 then
             lv_MaxParticipants = lv_MaxParticipants_tmp;
         end if;
         if lv_HomepageURL = '' then

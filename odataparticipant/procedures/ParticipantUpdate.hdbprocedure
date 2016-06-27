@@ -1,0 +1,171 @@
+--
+--   Copyright 2016 SAP Mentors
+--
+--   Licensed under the Apache License, Version 2.0 (the "License");
+--   you may not use this file except in compliance with the License.
+--   You may obtain a copy of the License at
+--
+--       http://www.apache.org/licenses/LICENSE-2.0
+--
+--   Unless required by applicable law or agreed to in writing, software
+--   distributed under the License is distributed on an "AS IS" BASIS,
+--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--   See the License for the specific language governing permissions and
+--   limitations under the License.
+--
+
+PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate" ( 
+    IN inrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",
+    IN oldrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",
+    OUT error "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.error"
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   DEFAULT SCHEMA SITREG
+   AS
+BEGIN
+
+	DECLARE lv_Count            INT;
+	DECLARE lv_ID               STRING;
+	DECLARE lv_EventID          STRING;
+	DECLARE lv_RegistrationTime TIMESTAMP;
+	DECLARE lv_FirstName        STRING;
+	DECLARE lv_LastName         STRING;
+	DECLARE lv_EMail            STRING;
+	DECLARE lv_MobilePhone      STRING;
+	DECLARE lv_BioURL           STRING;
+	DECLARE lv_Twitter          STRING;
+	DECLARE lv_RSVP             STRING;
+	DECLARE lv_PreEveningEvent  STRING;
+	DECLARE lv_PostEveningEvent STRING;
+	DECLARE lv_RelationToSAP    STRING;
+	DECLARE lv_Receipt          STRING;
+	DECLARE lv_ReceiptCompany   STRING;
+	DECLARE lv_ReceiptAddress   STRING;
+    DECLARE lv_CreatedBy        string;
+    DECLARE lv_CreatedAt        string;
+    DECLARE lv_ChangedBy        string;
+    DECLARE lv_ChangedAt        string;
+
+	DECLARE lv_FirstName_tmp        STRING;
+	DECLARE lv_LastName_tmp         STRING;
+	DECLARE lv_EMail_tmp            STRING;
+	DECLARE lv_MobilePhone_tmp      STRING;
+	DECLARE lv_BioURL_tmp           STRING;
+	DECLARE lv_Twitter_tmp          STRING;
+	DECLARE lv_RSVP_tmp             STRING;
+	DECLARE lv_PreEveningEvent_tmp  STRING;
+	DECLARE lv_PostEveningEvent_tmp STRING;
+	DECLARE lv_RelationToSAP_tmp    STRING;
+	DECLARE lv_Receipt_tmp          STRING;
+	DECLARE lv_ReceiptCompany_tmp   STRING;
+	DECLARE lv_ReceiptAddress_tmp   STRING;
+
+    
+	SELECT * INTO lv_ID              
+        , lv_EventID         
+        , lv_RegistrationTime
+        , lv_FirstName       
+        , lv_LastName        
+        , lv_EMail           
+        , lv_MobilePhone     
+        , lv_BioURL          
+        , lv_Twitter         
+        , lv_RSVP            
+        , lv_PreEveningEvent 
+        , lv_PostEveningEvent
+        , lv_RelationToSAP   
+        , lv_Receipt         
+        , lv_ReceiptCompany  
+        , lv_ReceiptAddress  
+        , lv_CreatedBy      
+        , lv_CreatedAt      
+        , lv_ChangedBy      
+        , lv_ChangedAt          
+        FROM :inrow;
+
+    -- Don't trust the provided Username. we read it from the current user
+	SELECT CURRENT_USER
+		INTO lv_ChangedBy
+		FROM DUMMY;
+
+    -- Check if provided Event ID belongs to the User
+    SELECT COUNT(ID) INTO lv_Count 
+      FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+      WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
+     
+    IF lv_Count = 1 THEN
+        
+        SELECT 
+              "FirstName"
+            , "LastName"
+            , "EMail"
+            , "MobilePhone"
+            , "BioURL"
+            , "Twitter"
+            , "RSVP"
+            , "PreEveningEvent"
+            , "PostEveningEvent"
+            , "RelationToSAP"
+            , "Receipt"
+            , "ReceiptCompany"
+            , "ReceiptAddress"
+            INTO lv_FirstName_tmp       
+                , lv_LastName_tmp        
+                , lv_EMail_tmp           
+                , lv_MobilePhone_tmp     
+                , lv_BioURL_tmp          
+                , lv_Twitter_tmp         
+                , lv_RSVP_tmp            
+                , lv_PreEveningEvent_tmp 
+                , lv_PostEveningEvent_tmp
+                , lv_RelationToSAP_tmp   
+                , lv_Receipt_tmp         
+                , lv_ReceiptCompany_tmp  
+                , lv_ReceiptAddress_tmp      
+            FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+            WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
+            
+        -- OData call can also contain just single attributes. We have to preserve the data
+        if lv_FirstName = ''        then lv_FirstName        = lv_FirstName_tmp;        end if;
+        if lv_LastName = ''         then lv_LastName         = lv_LastName_tmp;         end if;
+        if lv_EMail = ''            then lv_EMail            = lv_EMail_tmp;            end if;
+        if lv_MobilePhone = ''      then lv_MobilePhone      = lv_MobilePhone_tmp;      end if;
+        if lv_BioURL = ''           then lv_BioURL           = lv_BioURL_tmp;           end if;
+        if lv_Twitter = ''          then lv_Twitter          = lv_Twitter_tmp;          end if;
+        if lv_PreEveningEvent = ''  then lv_PreEveningEvent  = lv_PreEveningEvent_tmp;  end if;
+        if lv_PostEveningEvent = '' then lv_PostEveningEvent = lv_PostEveningEvent_tmp; end if;
+        if lv_RelationToSAP = ''    then lv_RelationToSAP    = lv_RelationToSAP_tmp;    end if;
+        if lv_Receipt = ''          then lv_Receipt          = lv_Receipt_tmp;          end if;
+        if lv_ReceiptCompany = ''   then lv_ReceiptCompany   = lv_ReceiptCompany_tmp;   end if;
+        if lv_ReceiptAddress = ''   then lv_ReceiptAddress   = lv_ReceiptAddress_tmp;   end if;
+
+        UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+          SET   "FirstName" = lv_FirstName_tmp          
+              , "LastName" = lv_LastName_tmp           
+              , "EMail" = lv_EMail_tmp              
+              , "MobilePhone" = lv_MobilePhone_tmp        
+              , "BioURL" = lv_BioURL_tmp             
+              , "Twitter" = lv_Twitter_tmp            
+              , "RSVP" = lv_RSVP_tmp               
+              , "PreEveningEvent" = lv_PreEveningEvent_tmp  
+              , "PostEveningEvent" = lv_PostEveningEvent_tmp 
+              , "RelationToSAP" = lv_RelationToSAP_tmp   
+              , "Receipt" = lv_Receipt_tmp         
+              , "ReceiptCompany" = lv_ReceiptCompany_tmp  
+              , "ReceiptAddress" = lv_ReceiptAddress_tmp 
+              , "History.ChangedBy" = lv_ChangedBy
+              , "History.ChangedAt" = CURRENT_TIMESTAMP
+          WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
+
+        if 1 = 2 then 
+            error = select 400 as http_status_code, 
+                    'Update failed' error_message, 
+                    '' detail from dummy;
+        end if;
+    else
+        error = select 400 as http_status_code, 
+                'Registration does not exist' error_message, 
+                '' detail from dummy;
+    end if;
+END

@@ -51,15 +51,15 @@ context SITreg {
     
     entity Participant {
         key ID               : BusinessKey;
-            EventID          : BusinessKey;
+            EventID          : BusinessKey not null;
             RegistrationTime : UTCTimestamp;
-            FirstName        : String(100);
-            LastName         : String(100);
-            EMail            : String(256);
+            FirstName        : String(100) not null;
+            LastName         : String(100) not null;
+            EMail            : String(256) not null;
             MobilePhone      : String(25);
             BioURL           : URL;
             Twitter          : String(15);
-            RSVP             : String(1); // Y = Yes / N = No
+            RSVP             : String(1) not null; // Y = Yes / N = No
             PreEveningEvent  : String(1); // Y = Yes / N = No / M = Maybe
             PostEveningEvent : String(1); // Y = Yes / N = No / M = Maybe
             RelationToSAP    : String(1); 

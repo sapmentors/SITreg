@@ -141,19 +141,19 @@ BEGIN
         if lv_ReceiptAddress = ''   then lv_ReceiptAddress   = lv_ReceiptAddress_tmp;   end if;
 
         UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Participant"
-          SET   "FirstName" = lv_FirstName_tmp          
-              , "LastName" = lv_LastName_tmp           
-              , "EMail" = lv_EMail_tmp              
-              , "MobilePhone" = lv_MobilePhone_tmp        
-              , "BioURL" = lv_BioURL_tmp             
-              , "Twitter" = lv_Twitter_tmp            
-              , "RSVP" = lv_RSVP_tmp               
-              , "PreEveningEvent" = lv_PreEveningEvent_tmp  
-              , "PostEveningEvent" = lv_PostEveningEvent_tmp 
-              , "RelationToSAP" = lv_RelationToSAP_tmp   
-              , "Receipt" = lv_Receipt_tmp         
-              , "ReceiptCompany" = lv_ReceiptCompany_tmp  
-              , "ReceiptAddress" = lv_ReceiptAddress_tmp 
+          SET   "FirstName" = lv_FirstName
+              , "LastName" = lv_LastName
+              , "EMail" = lv_EMail
+              , "MobilePhone" = lv_MobilePhone
+              , "BioURL" = lv_BioURL
+              , "Twitter" = lv_Twitter
+              , "RSVP" = lv_RSVP
+              , "PreEveningEvent" = lv_PreEveningEvent
+              , "PostEveningEvent" = lv_PostEveningEvent
+              , "RelationToSAP" = lv_RelationToSAP 
+              , "Receipt" = lv_Receipt
+              , "ReceiptCompany" = lv_ReceiptCompany
+              , "ReceiptAddress" = lv_ReceiptAddress
               , "History.ChangedBy" = lv_ChangedBy
               , "History.ChangedAt" = CURRENT_TIMESTAMP
           WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;

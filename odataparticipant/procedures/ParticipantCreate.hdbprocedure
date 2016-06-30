@@ -7,26 +7,27 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::Parti
 	DEFAULT SCHEMA SITREG
 AS
 BEGIN
-	DECLARE lv_ID STRING;
-	DECLARE lv_EventID STRING;
+	DECLARE lv_Count            INT;
+	DECLARE lv_ID               STRING;
+	DECLARE lv_EventID          STRING;
 	DECLARE lv_RegistrationTime TIMESTAMP;
-	DECLARE lv_FirstName STRING;
-	DECLARE lv_LastName STRING;
-	DECLARE lv_EMail STRING;
-	DECLARE lv_MobilePhone STRING;
-	DECLARE lv_BioURL STRING;
-	DECLARE lv_Twitter STRING;
-	DECLARE lv_RSVP STRING;
-	DECLARE lv_PreEveningEvent STRING;
+	DECLARE lv_FirstName        STRING;
+	DECLARE lv_LastName         STRING;
+	DECLARE lv_EMail            STRING;
+	DECLARE lv_MobilePhone      STRING;
+	DECLARE lv_BioURL           STRING;
+	DECLARE lv_Twitter          STRING;
+	DECLARE lv_RSVP             STRING;
+	DECLARE lv_PreEveningEvent  STRING;
 	DECLARE lv_PostEveningEvent STRING;
-	DECLARE lv_RelationToSAP STRING;
-	DECLARE lv_Receipt STRING;
-	DECLARE lv_ReceiptCompany STRING;
-	DECLARE lv_ReceiptAddress STRING;
-    DECLARE lv_CreatedBy       string;
-    DECLARE lv_CreatedAt       string;
-    DECLARE lv_ChangedBy       string;
-    DECLARE lv_ChangedAt       string;
+	DECLARE lv_RelationToSAP    STRING;
+	DECLARE lv_Receipt          STRING;
+	DECLARE lv_ReceiptCompany   STRING;
+	DECLARE lv_ReceiptAddress   STRING;
+    DECLARE lv_CreatedBy        string;
+    DECLARE lv_CreatedAt        string;
+    DECLARE lv_ChangedBy        string;
+    DECLARE lv_ChangedAt        string;
     
 	SELECT * INTO lv_ID              
         , lv_EventID         
@@ -55,34 +56,42 @@ BEGIN
 		INTO lv_CreatedBy
 		FROM DUMMY;
 	
-	SELECT "com.sap.sapmentors.sitreg.data::participantId".NEXTVAL
-		INTO lv_ID
-		FROM dummy;
-		
-	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Participant" 
-	    VALUES(lv_ID              
-        , lv_EventID         
-        , CURRENT_TIMESTAMP
-        , lv_FirstName       
-        , lv_LastName        
-        , lv_EMail           
-        , lv_MobilePhone     
-        , lv_BioURL          
-        , lv_Twitter         
-        , lv_RSVP            
-        , lv_PreEveningEvent 
-        , lv_PostEveningEvent
-        , lv_RelationToSAP   
-        , lv_Receipt         
-        , lv_ReceiptCompany  
-        , lv_ReceiptAddress  
-        , lv_CreatedBy      
-        , CURRENT_TIMESTAMP      
-        , lv_ChangedBy      
-        , CURRENT_TIMESTAMP
-	    );
+	-- Is the current user already registered for the event?
+	
+    SELECT COUNT(ID) INTO lv_Count 
+      FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+      WHERE "EventID" = lv_EventID AND "History.CreatedBy" = lv_CreatedBy;
+    
+    IF (lv_Count <> 1) THEN
 
-	IF (1 = 2) THEN
+    	SELECT "com.sap.sapmentors.sitreg.data::participantId".NEXTVAL
+    		INTO lv_ID
+    		FROM dummy;
+    		
+    	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Participant" 
+    	    VALUES(lv_ID              
+            , lv_EventID         
+            , CURRENT_TIMESTAMP
+            , lv_FirstName       
+            , lv_LastName        
+            , lv_EMail           
+            , lv_MobilePhone     
+            , lv_BioURL          
+            , lv_Twitter         
+            , lv_RSVP            
+            , lv_PreEveningEvent 
+            , lv_PostEveningEvent
+            , lv_RelationToSAP   
+            , lv_Receipt         
+            , lv_ReceiptCompany  
+            , lv_ReceiptAddress  
+            , lv_CreatedBy      
+            , CURRENT_TIMESTAMP      
+            , lv_ChangedBy      
+            , CURRENT_TIMESTAMP
+    	    );
+
+	ELSE
 		error = SELECT 400 AS http_status_code, 
 					'Insert failed' AS error_message, 
 					'' AS detail

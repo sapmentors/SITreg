@@ -1,0 +1,5 @@
+{
+    "exposed":true,
+    "anonymous_connection" : "com.sap.sapmentors.sitreg.odatapublic::public",
+    "default_file": "EventsRead.xsjs"
+}

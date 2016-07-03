@@ -1,0 +1,16 @@
+FUNCTION "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc" ( )
+     RETURNS "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.RegistrationNumbers"
+     LANGUAGE SQLSCRIPT
+     SQL SECURITY INVOKER AS
+BEGIN
+
+     RETURN SELECT 
+        "Participant"."EventID"                               AS "EventID", 
+        "Event"."MaxParticipants" - COUNT("Participant"."ID") AS "Free", 
+        COUNT("Participant"."ID")                             AS "Participants"
+        FROM "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Event" AS "Event"
+        JOIN "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant" AS "Participant"
+          ON "Event"."ID" = "Participant"."EventID"
+        GROUP BY "Event"."MaxParticipants", "Participant"."EventID";
+ 
+END;

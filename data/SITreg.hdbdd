@@ -38,6 +38,12 @@ context SITreg {
         ChangedAt : SDate;
     };
     
+    type RegistrationNumbers {
+        EventID      : BusinessKey;
+        Free         : Integer;
+        Participants : Integer;
+    };
+    
     entity Event {
         key ID              : BusinessKey; 
             Location        : String(100) not null;

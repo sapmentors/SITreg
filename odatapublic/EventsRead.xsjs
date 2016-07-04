@@ -26,24 +26,25 @@ function EventsRead() {
         conn = $.db.getConnection("com.sap.sapmentors.sitreg.odatapublic::public");
         var pStmt = conn.prepareStatement('SELECT "ID", "Location", "EventDate", "StartTime", "EndTime", "MaxParticipants", "HomepageURL" FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"');
         var rs = pStmt.executeQuery();
-        body = "[";
+        var json = "[";
         while (rs.next()) {
             if(firstResult){
                 firstResult = false;
             } else {
-                body += ',';
+                json += ',';
             }
-            body += '{ '
-                    + '"ID": "'              + rs.getNString(1) + '", '
-                    + '"Location": "'        + rs.getNString(2) + '",'
-                    + '"EventDate": "'       + rs.getNString(3) + '",'
-                    + '"StartTime": "'       + rs.getNString(4) + '",'
-                    + '"EndTime": "'         + rs.getNString(5) + '",'
-                    + '"MaxParticipants": "' + rs.getNString(6) + '",'
-                    + '"HomepageURL": "'     + rs.getNString(7) + '"'
+            json += '{ '
+                    + '"ID": '              + JSON.stringify(rs.getNString(1)) + ', '
+                    + '"Location": '        + JSON.stringify(rs.getNString(2)) + ','
+                    + '"EventDate": '       + JSON.stringify(rs.getNString(3)) + ','
+                    + '"StartTime": '       + JSON.stringify(rs.getNString(4)) + ','
+                    + '"EndTime": '         + JSON.stringify(rs.getNString(5)) + ','
+                    + '"MaxParticipants": ' + JSON.stringify(rs.getNString(6)) + ','
+                    + '"HomepageURL": '     + JSON.stringify(rs.getNString(7)) + ''
                     + '}';
         }
-        body += "]";
+        json += "]";
+        body = json;
         rs.close();
         pStmt.close();
     } catch (e) {

@@ -5,12 +5,12 @@ FUNCTION "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::Regist
 BEGIN
 
      RETURN SELECT 
-        "Participant"."EventID"                               AS "EventID", 
+        "Event"."ID"                                          AS "EventID", 
         "Event"."MaxParticipants" - COUNT("Participant"."ID") AS "Free", 
         COUNT("Participant"."ID")                             AS "Participants"
         FROM "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Event" AS "Event"
-        JOIN "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant" AS "Participant"
+        LEFT OUTER JOIN "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant" AS "Participant"
           ON "Event"."ID" = "Participant"."EventID"
-        GROUP BY "Event"."MaxParticipants", "Participant"."EventID";
+        GROUP BY "Event"."MaxParticipants", "Event"."ID";
  
 END;

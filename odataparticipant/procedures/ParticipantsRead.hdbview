@@ -23,4 +23,5 @@ schema = "SITREG";
 query = "SELECT \"ID\", \"EventID\", \"RegistrationTime\"
 , \"FirstName\", \"LastName\", \"BioURL\", \"Twitter\"
 , \"RSVP\", \"PreEveningEvent\", \"PostEveningEvent\"
-    FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\"";
+    FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\"
+    ORDER BY \"RegistrationTime\" ASC";

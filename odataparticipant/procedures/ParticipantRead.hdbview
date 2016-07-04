@@ -21,4 +21,5 @@
 schema = "SITREG";
 query = "SELECT * 
         FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\"
-        WHERE \"History.CreatedBy\" = CURRENT_USER";
+        WHERE \"History.CreatedBy\" = CURRENT_USER
+        ORDER BY \"RegistrationTime\" ASC";

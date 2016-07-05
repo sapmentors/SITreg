@@ -24,6 +24,8 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCr
    AS
 BEGIN
 
+    DECLARE ls_Event "com.sap.sapmentors.sitreg.data::SITreg.Event";
+
     DECLARE lv_ID              string;
     DECLARE lv_Location        string;
     DECLARE lv_EventDate       string;

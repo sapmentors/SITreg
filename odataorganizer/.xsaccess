@@ -1,5 +1,7 @@
 {
     "exposed":true,
+    "force_ssl" : true,
+    "prevent_xsrf" : true,
     "authorization": [
         "com.sap.sapmentors.sitreg.odataorganizer::organizer"
     ]

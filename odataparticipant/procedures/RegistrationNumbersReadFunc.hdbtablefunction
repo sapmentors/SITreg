@@ -3,7 +3,6 @@ FUNCTION "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::Regist
      LANGUAGE SQLSCRIPT
      SQL SECURITY INVOKER AS
 BEGIN
-
      RETURN SELECT 
         "Event"."ID"                                          AS "EventID", 
         "Event"."MaxParticipants" - COUNT("Participant"."ID") AS "Free", 

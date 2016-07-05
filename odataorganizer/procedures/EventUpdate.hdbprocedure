@@ -25,12 +25,12 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUp
    AS
 BEGIN
 
-    DECLARE lv_Count INT;
+    DECLARE lv_Count           INT;
     DECLARE lv_ID              string;
     DECLARE lv_Location        string;
     DECLARE lv_EventDate       DATE;
-    DECLARE lv_StartTime       TIME;
-    DECLARE lv_EndTime         TIME;
+    DECLARE lv_StartTime       TIMESTAMP;
+    DECLARE lv_EndTime         TIMESTAMP;
     DECLARE lv_MaxParticipants INTEGER;
     DECLARE lv_HomepageURL     string;
     DECLARE lv_CreatedBy       string;
@@ -40,8 +40,8 @@ BEGIN
 
     DECLARE lv_Location_tmp        string;
     DECLARE lv_EventDate_tmp       DATE;
-    DECLARE lv_StartTime_tmp       TIME;
-    DECLARE lv_EndTime_tmp         TIME;
+    DECLARE lv_StartTime_tmp       TIMESTAMP;
+    DECLARE lv_EndTime_tmp         TIMESTAMP;
     DECLARE lv_MaxParticipants_tmp INTEGER;
     DECLARE lv_HomepageURL_tmp     string;
 

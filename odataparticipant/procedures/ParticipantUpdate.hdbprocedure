@@ -13,7 +13,6 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 --
-
 PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate" ( 
     IN inrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",
     IN oldrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",

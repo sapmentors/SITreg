@@ -89,8 +89,7 @@ BEGIN
             , CURRENT_TIMESTAMP      
             , lv_ChangedBy      
             , CURRENT_TIMESTAMP
-    	    );
-
+            );
 	ELSE
 		error = SELECT 400 AS http_status_code, 
 					'Insert failed' AS error_message, 

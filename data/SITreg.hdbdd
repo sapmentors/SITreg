@@ -28,7 +28,6 @@ context SITreg {
     type BusinessKey : Integer;
     type UserT : String(256);
     type SDate : LocalDate;
-    type STime : LocalTime;
     type URL   : String(256);
     
     type HistoryT {
@@ -48,9 +47,9 @@ context SITreg {
         key ID              : BusinessKey; 
             Location        : String(100) not null;
             EventDate       : SDate not null;
-            StartTime       : STime;
-            EndTime         : STime;
-            MaxParticipants : Integer;
+            StartTime       : UTCTimestamp;
+            EndTime         : UTCTimestamp;
+            MaxParticipants : Integer not null;
             HomepageURL     : URL;
             History         : HistoryT;
     };

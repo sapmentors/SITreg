@@ -17,7 +17,6 @@
 // Thanks to the Blog: OData read exits - a delightful solution
 // http://scn.sap.com/community/developer-center/hana/blog/2016/01/14/odata-read-exits--an-ingenious-solution
 //
-
 schema = "SITREG";
 query = "select * from \"com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc\"()";
 depends_on_view=["com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc"];

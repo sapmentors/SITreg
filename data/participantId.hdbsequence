@@ -13,7 +13,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 //
-
 schema = "SITREG";
 start_with = 1;
 maxvalue   = 9999999;

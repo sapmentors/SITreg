@@ -1,6 +1,9 @@
 # SAP Inside Track Registration app backend
 
-This repository contains the backend for the SITreg app. It is developed on SAP HANA native using XSODATA. For more details check out the information in the [Wiki](https://github.com/sapmentors/SITreg/wiki).
+This repository contains the backend for the SITreg app. It is developed on SAP HANA native using XSODATA. For more details check out the information in the [Wiki](https://github.com/sapmentors/SITreg/wiki). You can find the frontend projects here:
+
+* [SITregParticipant](https://github.com/sapmentors/SITregParticipant)
+* [SITregOrganizer](https://github.com/sapmentors/SITregOrganizer)
 
 ## Setup Guide
 

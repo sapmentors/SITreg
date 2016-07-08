@@ -1,0 +1,10 @@
+FUNCTION "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantReadFunc" ( )
+     RETURNS "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.ParticipantT"
+     LANGUAGE SQLSCRIPT
+     SQL SECURITY INVOKER AS
+BEGIN
+
+     RETURN SELECT * 
+        FROM "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant"
+        WHERE "History.CreatedBy" = CURRENT_USER;
+END;

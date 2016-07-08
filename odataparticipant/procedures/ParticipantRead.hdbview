@@ -17,8 +17,7 @@
 // Thanks to the Blog: OData read exits - a delightful solution
 // http://scn.sap.com/community/developer-center/hana/blog/2016/01/15/odata-read-exits--an-ingenious-solution
 //
+
 schema = "SITREG";
-query = "SELECT * 
-        FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\"
-        WHERE \"History.CreatedBy\" = CURRENT_USER
-        ORDER BY \"RegistrationTime\" ASC";
+query = "select * from \"com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantReadFunc\"()";
+depends_on_view=["com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantReadFunc"];

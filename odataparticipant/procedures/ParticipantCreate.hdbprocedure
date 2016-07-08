@@ -57,7 +57,6 @@ BEGIN
 		FROM DUMMY;
 	
 	-- Is the current user already registered for the event?
-	
     SELECT COUNT(ID) INTO lv_Count 
       FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
       WHERE "EventID" = lv_EventID AND "History.CreatedBy" = lv_CreatedBy;

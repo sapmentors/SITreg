@@ -18,10 +18,21 @@
 service  { 
 
     "com.sap.sapmentors.sitreg.data::SITreg.Event" as "Events"
-    navigates ("Events_Participants" as "Participants")
+    navigates (
+        "Events_Participants" as "Participants",
+        "Events_CoOrganizers" as "CoOrganizers"
+    )
     create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate" 
     update using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUpdate"
     delete forbidden;
+
+    "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer" as "CoOrganizers"
+    create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerCreate" 
+    update using "com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerUpdate"
+    delete forbidden;
+
+    association "Events_CoOrganizers" principal "Events"("ID") multiplicity "1"
+        dependent "CoOrganizers"("EventID") multiplicity "*";    
     
     "com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantsRead" as "Participants" key  ("ID")
     create forbidden

@@ -53,6 +53,13 @@ context SITreg {
             HomepageURL     : URL;
             History         : HistoryT;
     };
+    
+    entity CoOrganizer {
+        key EventID  : BusinessKey;
+        key UserName : UserT;
+            History  : HistoryT;
+            Active   : String(1); // Y = Yes / N = No
+    };
 
     type ParticipantT {
             ID               : BusinessKey;

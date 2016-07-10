@@ -50,11 +50,13 @@ BEGIN
     -- Check if provided Event ID belongs to the User
     SELECT COUNT(ID) INTO lv_Count 
       FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
-      WHERE "ID" = lv_EventID AND "History.CreatedBy" = lv_CreatedBy;
+      WHERE "ID" = lv_EventID 
+        AND "History.CreatedBy" = lv_CreatedBy;
       
     IF lv_Count = 1 THEN
     	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer" 
-    	    VALUES(lv_EventID
+    	    VALUES(
+    	        lv_EventID
                 , lv_UserName
                 , lv_CreatedBy
                 , CURRENT_TIMESTAMP

@@ -61,16 +61,16 @@ BEGIN
     -- Don't trust the provided Username. We read it from the current user
     SELECT CURRENT_USER INTO lv_ChangedBy FROM DUMMY;
     -- Check if provided Event ID belongs to the User
-    SELECT COUNT(ID) INTO lv_Count 
+    SELECT COUNT("ID") INTO lv_Count 
       FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
       WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
     -- Check CoOrganizer Table
-    IF lv_Count <> 1 THEN
+    IF lv_Count = 0 THEN
         SELECT COUNT("EventID") INTO lv_Count 
           FROM "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer"
-          WHERE "EventID" = lv_ID 
+          WHERE "EventID"  = lv_ID 
             AND "UserName" = lv_ChangedBy
-            AND "Active" = 'Y';    
+            AND "Active"   = 'Y';    
     END IF;
       
     IF lv_Count = 1 THEN
@@ -82,7 +82,7 @@ BEGIN
                 , lv_MaxParticipants_tmp
                 , lv_HomepageURL_tmp    
             FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
-            WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
+            WHERE "ID" = lv_ID;
         -- OData call can also contain just single attributes. We have to preserve the data
         if lv_Location = '' then
             lv_Location = lv_Location_tmp;
@@ -112,7 +112,7 @@ BEGIN
               , "HomepageURL"     = lv_HomepageURL
               , "History.ChangedBy" = lv_ChangedBy
               , "History.ChangedAt" = CURRENT_TIMESTAMP
-          WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
+          WHERE "ID" = lv_ID;
 
         if 1 = 2 then 
             error = select 400 as http_status_code, 

@@ -53,6 +53,26 @@ context SITreg {
             HomepageURL     : URL;
             History         : HistoryT;
     };
+
+    type ParticipantT {
+            ID               : BusinessKey;
+            EventID          : BusinessKey;
+            RegistrationTime : UTCTimestamp;
+            FirstName        : String(100);
+            LastName         : String(100);
+            EMail            : String(256);
+            MobilePhone      : String(25);
+            BioURL           : URL;
+            Twitter          : String(15);
+            RSVP             : String(1); // Y = Yes / N = No
+            PreEveningEvent  : String(1); // Y = Yes / N = No / M = Maybe
+            PostEveningEvent : String(1); // Y = Yes / N = No / M = Maybe
+            RelationToSAP    : String(1); 
+            Receipt          : String(1); // Y = Yes / N = No
+            ReceiptCompany   : String(256);
+            ReceiptAddress   : LargeString;
+            History          : HistoryT;
+    };  
     
     entity Participant {
         key ID               : BusinessKey;
@@ -72,5 +92,6 @@ context SITreg {
             ReceiptCompany   : String(256);
             ReceiptAddress   : LargeString;
             History          : HistoryT;
-    };    
+    };
+  
 };

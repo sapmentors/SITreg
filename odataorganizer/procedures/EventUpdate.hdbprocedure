@@ -64,6 +64,12 @@ BEGIN
     SELECT COUNT(ID) INTO lv_Count 
       FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
       WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
+    -- Check CoOrganizer Table
+    IF lv_Count <> 1 THEN
+        SELECT COUNT("EventID") INTO lv_Count 
+          FROM "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer"
+          WHERE "EventID" = lv_ID AND "UserName" = lv_ChangedBy;    
+    END IF;
       
     IF lv_Count = 1 THEN
         SELECT "Location", "EventDate", "StartTime", "EndTime", "MaxParticipants", "HomepageURL"
@@ -78,22 +84,22 @@ BEGIN
         -- OData call can also contain just single attributes. We have to preserve the data
         if lv_Location = '' then
             lv_Location = lv_Location_tmp;
-        end if;
+        END IF;
         if lv_EventDate = '' then
             lv_EventDate = lv_EventDate_tmp;
-        end if;
+        END IF;
         if lv_StartTime = '' then
             lv_StartTime = lv_StartTime_tmp;
-        end if;
+        END IF;
         if lv_EndTime = '' then
             lv_EndTime = lv_EndTime_tmp;
-        end if;
+        END IF;
         if lv_MaxParticipants = 0 then
             lv_MaxParticipants = lv_MaxParticipants_tmp;
-        end if;
+        END IF;
         if lv_HomepageURL = '' then
             lv_HomepageURL = lv_HomepageURL_tmp;
-        end if;
+        END IF;
         
         UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Event"
           SET   "Location"        = lv_Location
@@ -110,10 +116,10 @@ BEGIN
             error = select 400 as http_status_code, 
                     'Update failed' error_message, 
                     '' detail from dummy;
-        end if;
-    else
+        END IF;
+    ELSE
         error = select 400 as http_status_code, 
                 'Event does not exist' error_message, 
                 '' detail from dummy;
-    end if;
+    END IF;
 END

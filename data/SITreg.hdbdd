@@ -42,7 +42,12 @@ context SITreg {
         Free         : Integer;
         Participants : Integer;
     };
-    
+
+    type EventChangeable {
+        EventID      : BusinessKey;
+        Changeable   : Integer;
+    };
+
     entity Event {
         key ID              : BusinessKey; 
             Location        : String(100) not null;

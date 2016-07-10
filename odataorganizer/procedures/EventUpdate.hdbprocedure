@@ -68,7 +68,9 @@ BEGIN
     IF lv_Count <> 1 THEN
         SELECT COUNT("EventID") INTO lv_Count 
           FROM "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer"
-          WHERE "EventID" = lv_ID AND "UserName" = lv_ChangedBy;    
+          WHERE "EventID" = lv_ID 
+            AND "UserName" = lv_ChangedBy
+            AND "Active" = 'Y';    
     END IF;
       
     IF lv_Count = 1 THEN

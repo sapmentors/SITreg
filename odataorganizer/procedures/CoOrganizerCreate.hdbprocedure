@@ -57,7 +57,7 @@ BEGIN
     	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer" 
     	    VALUES(
     	        lv_EventID
-                , lv_UserName
+                , UCASE( lv_UserName )
                 , lv_CreatedBy
                 , CURRENT_TIMESTAMP
                 , lv_CreatedBy

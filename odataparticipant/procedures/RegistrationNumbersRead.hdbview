@@ -18,5 +18,14 @@
 // http://scn.sap.com/community/developer-center/hana/blog/2016/01/14/odata-read-exits--an-ingenious-solution
 //
 schema = "SITREG";
-query = "select * from \"com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc\"()";
-depends_on_view=["com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc"];
+query = "SELECT 
+        \"Event\".\"ID\"                                          AS \"EventID\", 
+        \"Event\".\"MaxParticipants\" - COUNT(\"Participant\".\"ID\") AS \"Free\", 
+        COUNT(\"Participant\".\"ID\")                             AS \"Participants\"
+        FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Event\" AS \"Event\"
+        LEFT OUTER JOIN \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\" AS \"Participant\"
+          ON \"Event\".\"ID\" = \"Participant\".\"EventID\"
+        GROUP BY \"Event\".\"MaxParticipants\", \"Event\".\"ID\";";
+// Using an hdbtablefunction does not work as it would need SELECT authorization on the Participant table
+// query = "select * from \"com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc\"()";
+// depends_on_view=["com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc"];

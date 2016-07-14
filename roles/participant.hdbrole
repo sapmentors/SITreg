@@ -1,10 +1,13 @@
 role com.sap.sapmentors.sitreg.roles::participant {
-    catalog schema "SITREG": SELECT;
+    // catalog schema "SITREG": SELECT;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Event: SELECT;
-    sql object com.sap.sapmentors.sitreg.data::SITreg.Participant: SELECT, INSERT, UPDATE;
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantsRead: SELECT;
+    sql object com.sap.sapmentors.sitreg.data::SITreg.Participant: INSERT, UPDATE;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantReadFunc: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantCreate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc: EXECUTE;
 
     application privilege: "com.sap.sapmentors.sitreg.odataparticipant::participant";

@@ -6,6 +6,7 @@ role com.sap.sapmentors.sitreg.roles::participant {
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantReadFunc: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantCreate: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.data::participantId: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc: EXECUTE;

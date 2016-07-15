@@ -19,5 +19,15 @@
 //
 
 schema = "SITREG";
-query = "select * from \"com.sap.sapmentors.sitreg.odataorganizer.procedures::EventChangeableFunc\"()";
-depends_on_view=["com.sap.sapmentors.sitreg.odataorganizer.procedures::EventChangeableFunc"];
+query = "SELECT 
+        \"Event\".\"ID\" AS \"EventID\",
+        COUNT(\"Event\".\"ID\") AS \"Changeable\"
+        FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Event\" AS \"Event\"
+        LEFT OUTER JOIN \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer\" AS \"CoOrganizer\"
+          ON \"Event\".\"ID\" = \"CoOrganizer\".\"EventID\"
+        WHERE \"Event\".\"History.CreatedBy\" = CURRENT_USER
+           OR ( \"CoOrganizer\".\"UserName\" = CURRENT_USER AND \"CoOrganizer\".\"Active\"  = 'Y' )
+        GROUP BY \"Event\".\"MaxParticipants\", \"Event\".\"ID\";";
+
+// query = "select * from \"com.sap.sapmentors.sitreg.odataorganizer.procedures::EventChangeableFunc\"()";
+// depends_on_view=["com.sap.sapmentors.sitreg.odataorganizer.procedures::EventChangeableFunc"];

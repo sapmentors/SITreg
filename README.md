@@ -7,7 +7,7 @@ This repository contains the backend for the SITreg app. It is developed on SAP 
 
 ## Setup Guide
 
-You must have developer authorization in your HANA System. To try this project just spin up your own HANA Multitennant Database Container (MDC) on the HANA Cloud Platform Trial (HCP). Open the SAP HANA Web-based Development Workbench and create the package:
+You must have developer authorization in your HANA System. To try this project just spin up your own HANA Multitennant Database Container (MDC) on the [HANA Cloud Platform Trial (HCP)](https://hcp.sap.com/). Open the SAP HANA Web-based Development Workbench and create the package:
 
     com/sap/sapmentors/sitreg
 

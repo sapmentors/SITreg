@@ -44,8 +44,8 @@ describe("Read event and change MaxParticipants", function() {
     });
 });
 
-describe("Create COORGANIZER", function() {
-    it("should create COORGANIZER", function() {
+describe("Add COORGANIZER to event", function() {
+    it("should add COORGANIZER to event", function() {
         var create = {
             "EventID": eventID,
             "UserName": "COORGANIZER",

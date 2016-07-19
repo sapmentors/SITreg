@@ -10,24 +10,51 @@ describe("Login ORGANIZER", function() {
 
 describe("Create event", function() {
     it("should create event", function() {
-        var xhr = new XMLHttpRequest();
-        var create = {
-            "ID": 1,
-            "Location": "München",
-            "EventDate": "/Date(1475798400000)/",
-            "StartTime": "/Date(1475910000000)/",
-            "EndTime": "/Date(1475942400000)/",
-            "MaxParticipants": 80,
-            "HomepageURL": null
+        var xhr = createEvent("München");
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+        xhr = createEvent("Bern");
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+    });
+});
+
+describe("Read event and change MaxParticipants", function() {
+    it("should return the created event, change the MaxParticipants and check the change", function() {
+        var xhr = prepareRequest("GET", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events");
+        xhr.send();
+        expect(xhr.status).toBe(200);
+        expect(xhr.statusText).toBe("OK");
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.results[0].Location).toBe("München");
+        // Change MaxParticipants
+        var uri = body.d.results[0].__metadata.uri;
+        xhr = prepareRequest("PATCH", uri);
+        var change = {
+            "MaxParticipants": 81
         };
-        xhr.open("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events", false);
-        xhr.setRequestHeader("X-CSRF-Token", csrfToken);
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(change));
+        expect(xhr.status).toBe(204);
+        // Check MaxParticipants
+        xhr = prepareRequest("GET", uri);
+        xhr.send();
+        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.MaxParticipants).toBe(81);
+        eventID = body.d.ID;
+    });
+});
+
+describe("Create COORGANIZER", function() {
+    it("should create COORGANIZER", function() {
+        var create = {
+            "EventID": eventID,
+            "UserName": "COORGANIZER",
+            "Active": "Y"
+        };
+        var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/CoOrganizers");
         xhr.send(JSON.stringify(create));
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
-        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
     });
 });
 

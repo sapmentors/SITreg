@@ -29,7 +29,18 @@ function login(username, pwd, csrf) {
     expect(xhr.statusText).toBe("OK");
     var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
     expect(body.login).toBe(true);
+    if(!body.pwdChange) {
+        expect(body.username).toBe(username);
+    }
     return body;
+}
+
+function getCSRFtokenAndLogin(_username, _password) {
+    checkSession();
+    var _csrfToken = getCSRFtoken();
+    expect(_csrfToken).toBe("unsafe");
+    login(_username, _password, _csrfToken);
+    return getCSRFtoken();
 }
 
 function logout(csrf) {

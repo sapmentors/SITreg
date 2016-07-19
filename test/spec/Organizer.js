@@ -1,10 +1,6 @@
 describe("Login ORGANIZER", function() {
     it("should login ORGANIZER and get csrfToken", function() {
-        checkSession();
-        csrfToken = getCSRFtoken();
-        expect(csrfToken).toBe("unsafe");
-        login("ORGANIZER", password, csrfToken);
-        csrfToken = getCSRFtoken();
+        csrfToken = getCSRFtokenAndLogin("ORGANIZER", password);
     });
 });
 

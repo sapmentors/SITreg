@@ -1,10 +1,6 @@
 describe("Login COORGANIZER", function() {
     it("should login COORGANIZER and get csrfToken", function() {
-        checkSession();
-        csrfToken = getCSRFtoken();
-        expect(csrfToken).toBe("unsafe");
-        login("ORGANIZER", password, csrfToken);
-        csrfToken = getCSRFtoken();
+        csrfToken = getCSRFtokenAndLogin("COORGANIZER", password);
     });
 });
 

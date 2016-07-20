@@ -1,3 +1,7 @@
+DROP USER ORGANIZER;
+DROP USER COORGANIZER;
+DROP USER PARTICIPANT;
+
 DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Event";
 DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant";
 DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer";

@@ -17,12 +17,13 @@ To test the different services with the correct authorizations setup the users:
 
 * PARTICIPANT 
 * ORGANIZER
+* COORGANIZER
 * SITREGADMIN
  
 Assign the roles:
 
 * com.sap.sapmentors.sitreg.roles::participant (to PARTICIPANT)
-* com.sap.sapmentors.sitreg.roles::organizer (to ORGANIZER)
+* com.sap.sapmentors.sitreg.roles::organizer (to ORGANIZER and COORGANIZER)
 * com.sap.sapmentors.sitreg.roles::admin (to SITREGADMIN)
 
 to be able to test the different services also according the correct implementation of the authorizations.

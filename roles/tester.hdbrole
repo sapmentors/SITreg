@@ -1,0 +1,4 @@
+role com.sap.sapmentors.sitreg.roles::tester {
+    sql object com.sap.sapmentors.sitreg.test.procedures::setup: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.test.procedures::teardown: EXECUTE;
+}

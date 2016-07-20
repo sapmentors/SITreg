@@ -2,5 +2,6 @@
     "exposed" : true, 
     "force_ssl" : true,
     "prevent_xsrf" : true,
-    "authentication" : null
+    "anonymous_connection" : "com.sap.sapmentors.sitreg.test::public",
+    "default_file": "50_SpecRunner.html"
 }

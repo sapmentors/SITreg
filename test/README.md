@@ -1,0 +1,26 @@
+# Tests
+
+As manual testing of an API with 4 different user roles can become quite tedious automated tests are the way to go. SAP is using Jasmine also in the DU HANA_TEST_TOOLS we stick with that. The test is fully automated and will create the users, assigns roles, deletes the content of the DB tables and deletes the users after execution of the test.
+
+## Setup Guide
+
+To run the tests you have to install [Jasmine](https://jasmine.github.io/) into the HANA repository. Do that by executing the following steps in the SAP HANA Web-based Development Workbench (Path: /sap/hana/ide/editor/):
+
+* Download [Jasmine 2.4.1](https://github.com/jasmine/jasmine/releases/download/v2.4.1/jasmine-standalone-2.4.1.zip)
+* Create the package **jasmine** below the content root
+* Right click on the **jasmine** package and choose **import > archive**
+
+The following step will enable a service that automatically creates users, assigns roles, deletes the content of the DB tables and deletes the users again. So **NEVER** execute this steps on a productive instance of this app.
+
+* Switch to the HANA XS Admin (Path: /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.test)
+* Click the **Edit** button
+* Tick the checkbox **Public (No Authentication Required)**
+* Click **Save** 
+* Navigate further to the path /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.test/sqlcc/public
+* Click the **Edit** button
+* Tick the checkbox **Active**
+* Click **Save**
+
+## Test execution
+
+Open an **Incognito Window** (Chrome) or **Private Window** (Firefox) and call the path /com/sap/sapmentors/sitreg/test/ on your HANA System.

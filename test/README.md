@@ -9,9 +9,14 @@ To run the tests you have to install [Jasmine](https://jasmine.github.io/) into 
 * Download [Jasmine 2.4.1](https://github.com/jasmine/jasmine/releases/download/v2.4.1/jasmine-standalone-2.4.1.zip)
 * Create the package **jasmine** below the content root
 * Right click on the **jasmine** package and choose **import > archive**
+* **Copy** the **.xsaccess** and **.xsapp** file from this folder to the **jasmine** package
 
 The following step will enable a service that automatically creates users, assigns roles, deletes the content of the DB tables and deletes the users again. So **NEVER** execute this steps on a productive instance of this app.
 
+* Switch to the HANA XS Admin (Path: /sap/hana/xs/admin/#/package/jasmine)
+* Click the **Edit** button
+* Tick the checkbox **Public (No Authentication Required)**
+* Click **Save** 
 * Switch to the HANA XS Admin (Path: /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.test)
 * Click the **Edit** button
 * Tick the checkbox **Public (No Authentication Required)**

@@ -29,6 +29,7 @@ context SITreg {
     type UserT : String(256);
     type SDate : LocalDate;
     type URL   : String(256);
+    type RegisterAsOrganizerStatus : String(10) enum{ ACCEPTED = 'A'; REJECTED = 'R'; PENDING = 'P'; };
     
     type HistoryT {
         CreatedBy : UserT;
@@ -104,6 +105,14 @@ context SITreg {
             ReceiptCompany   : String(256);
             ReceiptAddress   : LargeString;
             History          : HistoryT;
+    };
+    
+    entity RegisterAsOrganizerQueue {
+        key UserName            : UserT; // Username of the maybe new Organizer
+            Status              : String(1); // See enum RegisterAsOrganizerStatus // A = Accepted / R = Rejected / P = Pending
+            RequestTimeStamp    : UTCTimestamp;
+            StatusSetTimeStamp  : UTCTimestamp;
+            History             : HistoryT;
     };
   
 };

@@ -24,15 +24,15 @@ describe("Read event and change MaxParticipants", function() {
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.results[0].Location).toBe("München");
         // Change MaxParticipants
-        var uri = body.d.results[0].__metadata.uri;
-        xhr = prepareRequest("PATCH", uri);
+        eventUri = body.d.results[0].__metadata.uri;
+        xhr = prepareRequest("PATCH", eventUri);
         var change = {
             "MaxParticipants": 81
         };
         xhr.send(JSON.stringify(change));
         expect(xhr.status).toBe(204);
         // Check MaxParticipants
-        xhr = prepareRequest("GET", uri);
+        xhr = prepareRequest("GET", eventUri);
         xhr.send();
         body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.MaxParticipants).toBe(81);
@@ -56,7 +56,7 @@ describe("Add COORGANIZER to event", function() {
 
 describe("Read COORGANIZER's of event", function() {
     it("should read list of COORGANIZER's of an event", function() {
-        var uri = "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events(" + eventID + ")/CoOrganizers";
+        var uri = eventUri + "/CoOrganizers";
         var xhr = prepareRequest("GET", uri);
         xhr.send();
         body = xhr.responseText ? JSON.parse(xhr.responseText) : "";

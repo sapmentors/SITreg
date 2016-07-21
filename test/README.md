@@ -45,3 +45,4 @@ Now you should be able to execute the following steps:
 ## Test execution
 
 Open an **Incognito Window** (Chrome) or **Private Window** (Firefox) and call the path /com/sap/sapmentors/sitreg/test/ on your HANA System.
+Note **run the test twice** first run creates data and second run then can verify tests

@@ -10,12 +10,22 @@ To run the tests you have to install [Jasmine](https://jasmine.github.io/) into 
 * Create the package **jasmine** below the content root
 * Right click on the **jasmine** package and choose **import > archive**
 * **Copy** the **.xsaccess** and **.xsapp** file from this folder to the **jasmine** package
+* Adjust the **.xsaccess**  in the **jasmine** package to have the following content
+
+  ```
+  {
+     "exposed":true,
+     "force_ssl" : true,
+     "prevent_xsrf" : true
+  }
+  ```
 
 The following step will enable a service that automatically creates users, assigns roles, deletes the content of the DB tables and deletes the users again. So **NEVER** execute this steps on a productive instance of this app. The HANA user running this steps need the Roles:
 
 * sap.hana.security.base.roles::XSUserAdmin
 * sap.hana.security.base.roles::XSUserAdmin
 * sap.hana.xs.admin.roles::RuntimeConfAdministrator
+* sap.hana.xs.admin.roles::SAMLAdministrator
 
 Now you should be able to execute the following steps:
 

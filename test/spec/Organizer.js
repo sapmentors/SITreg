@@ -54,6 +54,18 @@ describe("Add COORGANIZER to event", function() {
     });
 });
 
+describe("Read COORGANIZER's of event", function() {
+    it("should read list of COORGANIZER's of an event", function() {
+        var uri = "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events(" + eventID + ")/CoOrganizers";
+        var xhr = prepareRequest("GET", uri);
+        xhr.send();
+        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.results[0].EventID).toBe(eventID);
+        expect(body.d.results[0].UserName).toBe("COORGANIZER");
+        expect(body.d.results[0].Active).toBe("Y");
+    });
+});
+
 describe("Logout ORGANIZER", function() {
     it("should logout ORGANIZER", function() {
         logout(csrfToken);

@@ -42,6 +42,12 @@ service  {
     update forbidden
     delete forbidden;
     
+    // Registration as an Organizer  
+    "com.sap.sapmentors.sitreg.odataparticipant.procedures::RegisterAsOrganizerRead" as "RegisterAsOrganizer" key ("UserName")
+    create using "com.sap.sapmentors.sitreg.odataparticipant.procedures::RegisterAsOrganizerCreate"
+    update forbidden
+    delete forbidden;
+    
     association "Event_Participant" principal "Events"("ID") multiplicity "1"
         dependent "Participant"("EventID") multiplicity "1";
     association "Event_Participants" principal "Events"("ID") multiplicity "1"

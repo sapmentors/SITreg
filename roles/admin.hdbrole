@@ -3,4 +3,5 @@ role com.sap.sapmentors.sitreg.roles::admin {
     sql object com.sap.sapmentors.sitreg.data::SITreg.Event: SELECT, INSERT, UPDATE, DELETE;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Participant: SELECT, INSERT, UPDATE, DELETE;
     sql object com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer: SELECT, INSERT, UPDATE, DELETE;
+    sql object com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue: SELECT, INSERT, UPDATE, DELETE;
 }

@@ -10,6 +10,10 @@ role com.sap.sapmentors.sitreg.roles::participant {
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc: EXECUTE;
-
+    
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegisterAsOrganizerCreate: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegisterAsOrganizerRead: SELECT;
+    sql object com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue: INSERT, UPDATE;
+    
     application privilege: "com.sap.sapmentors.sitreg.odataparticipant::participant";
 }

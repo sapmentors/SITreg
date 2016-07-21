@@ -11,6 +11,7 @@ BEGIN
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Event";
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant";
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer";
+    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue";
     
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::organizer','ORGANIZER');
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::organizer','COORGANIZER');

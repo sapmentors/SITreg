@@ -21,3 +21,19 @@ function createEvent(Location) {
     xhr.send(JSON.stringify(create));
     return xhr;
 }
+
+function registerAsOrganizer(UserName) {
+    var register = {
+        "UserName"           : UserName,
+        "Status"             : "P", // Pending
+	    "RequestTimeStamp"   : "/Date(1475942400000)/",
+	    "StatusSetTimeStamp" : "/Date(1475942400000)/",
+	    "History.CreatedBy"  : UserName,
+	    "History.CreatedAt"  : "/Date(1475942400000)/",
+	    "History.ChangedBy"  : UserName,
+	    "History.ChangedAt"  : "/Date(1475942400000)/"
+    };
+    var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/RegisterAsOrganizer");
+    xhr.send(JSON.stringify(register));
+    return xhr;
+}

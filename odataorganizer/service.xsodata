@@ -50,4 +50,5 @@ service  {
     
     association "Events_Participants" principal "Events"("ID") multiplicity "1"
         dependent "Participants"("EventID") multiplicity "*";    
+
 }

@@ -23,6 +23,7 @@ To run the tests you have to install [Jasmine](https://jasmine.github.io/) into 
 The following step will enable a service that automatically creates users, assigns roles, deletes the content of the DB tables and deletes the users again. So **NEVER** execute this steps on a productive instance of this app. The HANA user running this steps need the Roles:
 
 * sap.hana.security.base.roles::XSUserAdmin
+* sap.hana.xs.admin.roles::SQLCCAdministrator
 * sap.hana.xs.admin.roles::RuntimeConfAdministrator
 * sap.hana.xs.admin.roles::SAMLAdministrator
 

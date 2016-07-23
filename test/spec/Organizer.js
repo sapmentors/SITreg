@@ -25,6 +25,7 @@ describe("Read event and change MaxParticipants", function() {
         expect(body.d.results[0].Location).toBe("München");
         // Change MaxParticipants
         eventUri = body.d.results[0].__metadata.uri;
+        eventUri2 = body.d.results[1].__metadata.uri;
         xhr = prepareRequest("PATCH", eventUri);
         var change = {
             "MaxParticipants": 81

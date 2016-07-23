@@ -13,11 +13,15 @@ describe("Change Homepage URL and read event as COORGANIZER", function() {
         };
         xhr.send(JSON.stringify(change));
         expect(xhr.status).toBe(204);
-        // Check MaxParticipants
+        // Check HomepageURL
         xhr = prepareRequest("GET", eventUri);
         xhr.send();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.HomepageURL).toBe(HomepageURL);
+        // We should not be able to change Event 2
+        xhr = prepareRequest("PATCH", eventUri2);
+        xhr.send(JSON.stringify(change));
+        expect(xhr.status).toBe(400);
     });
 });
 

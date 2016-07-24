@@ -14,7 +14,7 @@
 --   limitations under the License.
 --
 PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate" ( 
-    IN inrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",
+    IN inrow  "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",
     IN oldrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",
     OUT error "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.error"
 )
@@ -60,7 +60,6 @@ BEGIN
 	DECLARE lv_ReceiptCompany_tmp   STRING;
 	DECLARE lv_ReceiptAddress_tmp   STRING;
 
-    
 	SELECT * INTO lv_ID              
         , lv_EventID         
         , lv_RegistrationTime
@@ -90,7 +89,7 @@ BEGIN
 
     -- Check if provided Event ID belongs to the User
     SELECT COUNT(ID) INTO lv_Count 
-      FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+      FROM "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead"
       WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
      
     IF lv_Count = 1 THEN
@@ -122,7 +121,7 @@ BEGIN
                 , lv_Receipt_tmp         
                 , lv_ReceiptCompany_tmp  
                 , lv_ReceiptAddress_tmp      
-            FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+            FROM "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead"
             WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
             
         -- OData call can also contain just single attributes. We have to preserve the data

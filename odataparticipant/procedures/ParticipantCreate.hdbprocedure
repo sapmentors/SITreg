@@ -58,7 +58,7 @@ BEGIN
 	
 	-- Is the current user already registered for the event?
     SELECT COUNT(ID) INTO lv_Count 
-      FROM "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantsRead"
+      FROM "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead"
       WHERE "EventID" = lv_EventID AND "History.CreatedBy" = lv_CreatedBy;
     
     IF (lv_Count <> 1) THEN

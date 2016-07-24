@@ -31,6 +31,36 @@ describe("Register as Participant", function() {
     });
 });
 
+describe("Try to read organizer OData service as participant", function() {
+    it("should not be possible", function() {
+        var xhr = prepareRequest("GET", eventUri + "/Participant");
+        xhr.send();
+        expect(xhr.status).toBe(403);
+    });
+});
+
+describe("Read event details and update pre-eventing event", function() {
+    it("should provide participation details and update pre-evining event status", function() {
+        var participantUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + eventID + ")/Participant";
+        var xhr = prepareRequest("GET", participantUrl);
+        xhr.send();
+        expect(xhr.status).toBe(200);
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.FirstName).toBe("John");
+        participantUrl = body.d.__metadata.uri;
+        xhr = prepareRequest("PATCH", participantUrl);
+        var change = {
+            "PreEveningEvent": "Y"
+        };
+        xhr.send(JSON.stringify(change));
+        expect(xhr.status).toBe(204);
+        xhr = prepareRequest("GET", participantUrl);
+        xhr.send();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.PreEveningEvent).toBe("Y");
+    });
+});
+
 describe("Logout PARTICIPANT", function() {
     it("should logout PARTICIPANT", function() {
         logout(csrfToken);

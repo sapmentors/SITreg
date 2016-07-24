@@ -1,0 +1,108 @@
+--
+--   Copyright 2016 SAP Mentors
+--
+--   Licensed under the Apache License, Version 2.0 (the "License");
+--   you may not use this file except in compliance with the License.
+--   You may obtain a copy of the License at
+--
+--       http://www.apache.org/licenses/LICENSE-2.0
+--
+--   Unless required by applicable law or agreed to in writing, software
+--   distributed under the License is distributed on an "AS IS" BASIS,
+--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--   See the License for the specific language governing permissions and
+--   limitations under the License.
+--
+PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdatePrepare" ( 
+    IN inrow  "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",
+    IN oldrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",
+    OUT error "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.error"
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   DEFAULT SCHEMA SITREG
+   AS
+BEGIN
+
+	DECLARE lv_Count            INT;
+	DECLARE lv_ID               STRING;
+	DECLARE lv_EventID          STRING;
+	DECLARE lv_RegistrationTime TIMESTAMP;
+	DECLARE lv_FirstName        STRING;
+	DECLARE lv_LastName         STRING;
+	DECLARE lv_EMail            STRING;
+	DECLARE lv_MobilePhone      STRING;
+	DECLARE lv_BioURL           STRING;
+	DECLARE lv_Twitter          STRING;
+	DECLARE lv_RSVP             STRING;
+	DECLARE lv_PreEveningEvent  STRING;
+	DECLARE lv_PostEveningEvent STRING;
+	DECLARE lv_RelationToSAP    STRING;
+	DECLARE lv_Receipt          STRING;
+	DECLARE lv_ReceiptCompany   STRING;
+	DECLARE lv_ReceiptAddress   STRING;
+    DECLARE lv_CreatedBy        string;
+    DECLARE lv_CreatedAt        string;
+    DECLARE lv_ChangedBy        string;
+    DECLARE lv_ChangedAt        string;
+
+	DECLARE lv_FirstName_tmp        STRING;
+	DECLARE lv_LastName_tmp         STRING;
+	DECLARE lv_EMail_tmp            STRING;
+	DECLARE lv_MobilePhone_tmp      STRING;
+	DECLARE lv_BioURL_tmp           STRING;
+	DECLARE lv_Twitter_tmp          STRING;
+	DECLARE lv_RSVP_tmp             STRING;
+	DECLARE lv_PreEveningEvent_tmp  STRING;
+	DECLARE lv_PostEveningEvent_tmp STRING;
+	DECLARE lv_RelationToSAP_tmp    STRING;
+	DECLARE lv_Receipt_tmp          STRING;
+	DECLARE lv_ReceiptCompany_tmp   STRING;
+	DECLARE lv_ReceiptAddress_tmp   STRING;
+
+    DECLARE lv_msg                  STRING;
+    
+	SELECT * INTO lv_ID              
+        , lv_EventID         
+        , lv_RegistrationTime
+        , lv_FirstName       
+        , lv_LastName        
+        , lv_EMail           
+        , lv_MobilePhone     
+        , lv_BioURL          
+        , lv_Twitter         
+        , lv_RSVP            
+        , lv_PreEveningEvent 
+        , lv_PostEveningEvent
+        , lv_RelationToSAP   
+        , lv_Receipt         
+        , lv_ReceiptCompany  
+        , lv_ReceiptAddress
+        , lv_CreatedBy
+        , lv_CreatedAt
+        , lv_ChangedBy      
+        , lv_ChangedAt          
+        FROM :inrow;
+
+    -- Don't trust the provided Username. we read it from the current user
+	SELECT CURRENT_USER
+		INTO lv_ChangedBy
+		FROM DUMMY;
+		
+    -- Check if provided Event ID belongs to the User
+    SELECT COUNT(ID) INTO lv_Count 
+      FROM "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead"
+      WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
+     
+    IF lv_Count = 1 THEN
+        CALL "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate" ( :inrow );
+    else
+        SELECT CONCAT( 'Registration ', lv_ID ) INTO lv_msg FROM DUMMY;
+        SELECT CONCAT( lv_msg, ' does not exist' ) INTO lv_msg FROM DUMMY;
+        SELECT CONCAT( lv_msg, '. Current User: ' ) INTO lv_msg FROM DUMMY;
+        SELECT CONCAT( lv_msg, lv_ChangedBy ) INTO lv_msg FROM DUMMY;
+        error = select 400 as http_status_code, 
+                lv_msg error_message, 
+                '' detail from dummy;
+    end if;
+END

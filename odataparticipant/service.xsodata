@@ -28,7 +28,7 @@ service  {
     // Read Participant from View to restrict to logged on user
     "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead" as "Participant" key ("ID")
     create using "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantCreate"
-    update using "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate" 
+    update using "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdatePrepare" 
     delete forbidden;
     
     // Read Participants from View to restrict fields that can be read

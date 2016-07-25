@@ -26,17 +26,13 @@ describe("Read event and change MaxParticipants", function() {
         // Change MaxParticipants
         eventUri = body.d.results[0].__metadata.uri;
         eventUri2 = body.d.results[1].__metadata.uri;
-        xhr = prepareRequest("PATCH", eventUri);
-        var change = {
-            "MaxParticipants": 81
-        };
-        xhr.send(JSON.stringify(change));
+        xhr = xhr = updateEvent(eventUri);
         expect(xhr.status).toBe(204);
         // Check MaxParticipants
         xhr = prepareRequest("GET", eventUri);
         xhr.send();
         body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
-        expect(body.d.MaxParticipants).toBe(81);
+        expect(body.d.MaxParticipants).toBe(MaxParticipants);
         eventID = body.d.ID;
     });
 });

@@ -37,3 +37,12 @@ function registerAsOrganizer(UserName) {
     xhr.send(JSON.stringify(register));
     return xhr;
 }
+
+function updateEvent(url) {
+    var xhr = prepareRequest("PATCH", url);
+    var change = {
+        "MaxParticipants": MaxParticipants
+    };
+    xhr.send(JSON.stringify(change));
+    return xhr;
+}

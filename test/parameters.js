@@ -9,3 +9,4 @@ var csrfToken = "";
 var eventID = 1;
 var eventUri = "";
 var eventUri2 = "";
+var MaxParticipants = 90;

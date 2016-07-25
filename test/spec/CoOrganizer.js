@@ -6,21 +6,19 @@ describe("Login COORGANIZER", function() {
 
 describe("Change Homepage URL and read event as COORGANIZER", function() {
     it("should update the Homepage URL and check the change", function() {
-        var xhr = prepareRequest("PATCH", eventUri);
-        var HomepageURL = "http://www.sitmuc.de/";
-        var change = {
-            "HomepageURL": HomepageURL
-        };
-        xhr.send(JSON.stringify(change));
+        var xhr = updateEvent(eventUri);
         expect(xhr.status).toBe(204);
-        // Check HomepageURL
+        // Check MaxParticipants
         xhr = prepareRequest("GET", eventUri);
         xhr.send();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
-        expect(body.d.HomepageURL).toBe(HomepageURL);
-        // We should not be able to change Event 2
-        xhr = prepareRequest("PATCH", eventUri2);
-        xhr.send(JSON.stringify(change));
+        expect(body.d.MaxParticipants).toBe(MaxParticipants);
+    });
+});
+
+describe("Change data of an event where the COORGANIZER is not listed as a co-organizer", function() {
+    it("should not be possible", function() {
+        var xhr = xhr = updateEvent(eventUri2);
         expect(xhr.status).toBe(400);
     });
 });

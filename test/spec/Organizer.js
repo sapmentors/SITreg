@@ -26,6 +26,7 @@ describe("Read event and change MaxParticipants", function() {
         // Change MaxParticipants
         eventUri = body.d.results[0].__metadata.uri;
         eventUri2 = body.d.results[1].__metadata.uri;
+        eventID2 = body.d.results[1].ID;
         xhr = xhr = updateEvent(eventUri);
         expect(xhr.status).toBe(204);
         // Check MaxParticipants
@@ -39,13 +40,15 @@ describe("Read event and change MaxParticipants", function() {
 
 describe("Add COORGANIZER to event", function() {
     it("should add COORGANIZER to event", function() {
-        var create = {
-            "EventID": eventID,
-            "UserName": "COORGANIZER",
-            "Active": "Y"
-        };
-        var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/CoOrganizers");
-        xhr.send(JSON.stringify(create));
+        var xhr = addCoOrganizer(eventID, "COORGANIZER");
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+    });
+});
+
+xdescribe("Add XSA_DEV to event", function() {
+    it("should add XSA_DEV to event", function() {
+        var xhr = addCoOrganizer(eventID, "XSA_DEV");
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
     });

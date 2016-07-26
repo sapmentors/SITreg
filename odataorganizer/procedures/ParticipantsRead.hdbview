@@ -23,4 +23,7 @@ query = "SELECT \"Participant\".*
     FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Event\" AS \"Event\"
     JOIN \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\" AS \"Participant\"
       ON \"Event\".\"ID\" = \"Participant\".\"EventID\"
-    WHERE \"Event\".\"History.CreatedBy\" = CURRENT_USER;";
+    LEFT JOIN \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer\" AS \"CoOrganizer\"
+      ON \"Event\".\"ID\" = \"CoOrganizer\".\"EventID\"
+    WHERE \"Event\".\"History.CreatedBy\" = CURRENT_USER
+       OR \"CoOrganizer\".\"UserName\" = CURRENT_USER;";

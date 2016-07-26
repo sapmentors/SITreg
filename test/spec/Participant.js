@@ -15,19 +15,26 @@ describe("Register as Organizer", function() {
 
 describe("Register as Participant", function() {
     it("should add UserName as an Participant of an Event", function() {
+        var participantUri =  "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Participant";
         var register = {
 			ID: 1,
 			EventID: eventID,
 			FirstName: "John",
 			LastName: "Doe",
-			EMail: "John.Doe@test.com",
+			EMail: EMail,
 			RSVP: "Y",
 			"History.CreatedBy" : "John"
         };
-        var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Participant");
+        var xhr = prepareRequest("POST", participantUri);
         xhr.send(JSON.stringify(register));
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
+        // Register also for the second event
+        register.EventID = eventID2;
+        xhr = prepareRequest("POST", participantUri);
+        xhr.send(JSON.stringify(register));
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");        
     });
 });
 

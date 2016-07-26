@@ -38,6 +38,17 @@ function registerAsOrganizer(UserName) {
     return xhr;
 }
 
+function addCoOrganizer(_EventID, _UserName) {
+    var create = {
+        "EventID": _EventID,
+        "UserName": _UserName,
+        "Active": "Y"
+    };
+    var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/CoOrganizers");
+    xhr.send(JSON.stringify(create));
+    return xhr;
+}
+
 function updateEvent(url) {
     var xhr = prepareRequest("PATCH", url);
     var change = {
@@ -46,3 +57,4 @@ function updateEvent(url) {
     xhr.send(JSON.stringify(change));
     return xhr;
 }
+

@@ -75,3 +75,10 @@ function updateEvent(url) {
     xhr.send(JSON.stringify(change));
     return xhr;
 }
+
+function getParticipantDetailsForEvent(_EventID) {
+    var participantUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + _EventID + ")/Participant";
+    var xhr = prepareRequest("GET", participantUrl);
+    xhr.send();
+    return xhr;
+}

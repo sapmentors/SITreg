@@ -15,6 +15,7 @@
    limitations under the License.
 
 */
+var xssScript = "<script>alert('John');</script>";
 
 describe("Login PARTICIPANT", function() {
     it("should login PARTICIPANT and get csrfToken", function() {
@@ -49,6 +50,8 @@ describe("Register as Participant", function() {
         expect(xhr.statusText).toBe("Created");
         // Register also for the second event
         register.EventID = eventID2;
+        // Let's test XSS Injection
+        register.FirstName = xssScript;
         xhr = prepareRequest("POST", participantUri);
         xhr.send(JSON.stringify(register));
         expect(xhr.status).toBe(201);
@@ -66,9 +69,7 @@ describe("Try to read organizer OData service as participant", function() {
 
 describe("Read event details and update pre-eventing event", function() {
     it("should provide participation details and update pre-evining event status", function() {
-        var participantUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + eventID + ")/Participant";
-        var xhr = prepareRequest("GET", participantUrl);
-        xhr.send();
+        var xhr = getParticipantDetailsForEvent(eventID);
         expect(xhr.status).toBe(200);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.FirstName).toBe("John");
@@ -83,6 +84,14 @@ describe("Read event details and update pre-eventing event", function() {
         xhr.send();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.PreEveningEvent).toBe("Y");
+    });
+});
+
+describe("Read second event details where XSS was tried", function() {
+    it("should provide participation details and XSS script should been escaped", function() {
+        var xhr = getParticipantDetailsForEvent(eventID2);
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.FirstName).toBe(xssScript);
     });
 });
 

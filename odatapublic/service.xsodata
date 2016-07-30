@@ -32,3 +32,6 @@ service  {
     association "Event_Participants" principal "Events"("ID") multiplicity "1"
         dependent "Participants"("EventID") multiplicity "*";    
 }
+annotations {
+   enable OData4SAP;
+}

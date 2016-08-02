@@ -24,10 +24,21 @@ describe("Login ORGANIZER", function() {
 
 describe("Create event", function() {
     it("should create event", function() {
-        var xhr = createEvent("München");
+        var xhr = createEvent(
+            "München",
+            "/Date(1475798400000)/",
+            "/Date(1475910000000)/",
+            "/Date(1475942400000)/"
+        );
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
-        xhr = createEvent("Bern");
+        xhr = createEvent("");
+        var xhr = createEvent(
+            "Bern",
+            "/Date(1472774400000)/",
+            "/Date(1472889600000)/",
+            "/Date(1472911200000)/"
+        );
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
     });
@@ -64,11 +75,13 @@ describe("Add COORGANIZER to event", function() {
     });
 });
 
-xdescribe("Add XSA_DEV to event", function() {
-    it("should add XSA_DEV to event", function() {
+describe("Add additional co-organizers to event", function() {
+    it("should add additional co-organizers to event", function() {
         var xhr = addCoOrganizer(eventID, "XSA_DEV");
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
+        xhr = addCoOrganizer(eventID, "GWOLF");
+        xhr = addCoOrganizer(eventID, "S0001142741");
     });
 });
 

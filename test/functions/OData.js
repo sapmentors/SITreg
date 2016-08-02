@@ -25,13 +25,13 @@ function prepareRequest(method, url) {
     return xhr;
 }
 
-function createEvent(Location) {
+function createEvent(Location, EventDate, StartTime, EndTime) {
     var create = {
         "ID": eventID,
         "Location": Location,
-        "EventDate": "/Date(1475798400000)/",
-        "StartTime": "/Date(1475910000000)/",
-        "EndTime": "/Date(1475942400000)/",
+        "EventDate": EventDate,
+        "StartTime": StartTime,
+        "EndTime": EndTime,
         "MaxParticipants": 80,
         "HomepageURL": null
     };
@@ -73,12 +73,5 @@ function updateEvent(url) {
         "MaxParticipants": MaxParticipants
     };
     xhr.send(JSON.stringify(change));
-    return xhr;
-}
-
-function getParticipantDetailsForEvent(_EventID) {
-    var participantUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + _EventID + ")/Participant";
-    var xhr = prepareRequest("GET", participantUrl);
-    xhr.send();
     return xhr;
 }

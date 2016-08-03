@@ -34,26 +34,12 @@ describe("Register as Organizer", function() {
 
 describe("Register as Participant", function() {
     it("should add UserName as an Participant of an Event", function() {
-        var participantUri =  "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Participant";
-        var register = {
-			ID: 1,
-			EventID: eventID,
-			FirstName: "John",
-			LastName: "Doe",
-			EMail: EMail,
-			RSVP: "Y",
-			"History.CreatedBy" : "John"
-        };
-        var xhr = prepareRequest("POST", participantUri);
-        xhr.send(JSON.stringify(register));
+        var xhr = createParticipant(eventID , "PARTICIPANT");
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
         // Register also for the second event
-        register.EventID = eventID2;
-        // Let's test XSS Injection
-        register.FirstName = xssScript;
-        xhr = prepareRequest("POST", participantUri);
-        xhr.send(JSON.stringify(register));
+        // and let's test XSS Injection
+        xhr = createParticipant(eventID2 , xssScript);
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");        
     });
@@ -72,7 +58,7 @@ describe("Read event details and update pre-eventing event", function() {
         var xhr = getParticipantDetailsForEvent(eventID);
         expect(xhr.status).toBe(200);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
-        expect(body.d.FirstName).toBe("John");
+        expect(body.d.FirstName).toBe("PARTICIPANT");
         participantUrl = body.d.__metadata.uri;
         xhr = prepareRequest("PATCH", participantUrl);
         var change = {

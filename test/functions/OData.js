@@ -67,6 +67,29 @@ function addCoOrganizer(_EventID, _UserName) {
     return xhr;
 }
 
+function createParticipant(_EventID, _UserName) {
+    var participantUri =  "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Participant";
+    var xhr = prepareRequest("POST", participantUri);
+    var register = {
+		ID: 1,
+		EventID: _EventID,
+		FirstName: _UserName,
+		LastName: _UserName + "LastName",
+		EMail: _UserName + "@test.com",
+		RSVP: "Y",
+		"History.CreatedBy" : _UserName + "CreatedBy"
+    };
+    xhr.send(JSON.stringify(register));
+    return xhr;
+}
+
+function getParticipantDetailsForEvent(_EventID) {
+    var participantUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + _EventID + ")/Participant";
+    var xhr = prepareRequest("GET", participantUrl);
+    xhr.send();
+    return xhr;
+}
+
 function updateEvent(url) {
     var xhr = prepareRequest("PATCH", url);
     var change = {

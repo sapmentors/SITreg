@@ -29,4 +29,4 @@ var eventID2 = 2;
 var eventUri = "";
 var eventUri2 = "";
 var MaxParticipants = 90;
-var EMail = "John.Doe@test.com";
+var EMail = "PARTICIPANT@test.com";

@@ -7,6 +7,8 @@ This repository contains the backend for the SITreg app. It is developed on SAP 
 
 ## Setup Guide
 
+### Backend
+
 You must have developer authorization in your HANA System. To try this project just spin up your own HANA Multitennant Database Container (MDC) on the [HANA Cloud Platform Trial (HCP)](https://hcp.sap.com/). Open the SAP HANA Web-based Development Workbench and create the package:
 
     com/sap/sapmentors/sitreg
@@ -27,3 +29,24 @@ Assign the roles:
 * com.sap.sapmentors.sitreg.roles::admin (to SITREGADMIN)
 
 to be able to test the different services also according the correct implementation of the authorizations.
+
+### Frontend
+
+To be able to test the two frontend apps with the backend you have to create a destination in the **SAP HANA Cloud Platform Cockpit**. If you adjust the following and save it in a file called **HANAMDC** you can use the **Import Destination** function. After that you only have to maintain the password for your user.
+
+```
+Type=HTTP
+Authentication=BasicAuthentication
+Name=HANAMDC
+WebIDEEnabled=true
+URL=https\://<your-hana-mdc-host>.hanatrial.ondemand.com
+ProxyType=Internet
+User=<your-user>
+WebIDESystem=HANAMDC
+```
+
+If you want to use the HANA MDC XSODATA Service in a HCP HTML5 app with App2AppSSO then follow the great Blog by Martin Raepple: [Principal Propagation between HTML5- or Java-based applications and SAP HANA XS on SAP HANA Cloud Platform](http://scn.sap.com/community/developer-center/cloud-platform/blog/2016/03/21/principal-propagation-between-html5-and-sap-hana-xs-on-sap-hana-cloud-platform). After you've did the setup you can adjust your destination and set
+
+```
+Authentication=AppToAppSSO
+```

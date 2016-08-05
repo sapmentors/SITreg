@@ -23,12 +23,20 @@ describe("Login PARTICIPANT", function() {
     });
 });
 
-describe("Register as Organizer", function() {
+describe("Reqeust access as an Organizer", function() {
     it("should add UserName to RegisterAsOrganizerQueue Table", function() {
         var xhr = registerAsOrganizer("PARTICIPANT");
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
 
+    });
+});
+
+describe("Read values for relationship to SAP", function() {
+    it("should return a list of possible relationships", function() {
+        var xhr = getRelationToSAP();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.results.lenght).toBe(7);
     });
 });
 

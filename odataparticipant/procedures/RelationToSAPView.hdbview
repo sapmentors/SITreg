@@ -1,0 +1,3 @@
+schema = "SITREG";
+query = "select * from \"com.sap.sapmentors.sitreg.odataparticipant.procedures::RelationToSAP\"()";
+depends_on_view=["com.sap.sapmentors.sitreg.odataparticipant.procedures::RelationToSAP"];

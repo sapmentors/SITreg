@@ -31,6 +31,12 @@ service  {
     update using "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdatePrepare" 
     delete forbidden;
     
+    // RelationToSAP
+    "com.sap.sapmentors.sitreg.odataparticipant.procedures::RelationToSAPView" as "RelationToSAP" key ("RelationToSAP")
+    create forbidden 
+    update forbidden
+    delete forbidden;
+    
     // Read Participants from View to restrict fields that can be read
     "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantsRead" as "Participants" key ("ID")
     create forbidden 

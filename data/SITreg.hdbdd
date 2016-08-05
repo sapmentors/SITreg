@@ -27,6 +27,7 @@ context SITreg {
     
     type BusinessKey : Integer;
     type UserT : String(256);
+    type RelationToSAPT : String(1);
     type SDate : LocalDate;
     type URL   : String(256);
     type RegisterAsOrganizerStatus : String(10) enum{ ACCEPTED = 'A'; REJECTED = 'R'; PENDING = 'P'; };
@@ -67,6 +68,12 @@ context SITreg {
             Active   : String(1); // Y = Yes / N = No
     };
 
+    entity RelationToSAP {
+        key RelationToSAP : RelationToSAPT;
+        key Language : String(2);
+        Description  : String(250);
+    };
+    
     type ParticipantT {
             ID               : BusinessKey;
             EventID          : BusinessKey;
@@ -80,7 +87,7 @@ context SITreg {
             RSVP             : String(1); // Y = Yes / N = No
             PreEveningEvent  : String(1); // Y = Yes / N = No / M = Maybe
             PostEveningEvent : String(1); // Y = Yes / N = No / M = Maybe
-            RelationToSAP    : String(1); 
+            RelationToSAP    : RelationToSAPT; 
             Receipt          : String(1); // Y = Yes / N = No
             ReceiptCompany   : String(256);
             ReceiptAddress   : LargeString;

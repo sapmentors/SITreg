@@ -90,6 +90,13 @@ function getParticipantDetailsForEvent(_EventID) {
     return xhr;
 }
 
+function getRelationToSAP() {
+    var RelationToSAPUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/RelationToSAP";
+    var xhr = prepareRequest("GET", RelationToSAPUrl);
+    xhr.send();
+    return xhr;
+}
+
 function updateEvent(url) {
     var xhr = prepareRequest("PATCH", url);
     var change = {

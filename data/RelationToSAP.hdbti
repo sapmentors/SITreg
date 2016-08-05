@@ -1,0 +1,1 @@
+import = [{    table = "com.sap.sapmentors.sitreg.data::SITreg.RelationToSAP";    schema = "SITREG";    file = "com.sap.sapmentors.sitreg.data:RelationToSAP.csv";    header = false;}];

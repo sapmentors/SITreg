@@ -1,0 +1,20 @@
+FUNCTION "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::RelationToSAP" ()
+RETURNS TABLE ("RelationToSAP" NVARCHAR (1), "Description" NVARCHAR (250))
+LANGUAGE SQLSCRIPT SQL SECURITY INVOKER AS
+BEGIN
+    DECLARE lv_locale NVARCHAR (2);
+    DECLARE lv_count INT := 0;
+    
+    SELECT SESSION_CONTEXT('LOCALE') INTO lv_locale FROM DUMMY;
+    
+    SELECT COUNT(*) INTO lv_count FROM "com.sap.sapmentors.sitreg.data::SITreg.RelationToSAP"
+      WHERE "Language" = lv_locale;
+    IF (lv_count > 0) THEN
+        RETURN SELECT "RelationToSAP","Description" FROM "com.sap.sapmentors.sitreg.data::SITreg.RelationToSAP"
+          WHERE "Language" = lv_locale;
+    ELSE
+        RETURN SELECT "RelationToSAP","Description" FROM "com.sap.sapmentors.sitreg.data::SITreg.RelationToSAP"
+          WHERE "Language" = 'en';
+    END IF;
+    
+END;

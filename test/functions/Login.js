@@ -61,6 +61,15 @@ function getCSRFtokenAndLogin(_username, _password) {
     return getCSRFtoken();
 }
 
+function setLocale(_locale) {
+    var xhr = prepareRequest("POST", "/sap/hana/xs/formLogin/locale.xscfunc");
+    var locale = {
+        "locale": _locale
+    };
+    xhr.send(JSON.stringify(locale));
+    return xhr;
+}
+
 function logout(csrf) {
     // Now logout
     var xhr = new XMLHttpRequest();

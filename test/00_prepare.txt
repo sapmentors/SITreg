@@ -1,0 +1,4 @@
+To run the tests you have to install Jasmine (https://jasmine.github.io/) into the HANA repository.
+Download Jasmine 2.4.1 as a ZIP file, create the package jasmine below the content root and import the archive.
+Then run the SQL commands from 01_prepare.sql in the SQL console with an user that can create/delete users and assign roles.
+Then run the 50_SpecRunner.html in an Incognito Window (Chrome) or Private Window (Firefox)

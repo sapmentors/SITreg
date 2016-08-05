@@ -28,15 +28,28 @@ describe("Reqeust access as an Organizer", function() {
         var xhr = registerAsOrganizer("PARTICIPANT");
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
-
     });
 });
 
 describe("Read values for relationship to SAP", function() {
     it("should return a list of possible relationships", function() {
+        var xhr = setLocale("en");
+        expect(xhr.status).toBe(200);
         var xhr = getRelationToSAP();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
-        expect(body.d.results.lenght).toBe(7);
+        expect(body.d.results.length).toBe(7);
+        expect(body.d.results[0].Description).toBe("Customer");
+    });
+});
+
+describe("Switch locale to de and read relationship to SAP again", function() {
+    it("should return a list of possible relationships in German", function() {
+        var xhr = setLocale("de");
+        expect(xhr.status).toBe(200);
+        xhr = getRelationToSAP();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.results.length).toBe(7);
+        expect(body.d.results[0].Description).toBe("Kunde");
     });
 });
 
@@ -49,7 +62,7 @@ describe("Register as Participant", function() {
         // and let's test XSS Injection
         xhr = createParticipant(eventID2 , xssScript);
         expect(xhr.status).toBe(201);
-        expect(xhr.statusText).toBe("Created");        
+        expect(xhr.statusText).toBe("Created");
     });
 });
 

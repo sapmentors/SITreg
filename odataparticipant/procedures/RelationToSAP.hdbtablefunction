@@ -5,7 +5,7 @@ BEGIN
     DECLARE lv_locale NVARCHAR (2);
     DECLARE lv_count INT := 0;
     
-    SELECT SESSION_CONTEXT('LOCALE') INTO lv_locale FROM DUMMY;
+    SELECT LOWER ( SUBSTRING ( SESSION_CONTEXT('LOCALE'), 1, 2 ) ) INTO lv_locale FROM DUMMY;
     
     SELECT COUNT(*) INTO lv_count FROM "com.sap.sapmentors.sitreg.data::SITreg.RelationToSAP"
       WHERE "Language" = lv_locale;

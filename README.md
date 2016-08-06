@@ -13,7 +13,7 @@ You must have developer authorization in your HANA System. To try this project j
 
     com/sap/sapmentors/sitreg
 
-After you've created the package right click on the **sitreg** package and choose **Syncronize with GitHub**. Provide your GitHub credentials to allow the HANA system to read your GitHub repositories. As you can't specify a GitHub repository URL you have to fork the project so you have it in your repository list. Then coose the cloned repository and GitHub branch **master**. Click **Fetch** to retreive the content. After that step you have to activate the artifacts. Try a right click **activate all**.
+After you've created the package right click on the **sitreg** package and choose **Syncronize with GitHub**. Provide your GitHub credentials to allow the HANA system to read your GitHub repositories. As you can't specify a GitHub repository URL you have to fork the project so you have it in your repository list. Then choose the cloned repository and GitHub branch **master**. Click **Fetch** to retreive the content. After that step you have to activate the artifacts. Try a right click **activate all**.
 
 To test the different services with the correct authorizations setup the users: 
 
@@ -56,3 +56,8 @@ If you want to use the HANA MDC XSODATA Service in a HCP HTML5 app with App2AppS
 ```
 Authentication=AppToAppSSO
 ```
+
+You further must activate the SAML Authentication Method for the odataorganizer and odataparticipant. You do that by calling the XS Admin via the path:
+
+* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odataorganizer
+* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odataparticipant 

@@ -30,6 +30,19 @@ Assign the roles:
 
 to be able to test the different services also according the correct implementation of the authorizations.
 
+If you want to use AppToAppSSO as described in the Frontend section, you further must activate the SAML Authentication Method for the odataorganizer and odataparticipant. You do that by calling the XS Admin via the path:
+
+* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odataorganizer
+* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odataparticipant 
+ 
+For the anonymous access you have to activate the SQL Connection Details via the path:
+
+* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odatapublic/sqlcc/public
+
+and also enable **Public (No Authentication Required)** access to the package odatapublic. You do this via the path
+
+* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odatapublic
+
 ### Frontend
 
 To be able to test the two frontend apps with the backend you have to create a destination in the **SAP HANA Cloud Platform Cockpit**. If you adjust the following and save it in a file called **HANAMDC** you can use the **Import Destination** function. After that you only have to maintain the password for your user.
@@ -56,8 +69,3 @@ If you want to use the HANA MDC XSODATA Service in a HCP HTML5 app with App2AppS
 ```
 Authentication=AppToAppSSO
 ```
-
-You further must activate the SAML Authentication Method for the odataorganizer and odataparticipant. You do that by calling the XS Admin via the path:
-
-* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odataorganizer
-* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odataparticipant 

@@ -4,6 +4,7 @@ This repository contains the backend for the SITreg app. It is developed on SAP 
 
 * [SITregParticipant](https://github.com/sapmentors/SITregParticipant)
 * [SITregOrganizer](https://github.com/sapmentors/SITregOrganizer)
+* [SITRegParticipantList](https://github.com/sapmentors/SITRegParticipantList)
 
 ## Setup Guide
 

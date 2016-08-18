@@ -15,7 +15,7 @@
 --
 
 PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::RegisterAsOrganizerCreate" ( 
-    IN inrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue",
+    IN inrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Organizer",
     OUT error "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.error"
 )
    LANGUAGE SQLSCRIPT
@@ -23,33 +23,41 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::Regis
    DEFAULT SCHEMA SITREG
    AS
 BEGIN
-
-    DECLARE lv_Count           INT;
-    DECLARE lv_UserName        string;
-    DECLARE lv_Status          string;
-    DECLARE lv_RequestTimeStamp TIMESTAMP;
+    DECLARE lv_Count           	  INT;
+    DECLARE lv_UserName           string;
+    DECLARE lv_FirstName          string;
+    DECLARE lv_LastName           string;
+    DECLARE lv_Email      	      string;
+    DECLARE lv_MobilePhone        string;
+    DECLARE lv_Status          	  string;
+    DECLARE lv_RequestTimeStamp   TIMESTAMP;
     DECLARE lv_StatusSetTimeStamp TIMESTAMP;
-    DECLARE lv_CreatedBy       string;
-    DECLARE lv_CreatedAt       string;
-    DECLARE lv_ChangedBy       string;
-    DECLARE lv_ChangedAt       string;
+    DECLARE lv_CreatedBy       	  string;
+    DECLARE lv_CreatedAt       	  string;
+    DECLARE lv_ChangedBy          string;
+    DECLARE lv_ChangedAt          string;
 
 
-    SELECT * INTO lv_UserName
-            , lv_Status
-            , lv_RequestTimeStamp
-            , lv_StatusSetTimeStamp
-            , lv_CreatedBy
-            , lv_CreatedAt
-            , lv_ChangedBy
-            , lv_ChangedAt
+    SELECT * INTO 
+    	lv_UserName,
+    	lv_FirstName,
+    	lv_LastName,
+    	lv_Email,
+    	lv_MobilePhone,
+    	lv_Status,
+		lv_RequestTimeStamp,
+		lv_StatusSetTimeStamp,
+      	lv_CreatedBy,
+      	lv_CreatedAt,
+      	lv_ChangedBy,
+      	lv_ChangedAt
         FROM :inrow;
     
     -- Set Status initially to Pending (P)
     IF lv_Status = '' THEN
         lv_Status = 'P';
     END IF;
-    
+     
     -- Don't trust the provided Username. we read it from the current user
 	SELECT CURRENT_USER
 		INTO lv_UserName
@@ -64,17 +72,24 @@ BEGIN
       WHERE "History.CreatedBy" = lv_CreatedBy; 
       
     IF lv_Count = 0 THEN
-    	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue" 
+        DECLARE lv_now string;
+        lv_now = CURRENT_TIMESTAMP;
+        
+    	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Organizer" 
     	    VALUES(
-                  UCASE( lv_UserName )
-                , UCASE( lv_Status )
-                , CURRENT_TIMESTAMP
-                , CURRENT_TIMESTAMP
-                , lv_CreatedBy
-                , CURRENT_TIMESTAMP
-                , lv_ChangedBy
-                , CURRENT_TIMESTAMP
-            );
+    	    		UCASE( lv_UserName ),
+    	    		lv_FirstName,
+    	    		lv_LastName,
+    	    		lv_Email,
+    	    		lv_MobilePhone,
+                	UCASE( lv_Status ),
+                 	CURRENT_TIMESTAMP,
+                 	CURRENT_TIMESTAMP,
+                 	lv_CreatedBy,
+                 	CURRENT_TIMESTAMP,
+                 	lv_ChangedBy,
+                 	lv_now
+                );
 	ELSE
     	error = SELECT 400 AS http_status_code, 
     				'Event does not belong to you' AS error_message, 

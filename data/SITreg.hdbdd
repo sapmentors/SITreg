@@ -115,17 +115,21 @@ context SITreg {
     };
     
     entity Organizer {
-        key UserName          : UserT;
-            FirstName         : String(100) not null;
-            LastName          : String(100) not null;
-            EMail             : String(256) not null;
-            MobilePhone       : String(25);
-            Status            : String(1); // 
-            History           : HistoryT;
+        key UserName          	: UserT;
+            FirstName           : String(100) not null;
+            LastName        	: String(100) not null;
+            EMail            	: String(256) not null;
+            MobilePhone       	: String(25);
+            Status            	: String(1);
+            RequestTimeStamp    : UTCTimestamp;
+            StatusSetTimeStamp  : UTCTimestamp;         
+            History           	: HistoryT;
     }
     
     entity RegisterAsOrganizerQueue {
-        key UserName            : UserT; // Username of the maybe new Organizer
+        key EventID             : BusinessKey not null default 0;
+        key UserName            : UserT;
+            Organizer           : association to SITreg.Organizer {UserName};
             Status              : String(1); // See enum RegisterAsOrganizerStatus // A = Accepted / R = Rejected / P = Pending
             RequestTimeStamp    : UTCTimestamp;
             StatusSetTimeStamp  : UTCTimestamp;

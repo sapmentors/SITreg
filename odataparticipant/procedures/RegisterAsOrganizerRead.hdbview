@@ -20,7 +20,7 @@
 
 schema = "SITREG";
 query = "SELECT * 
-         FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue\"
+         FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Organizer\"
          WHERE \"History.CreatedBy\" = CURRENT_USER;";
 
 // Using an hdbtablefunction does not work as it would need SELECT authorization on the Participant table

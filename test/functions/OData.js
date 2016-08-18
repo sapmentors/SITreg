@@ -43,7 +43,11 @@ function createEvent(Location, EventDate, StartTime, EndTime) {
 function registerAsOrganizer(UserName) {
     var register = {
         "UserName"           : UserName,
-        "Status"             : "P", // Pending
+        "FirstName"			 : "Hello",
+        "LastName"			 : "InsideTrack Munic",
+        "EMail"			 	 : "hello@sitmuc.de",
+        "MobilePhone"		 : "0123456789",
+        "Status"             : "P", 
 	    "RequestTimeStamp"   : "/Date(1475942400000)/",
 	    "StatusSetTimeStamp" : "/Date(1475942400000)/",
 	    "History.CreatedBy"  : UserName,

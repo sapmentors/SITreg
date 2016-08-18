@@ -24,7 +24,7 @@ describe("Login PARTICIPANT", function() {
 });
 
 describe("Reqeust access as an Organizer", function() {
-    it("should add UserName to RegisterAsOrganizerQueue Table", function() {
+    it("should add UserName to Organizer Table", function() {
         var xhr = registerAsOrganizer("PARTICIPANT");
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");

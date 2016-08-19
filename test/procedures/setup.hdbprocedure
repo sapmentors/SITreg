@@ -8,10 +8,17 @@ BEGIN
     EXEC 'CREATE USER COORGANIZER PASSWORD Init1234;';
     EXEC 'CREATE USER PARTICIPANT PASSWORD Init1234;';
     
-    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Event";
-    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant";
-    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer";
-    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue";
+    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Event" 
+        WHERE "History.CreatedBy" = 'ORGANIZER'
+           OR "History.CreatedBy" = 'COORGANIZER';
+    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+        WHERE "History.CreatedBy" = 'PARTICIPANT';
+    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer"
+        WHERE "History.CreatedBy" = 'ORGANIZER';
+    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue"
+        WHERE "History.CreatedBy" = 'PARTICIPANT';
+    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Organizer"
+        WHERE "History.CreatedBy" = 'PARTICIPANT';
     
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::organizer','ORGANIZER');
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::organizer','COORGANIZER');

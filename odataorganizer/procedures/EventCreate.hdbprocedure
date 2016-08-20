@@ -71,7 +71,8 @@ BEGIN
 	    , lv_CreatedBy
 	    , CURRENT_TIMESTAMP
 	    );
-	    
+	-- Procedures for XSODATA are expected to fill the error sturcture
+	-- TODO: Find a better solution for 1 = 2
 	IF (1 = 2) THEN
 		error = SELECT 400 AS http_status_code, 
 					'Insert failed' AS error_message, 

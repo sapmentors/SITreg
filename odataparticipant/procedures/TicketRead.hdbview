@@ -1,0 +1,27 @@
+//
+//   Copyright 2016 SAP Mentors
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+//
+
+//
+// Thanks to the Blog: OData read exits - a delightful solution
+// http://scn.sap.com/community/developer-center/hana/blog/2016/01/15/odata-read-exits--an-ingenious-solution
+//
+schema = "SITREG";
+query = "SELECT \"ParticipantID\", \"Ticket\".\"EventID\" AS \"EventID\", \"TicketUsed\", \"SHA256HASH\"
+    FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Ticket\" AS \"Ticket\"
+    INNER JOIN \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\" AS \"Participant\"
+      ON \"Participant\".\"ID\" = \"Ticket\".\"ParticipantID\"
+    WHERE \"Ticket\".\"TicketUsed\" = 'N'
+      AND \"Participant\".\"History.CreatedBy\" = CURRENT_USER";

@@ -94,6 +94,15 @@ describe("Read event details and update pre-eventing event", function() {
     });
 });
 
+describe("Read ticket for event", function() {
+    it("should return the hashed ticket code", function() {
+        var xhr = prepareRequest("GET", getParticipantEventDetailsUrl(eventID) + "/Ticket");
+        xhr.send();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.EventID).toBe(eventID);
+    });
+});
+
 describe("Read second event details where XSS was tried", function() {
     it("should provide participation details and XSS script should been escaped", function() {
         var xhr = getParticipantDetailsForEvent(eventID2);

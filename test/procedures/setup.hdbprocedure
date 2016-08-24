@@ -13,6 +13,8 @@ BEGIN
            OR "History.CreatedBy" = 'COORGANIZER';
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
         WHERE "History.CreatedBy" = 'PARTICIPANT';
+    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Ticket"
+        WHERE "History.CreatedBy" = 'PARTICIPANT';
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer"
         WHERE "History.CreatedBy" = 'ORGANIZER';
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue"

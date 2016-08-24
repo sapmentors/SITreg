@@ -25,12 +25,15 @@ context SITreg {
         DETAIL           : String(100);
     };
     
-    type BusinessKey : Integer;
-    type UserT : String(256);
+    type BusinessKey    : Integer;
+    type UserT          : String(256);
     type RelationToSAPT : String(1);
-    type SDate : LocalDate;
-    type URL   : String(256);
-    type RegisterAsOrganizerStatus : String(10) enum{ ACCEPTED = 'A'; REJECTED = 'R'; PENDING = 'P'; };
+    type SDate          : LocalDate;
+    type URL            : String(256);
+    type TicketUsedT    : String(1) enum{ YES = 'Y'; NO = 'N'; };
+    type HashT          : Binary(32);
+    type RegisterAsOrganizerStatus : String(1) enum{ ACCEPTED = 'A'; REJECTED = 'R'; PENDING = 'P'; };
+
     
     type HistoryT {
         CreatedBy : UserT;
@@ -87,7 +90,7 @@ context SITreg {
             RSVP             : String(1); // Y = Yes / N = No
             PreEveningEvent  : String(1); // Y = Yes / N = No / M = Maybe
             PostEveningEvent : String(1); // Y = Yes / N = No / M = Maybe
-            RelationToSAP    : RelationToSAPT; 
+            RelationToSAP    : RelationToSAPT;
             Receipt          : String(1); // Y = Yes / N = No
             ReceiptCompany   : String(256);
             ReceiptAddress   : LargeString;
@@ -111,6 +114,14 @@ context SITreg {
             Receipt          : String(1); // Y = Yes / N = No
             ReceiptCompany   : String(256);
             ReceiptAddress   : LargeString;
+            History          : HistoryT;
+    };
+    
+    entity Ticket {
+        key ParticipantID    : BusinessKey;
+            EventID          : BusinessKey not null;
+            TicketUsed       : String(1); // See enum TicketUsedT // Y = used, N not used
+            SHA256HASH       : HashT;
             History          : HistoryT;
     };
     

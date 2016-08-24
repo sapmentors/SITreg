@@ -87,8 +87,13 @@ function createParticipant(_EventID, _UserName) {
     return xhr;
 }
 
+function getParticipantEventDetailsUrl(_EventID) {
+    var eventDetailsUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + _EventID + ")";
+    return eventDetailsUrl;
+}
+
 function getParticipantDetailsForEvent(_EventID) {
-    var participantUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + _EventID + ")/Participant";
+    var participantUrl = getParticipantEventDetailsUrl(_EventID) + "/Participant";
     var xhr = prepareRequest("GET", participantUrl);
     xhr.send();
     return xhr;

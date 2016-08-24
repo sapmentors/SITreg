@@ -19,6 +19,7 @@ service  {
 
     "com.sap.sapmentors.sitreg.data::SITreg.Event" as "Events"
         navigates ("Event_Participant"         as "Participant", 
+                   "Event_Ticket"              as "Ticket", 
                    "Event_Participants"        as "Participants", 
                    "Event_RegistrationNumbers" as "RegistrationNumbers")
     create forbidden 
@@ -42,8 +43,15 @@ service  {
     create forbidden 
     update forbidden
     delete forbidden;
+
     // Read RegistrationNumbers from View to restrict fields that can be read
     "com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead" as "RegistrationNumbers" key ("EventID")
+    create forbidden 
+    update forbidden
+    delete forbidden;
+
+    // Read Ticket from View to restrict fields that can be read
+    "com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketRead" as "Ticket" key ("ParticipantID")
     create forbidden 
     update forbidden
     delete forbidden;
@@ -56,6 +64,8 @@ service  {
     
     association "Event_Participant" principal "Events"("ID") multiplicity "1"
         dependent "Participant"("EventID") multiplicity "1";
+    association "Event_Ticket" principal "Events"("ID") multiplicity "1"
+        dependent "Ticket"("EventID") multiplicity "1";
     association "Event_Participants" principal "Events"("ID") multiplicity "1"
         dependent "Participants"("EventID") multiplicity "*";
     association "Event_RegistrationNumbers" principal "Events"("ID") multiplicity "1"

@@ -46,7 +46,8 @@ describe("Create event", function() {
 
 describe("Read event and change MaxParticipants", function() {
     it("should return the created event, change the MaxParticipants and check the change", function() {
-        var xhr = prepareRequest("GET", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events");
+        var url = "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events?$filter=History.CreatedBy eq 'ORGANIZER'";
+        var xhr = prepareRequest("GET", url);
         xhr.send();
         expect(xhr.status).toBe(200);
         expect(xhr.statusText).toBe("OK");

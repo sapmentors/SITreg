@@ -19,7 +19,8 @@ var publicEventURI = "";
 
 describe("Read events", function() {
     it("should return event details", function() {
-        var xhr = prepareRequest("GET", "/com/sap/sapmentors/sitreg/odatapublic/service.xsodata/Events");
+        var url = "/com/sap/sapmentors/sitreg/odatapublic/service.xsodata/Events?$filter=History.CreatedBy eq 'ORGANIZER'";
+        var xhr = prepareRequest("GET", url);
         xhr.send();
         expect(xhr.status).toBe(200);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";

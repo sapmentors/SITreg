@@ -100,6 +100,7 @@ describe("Read ticket for event", function() {
         xhr.send();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.EventID).toBe(eventID);
+        SHA256HASH = body.d.SHA256HASH;
     });
 });
 

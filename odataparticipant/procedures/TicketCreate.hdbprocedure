@@ -17,7 +17,7 @@ BEGIN
     DECLARE lv_rand double;
 
     SELECT COUNT(*) INTO lv_count
-        FROM "com.sap.sapmentors.sitreg.data::SITreg.Ticket" 
+        FROM "com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketRead" 
         WHERE "ParticipantID" = ParticipantID;
 
     IF lv_count = 0 THEN

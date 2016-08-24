@@ -7,6 +7,7 @@ BEGIN
     EXEC 'CREATE USER ORGANIZER PASSWORD Init1234;';
     EXEC 'CREATE USER COORGANIZER PASSWORD Init1234;';
     EXEC 'CREATE USER PARTICIPANT PASSWORD Init1234;';
+    EXEC 'CREATE USER RECEPTIONIST PASSWORD Init1234;';
     
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Event" 
         WHERE "History.CreatedBy" = 'ORGANIZER'
@@ -25,5 +26,6 @@ BEGIN
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::organizer','ORGANIZER');
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::organizer','COORGANIZER');
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::participant','PARTICIPANT');
+    CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::receptionist','RECEPTIONIST');
 
 END

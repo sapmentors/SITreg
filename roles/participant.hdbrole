@@ -22,7 +22,6 @@ role com.sap.sapmentors.sitreg.roles::participant {
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketCreate: EXECUTE;
     
-    
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc: EXECUTE;
     

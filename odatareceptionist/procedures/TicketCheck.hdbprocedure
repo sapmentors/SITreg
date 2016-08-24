@@ -1,0 +1,15 @@
+PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketCheck" (
+        IN inhash VARBINARY(32),
+        OUT outc "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Ticket"
+    )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   DEFAULT SCHEMA SITREG
+   READS SQL DATA AS
+BEGIN
+
+    outc = SELECT *
+        FROM "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Ticket"
+        WHERE "SHA256HASH" = inhash;
+
+END

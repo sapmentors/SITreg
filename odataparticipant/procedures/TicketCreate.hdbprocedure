@@ -12,30 +12,37 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::Ticke
 AS
 BEGIN
 
+    DECLARE lv_count         Int;
     DECLARE lv_SHA256HASH    string;
     DECLARE lv_rand double;
 
-    -- RAND_SECURE is not supported in HANA SP10 (Current release for HCP)
-    SELECT RAND() INTO lv_rand from dummy;
-    SELECT HASH_SHA256(
-        to_binary(lv_rand) 
-        , to_binary(ParticipantID)
-        , to_binary(EventID)
-        , to_binary(CURRENT_TIMESTAMP)
-        , to_binary(FirstName)
-        , to_binary(LastName)
-        , to_binary(EMail)
-        , to_binary(CreatedBy)
-        ) INTO lv_SHA256HASH FROM DUMMY;
+    SELECT COUNT(*) INTO lv_count
+        FROM "com.sap.sapmentors.sitreg.data::SITreg.Ticket" 
+        WHERE "ParticipantID" = ParticipantID;
 
-	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Ticket" 
-	    VALUES(ParticipantID
-        , EventID         
-	    , 'N'
-	    , lv_SHA256HASH
-        , CreatedBy      
-        , CURRENT_TIMESTAMP      
-        , CreatedBy      
-        , CURRENT_TIMESTAMP
-        );
+    IF lv_count = 0 THEN
+        -- RAND_SECURE is not supported in HANA SP10 (Current release for HCP)
+        SELECT RAND() INTO lv_rand from dummy;
+        SELECT HASH_SHA256(
+            to_binary(lv_rand) 
+            , to_binary(ParticipantID)
+            , to_binary(EventID)
+            , to_binary(CURRENT_TIMESTAMP)
+            , to_binary(FirstName)
+            , to_binary(LastName)
+            , to_binary(EMail)
+            , to_binary(CreatedBy)
+            ) INTO lv_SHA256HASH FROM DUMMY;
+    
+    	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Ticket" 
+    	    VALUES(ParticipantID
+            , EventID         
+    	    , 'N'
+    	    , lv_SHA256HASH
+            , CreatedBy      
+            , CURRENT_TIMESTAMP      
+            , CreatedBy      
+            , CURRENT_TIMESTAMP
+            );
+    END IF;
 END

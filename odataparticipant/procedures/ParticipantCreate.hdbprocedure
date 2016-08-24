@@ -29,9 +29,6 @@ BEGIN
     DECLARE lv_ChangedBy        string;
     DECLARE lv_ChangedAt        string;
 
-    DECLARE lv_SHA256HASH    string;
-    DECLARE lv_rand double;
-
 	SELECT * INTO lv_ID              
         , lv_EventID         
         , lv_RegistrationTime
@@ -93,29 +90,14 @@ BEGIN
             , CURRENT_TIMESTAMP
             );
     
-        -- RAND_SECURE is not supported in HANA SP10 (Current release for HCP)
-        SELECT RAND() INTO lv_rand from dummy;
-        SELECT HASH_SHA256(
-            to_binary(lv_rand) 
-            , to_binary(lv_ID)
-            , to_binary(lv_EventID)
-            , to_binary(CURRENT_TIMESTAMP)
-            , to_binary(lv_FirstName)
-            , to_binary(lv_LastName)
-            , to_binary(lv_EMail)
-            , to_binary(lv_CreatedBy)
-            ) INTO lv_SHA256HASH FROM DUMMY;
-
-    	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Ticket" 
-    	    VALUES(lv_ID
-            , lv_EventID         
-    	    , 'N'
-    	    , lv_SHA256HASH
-            , lv_CreatedBy      
-            , CURRENT_TIMESTAMP      
-            , lv_ChangedBy      
-            , CURRENT_TIMESTAMP
-            );    
+        CALL "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketCreate" ( 
+            lv_ID,
+            lv_EventID,
+            lv_FirstName,
+            lv_LastName,
+            lv_EMail,
+            lv_CreatedBy
+        );
     ELSE
 		error = SELECT 400 AS http_status_code, 
 					'Insert failed' AS error_message, 

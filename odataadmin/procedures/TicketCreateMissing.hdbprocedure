@@ -1,0 +1,26 @@
+PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataadmin.procedures::TicketCreateMissing" ( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   DEFAULT SCHEMA SITREG
+   AS
+BEGIN
+    DECLARE CURSOR c_participants FOR
+    SELECT "ID", 
+        "EventID",
+        "FirstName",
+        "LastName",
+        "EMail",
+        "History.CreatedBy"
+    FROM "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant";
+    
+    FOR cur_row as c_participants DO
+        CALL "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketCreate" ( 
+            cur_row."ID",
+            cur_row."EventID",
+            cur_row."FirstName",
+            cur_row."LastName",
+            cur_row."EMail",
+            cur_row."History.CreatedBy"
+        );
+    END FOR;
+END

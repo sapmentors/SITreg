@@ -31,18 +31,7 @@ Assign the roles:
 
 to be able to test the different services also according the correct implementation of the authorizations.
 
-If you want to use AppToAppSSO as described in the Frontend section, you further must activate the SAML Authentication Method for the odataorganizer and odataparticipant. You do that by calling the XS Admin via the path:
 
-* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odataorganizer
-* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odataparticipant 
- 
-For the anonymous access you have to activate the SQL Connection Details via the path:
-
-* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odatapublic/sqlcc/public
-
-and also enable **Public (No Authentication Required)** access to the package odatapublic. You do this via the path
-
-* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odatapublic
 
 ### Frontend
 
@@ -64,6 +53,20 @@ ProxyType=Internet
 User=<user_on_HANAMDC>
 WebIDESystem=HANAMDC
 ```
+
+### Use of AppToAppSSO (optional)
+If you want to use AppToAppSSO as described in the Frontend section, you further must activate the SAML Authentication Method for the odataorganizer and odataparticipant. You do that by calling the XS Admin via the path:
+
+* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odataorganizer
+* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odataparticipant 
+ 
+For the anonymous access you have to activate the SQL Connection Details via the path:
+
+* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odatapublic/sqlcc/public
+
+and also enable **Public (No Authentication Required)** access to the package odatapublic. You do this via the path
+
+* /sap/hana/xs/admin/#/package/com.sap.sapmentors.sitreg.odatapublic
 
 If you want to use the HANA MDC XSODATA Service in a HCP HTML5 app with App2AppSSO then follow the great Blog by Martin Raepple: [Principal Propagation between HTML5- or Java-based applications and SAP HANA XS on SAP HANA Cloud Platform](http://scn.sap.com/community/developer-center/cloud-platform/blog/2016/03/21/principal-propagation-between-html5-and-sap-hana-xs-on-sap-hana-cloud-platform). After you've did the setup you can adjust your destination and set
 

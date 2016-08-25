@@ -33,7 +33,7 @@ to be able to test the different services also according the correct implementat
 
 
 
-### Frontend
+### Frontend Access to the Data
 
 To be able to test the two frontend apps with the backend you have to create a destination in the **SAP HANA Cloud Platform Cockpit**. If you adjust the following and save it in a file called **HANAMDC** you can use the **Import Destination** function. After that you only have to maintain the password for your user.
 
@@ -53,6 +53,8 @@ ProxyType=Internet
 User=<user_on_HANAMDC>
 WebIDESystem=HANAMDC
 ```
+
+For the Setup of the Frontend Application itself refer to the Readme and Setup Guide of sapmentors/SITrefParticipant
 
 ### Use of AppToAppSSO (optional)
 If you want to use AppToAppSSO as described in the Frontend section, you further must activate the SAML Authentication Method for the odataorganizer and odataparticipant. You do that by calling the XS Admin via the path:

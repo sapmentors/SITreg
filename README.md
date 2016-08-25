@@ -37,6 +37,8 @@ to be able to test the different services also according the correct implementat
 
 To be able to test the two frontend apps with the backend you have to create a destination in the **SAP HANA Cloud Platform Cockpit**. If you adjust the following and save it in a file called **HANAMDC** you can use the **Import Destination** function. After that you only have to maintain the password for your user.
 
+For the application sapmentors/SITregParticipantList you need the destination HANAMDC_PUBLIC. The steps of creation are the same as already described.
+
 The user stored in this destination is used for accessing the HANA database in the backend. In order to use the needed OData services the user needs to own the roles 
 * "com.sap.sapmentors.sitreg.odataparticipant::participant" and 
 * "com.sap.sapmentors.sitreg.odataparticipant::organizer". 

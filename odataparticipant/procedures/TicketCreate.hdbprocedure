@@ -21,8 +21,7 @@ BEGIN
         WHERE "ParticipantID" = ParticipantID;
 
     IF lv_count = 0 THEN
-        -- RAND_SECURE is not supported in HANA SP10 (Current release for HCP)
-        SELECT RAND() INTO lv_rand from dummy;
+        SELECT RAND_SECURE() INTO lv_rand from dummy;
         SELECT HASH_SHA256(
             to_binary(lv_rand) 
             , to_binary(ParticipantID)

@@ -17,6 +17,7 @@
 */
 
 var TicketCodeURL = "/com/sap/sapmentors/sitreg/odatareceptionist/checkTicket.xsjs";
+var ReceptionistODataURL = "/com/sap/sapmentors/sitreg/odatareceptionist/service.xsodata";
 
 describe("Login RECEPTIONIST", function() {
     it("should login RECEPTIONIST and get csrfToken", function() {
@@ -45,6 +46,30 @@ describe("Check provided ticket using HTTP GET", function() {
         expect(xhr.status).toBe(200);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.OUTC[0].EventID).not.toBe(null);
+    });
+});
+
+describe("Check in participant ticket", function() {
+    it("should check in the participant", function() {
+        var xhr =  prepareRequest("PATCH", ReceptionistODataURL + "/Ticket(" + participantID + ")");
+        var change = {
+            "SHA256HASH": SHA256HASH
+        };
+        xhr.send(JSON.stringify(change));
+        expect(xhr.status).toBe(204);
+    });
+});
+
+describe("Check that provided ticket was used", function() {
+    it("should return no event ID", function() {
+        var check = {
+            "SHA256HASH": SHA256HASH
+        };
+        var xhr = prepareRequest("POST", TicketCodeURL);
+        xhr.send(JSON.stringify(check));
+        expect(xhr.status).toBe(200);
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.OUTC[0].TicketUsed).toBe('Y');
     });
 });
 

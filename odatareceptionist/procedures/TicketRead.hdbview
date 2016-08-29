@@ -19,9 +19,7 @@
 // http://scn.sap.com/community/developer-center/hana/blog/2016/01/15/odata-read-exits--an-ingenious-solution
 //
 schema = "SITREG";
-query = "SELECT \"Ticket\".*
-    FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Ticket\" AS \"Ticket\"
-    INNER JOIN \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\" AS \"Participant\"
-      ON \"Participant\".\"ID\" = \"Ticket\".\"ParticipantID\"
-    WHERE \"Ticket\".\"TicketUsed\" = 'N'
-      AND \"Participant\".\"History.CreatedBy\" = CURRENT_USER";
+query = "SELECT \"ParticipantID\", \"EventID\" AS \"EventID\", \"TicketUsed\"
+        , HASH_SHA256(to_binary(CURRENT_TIMESTAMP)) AS \"SHA256HASH\"
+        , \"History.CreatedBy\" , \"History.CreatedAt\", \"History.ChangedBy\", \"History.ChangedAt\"
+    FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Ticket\"";

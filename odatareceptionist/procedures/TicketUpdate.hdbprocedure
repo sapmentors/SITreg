@@ -1,0 +1,67 @@
+--
+--   Copyright 2016 SAP Mentors
+--
+--   Licensed under the Apache License, Version 2.0 (the "License");
+--   you may not use this file except in compliance with the License.
+--   You may obtain a copy of the License at
+--
+--       http://www.apache.org/licenses/LICENSE-2.0
+--
+--   Unless required by applicable law or agreed to in writing, software
+--   distributed under the License is distributed on an "AS IS" BASIS,
+--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--   See the License for the specific language governing permissions and
+--   limitations under the License.
+--
+PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketUpdate" ( 
+    IN inrow  "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Ticket",
+    IN oldrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Ticket",
+    OUT error "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.error"
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   DEFAULT SCHEMA SITREG
+   AS
+BEGIN
+
+	DECLARE lv_Count             INT;
+	DECLARE lv_ParticipantID     STRING;
+	DECLARE lv_EventID           STRING;
+	DECLARE lv_TicketUsed        STRING;
+    DECLARE lv_SHA256HASH        STRING;
+    DECLARE lv_CreatedBy         STRING;
+    DECLARE lv_CreatedAt         STRING;
+    DECLARE lv_ChangedBy         STRING;
+    DECLARE lv_ChangedAt         STRING;
+
+	DECLARE lv_TicketUsed_tmp    STRING;
+
+    DECLARE lv_msg               STRING;
+    
+	SELECT * INTO lv_ParticipantID
+        , lv_EventID
+        , lv_TicketUsed
+        , lv_SHA256HASH
+        , lv_CreatedBy
+        , lv_CreatedAt
+        , lv_ChangedBy
+        , lv_ChangedAt
+        FROM :inrow;
+
+    SELECT "TicketUsed"
+      INTO lv_TicketUsed_tmp
+      FROM "com.sap.sapmentors.sitreg.data::SITreg.Ticket"
+      WHERE "SHA256HASH" = lv_SHA256HASH;
+    
+    IF lv_TicketUsed_tmp = 'N' THEN
+        UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Ticket"
+          SET   "TicketUsed"        = 'Y'
+              , "History.ChangedBy" = CURRENT_USER
+              , "History.ChangedAt" = CURRENT_TIMESTAMP
+          WHERE "SHA256HASH" = lv_SHA256HASH;
+    ELSE
+        error = select 400 as http_status_code, 
+            'Update failed' error_message, 
+            'Ticket was already used' detail from dummy;
+    END IF;
+END

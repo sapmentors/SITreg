@@ -38,9 +38,9 @@ service  {
     delete forbidden;
 
     // Read Ticket from View to restrict fields that can be read
-    "com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketRead" as "Ticket" key ("ParticipantID")
+    "com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead" as "Ticket" key ("ParticipantID")
     create forbidden 
-    update forbidden
+    update using "com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketUpdate"
     delete forbidden;
     
     association "Event_Ticket" principal "Events"("ID") multiplicity "1"

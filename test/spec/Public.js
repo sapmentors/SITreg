@@ -19,12 +19,12 @@ var publicEventURI = "";
 
 describe("Read events", function() {
     it("should return event details", function() {
-        var url = "/com/sap/sapmentors/sitreg/odatapublic/service.xsodata/Events?$filter=History.CreatedBy eq 'ORGANIZER'";
+        var url = "/com/sap/sapmentors/sitreg/odatapublic/service.xsodata/Events";
         var xhr = prepareRequest("GET", url);
         xhr.send();
         expect(xhr.status).toBe(200);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
-        expect(body.d.results.length).toBe(2);
+        expect(body.d.results.length).toBeGreaterThan(1);
         publicEventURI = body.d.results[0].__metadata.uri;
     });
 });

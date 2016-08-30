@@ -1,5 +1,5 @@
 role com.sap.sapmentors.sitreg.roles::public {
     // catalog schema "SITREG": SELECT;
-    sql object com.sap.sapmentors.sitreg.data::SITreg.Event: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::EventsRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantsRead: SELECT;
 }

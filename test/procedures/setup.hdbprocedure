@@ -3,12 +3,30 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.test.procedures::setup" ( )
 	SQL SECURITY DEFINER
 	DEFAULT SCHEMA SITREG
 AS
+  found INT := 0;
 BEGIN
-    EXEC 'CREATE USER ORGANIZER PASSWORD Init1234;';
-    EXEC 'CREATE USER COORGANIZER PASSWORD Init1234;';
-    EXEC 'CREATE USER PARTICIPANT PASSWORD Init1234;';
-    EXEC 'CREATE USER RECEPTIONIST PASSWORD Init1234;';
-    
+-- TODO: Refactor to separate procedure
+    SELECT COUNT(*) INTO found FROM "USERS"  
+      WHERE "USER_NAME" = 'ORGANIZER';  
+    IF :found = 0 THEN         
+        EXEC 'CREATE USER ORGANIZER PASSWORD Init1234;';
+    END IF; 
+    SELECT COUNT(*) INTO found FROM "USERS"  
+      WHERE "USER_NAME" = 'COORGANIZER';  
+    IF :found = 0 THEN         
+        EXEC 'CREATE USER COORGANIZER PASSWORD Init1234;';
+    END IF; 
+    SELECT COUNT(*) INTO found FROM "USERS"  
+      WHERE "USER_NAME" = 'PARTICIPANT';  
+    IF :found = 0 THEN         
+        EXEC 'CREATE USER PARTICIPANT PASSWORD Init1234;';
+    END IF; 
+    SELECT COUNT(*) INTO found FROM "USERS"  
+      WHERE "USER_NAME" = 'RECEPTIONIST';  
+    IF :found = 0 THEN         
+        EXEC 'CREATE USER RECEPTIONIST PASSWORD Init1234;';
+    END IF; 
+
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Event" 
         WHERE "History.CreatedBy" = 'ORGANIZER'
            OR "History.CreatedBy" = 'COORGANIZER';

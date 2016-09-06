@@ -66,6 +66,44 @@ describe("Register as Participant", function() {
     });
 });
 
+describe("Register as Participant MaxAttendees overflow routes to RSVP=W for waiting", function() {
+    it("should add Two users as Participants of a SmallEvent one made it, one needs to wait", function() {
+        var xhr = createParticipant(eventIDsmall , "PARTICIPANTyeah", 3);
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+        // Register also for the second event
+        // and let's test XSS Injection
+        var xhr = createParticipant(eventIDsmall , "PARTICIPANTwaiting", 4);
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+    });
+});
+
+describe("Read Small-Event and check for waiting status", function() {
+    it("should return the created event, change the MaxParticipants and check the change", function() {
+        var url = "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events?$filter=EventID eq '"+ eventIDsmall+"'";
+        var xhr = prepareRequest("GET", url);
+        xhr.send();
+        expect(xhr.status).toBe(200);
+        expect(xhr.statusText).toBe("OK");
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.results[0].Participants[1].RSVP).toBe("W");
+        // Change MaxParticipants
+       /* eventUri = body.d.results[0].__metadata.uri;
+        eventUri2 = body.d.results[1].__metadata.uri;
+        eventID2 = body.d.results[1].ID;
+        xhr = xhr = updateEvent(eventUri);
+        expect(xhr.status).toBe(204);
+        // Check MaxParticipants
+        xhr = prepareRequest("GET", eventUri);
+        xhr.send();
+        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.MaxParticipants).toBe(MaxParticipants);
+        eventID = body.d.ID; */
+    });
+});
+
+
 describe("Try to read organizer OData service as participant", function() {
     it("should not be possible", function() {
         var xhr = prepareRequest("GET", eventUri + "/Participant");

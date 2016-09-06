@@ -40,6 +40,21 @@ function createEvent(Location, EventDate, StartTime, EndTime) {
     return xhr;
 }
 
+function createVerySmallEvent(Location, EventDate, StartTime, EndTime) {
+    var create = {
+        "ID": eventIDsmall,
+        "Location": Location,
+        "EventDate": EventDate,
+        "StartTime": StartTime,
+        "EndTime": EndTime,
+        "MaxParticipants": 1,
+        "HomepageURL": null
+    };
+    var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events");
+    xhr.send(JSON.stringify(create));
+    return xhr;
+}
+
 function registerAsOrganizer(UserName) {
     var register = {
         "UserName"           : UserName,
@@ -71,8 +86,24 @@ function addCoOrganizer(_EventID, _UserName) {
     return xhr;
 }
 
-function createParticipant(_EventID, _UserName) {
+function createParticipant(_EventID, _UserName, _ParticipantID = 1) {
     var participantUri =  "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Participant";
+    var xhr = prepareRequest("POST", participantUri);
+    var register = {
+		ID: _ParticipantID,
+		EventID: _EventID,
+		FirstName: _UserName,
+		LastName: _UserName + "LastName",
+		EMail: _UserName + "@test.com",
+		RSVP: "Y",
+		"History.CreatedBy" : _UserName + "CreatedBy"
+    };
+    xhr.send(JSON.stringify(register));
+    return xhr;
+}
+
+function readParticipant(_EventID, _UserName) {
+    var participantUri =  "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/ParticipantRead";
     var xhr = prepareRequest("POST", participantUri);
     var register = {
 		ID: 1,

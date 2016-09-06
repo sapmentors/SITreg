@@ -41,6 +41,15 @@ describe("Create event", function() {
         );
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
+        
+        var xhr = createVerySmallEvent(
+            "SmallTown",
+            "/Date(1472774400000)/",
+            "/Date(1472889600000)/",
+            "/Date(1472911200000)/"
+        );
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
     });
 });
 

@@ -27,6 +27,7 @@ var password = "Test1234";
 var csrfToken = "";
 var eventID = 1;
 var eventID2 = 2;
+var eventIDsmall = 3;
 var participantID;
 var eventUri = "";
 var eventUri2 = "";

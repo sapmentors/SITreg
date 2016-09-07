@@ -66,6 +66,7 @@ describe("Read event and change MaxParticipants", function() {
         eventUri = body.d.results[0].__metadata.uri;
         eventUri2 = body.d.results[1].__metadata.uri;
         eventID2 = body.d.results[1].ID;
+        eventIDsmall = body.d.results[2].ID;
         xhr = xhr = updateEvent(eventUri);
         expect(xhr.status).toBe(204);
         // Check MaxParticipants

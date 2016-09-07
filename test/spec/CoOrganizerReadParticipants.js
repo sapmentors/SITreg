@@ -45,6 +45,24 @@ describe("Try to read participant details of event 2", function() {
     });
 });
 
+describe("Register co-organizer as Participant MaxAttendees overflow routes to RSVP=W for waiting", function() {
+    it("should add users as Participants of a SmallEvent, this one one needs to wait", function() {
+        var xhr = createParticipant(eventIDsmall , "Co-Organizer", 4);
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+    });
+});
+
+describe("Read Small-Event and check for waiting status", function() {
+    it("should return the created event, change the MaxParticipants and check the change", function() {
+        var xhr = getParticipantDetailsForEvent(eventIDsmall);
+        expect(xhr.status).toBe(200);
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("W");
+    });
+});
+
+
 describe("Logout COORGANIZER", function() {
     it("should logout COORGANIZER", function() {
         logout(csrfToken);

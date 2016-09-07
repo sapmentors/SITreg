@@ -31,9 +31,11 @@ BEGIN
         WHERE "History.CreatedBy" = 'ORGANIZER'
            OR "History.CreatedBy" = 'COORGANIZER';
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
-        WHERE "History.CreatedBy" = 'PARTICIPANT';
+        WHERE "History.CreatedBy" = 'PARTICIPANT'
+           OR "History.CreatedBy" = 'COORGANIZER';
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Ticket"
-        WHERE "History.CreatedBy" = 'PARTICIPANT';
+        WHERE "History.CreatedBy" = 'PARTICIPANT'
+           OR "History.CreatedBy" = 'COORGANIZER';
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer"
         WHERE "History.CreatedBy" = 'ORGANIZER';
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue"
@@ -43,6 +45,7 @@ BEGIN
     
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::organizer','ORGANIZER');
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::organizer','COORGANIZER');
+    CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::participant','COORGANIZER');
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::participant','PARTICIPANT');
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::receptionist','RECEPTIONIST');
 

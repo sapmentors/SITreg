@@ -125,7 +125,7 @@ BEGIN
     ELSE
 		error = SELECT 400 AS http_status_code, 
 					'Insert failed' AS error_message, 
-					'' AS detail
+					'Participant is already registered for this event' AS detail
 				FROM dummy;
 	END IF;
 END;

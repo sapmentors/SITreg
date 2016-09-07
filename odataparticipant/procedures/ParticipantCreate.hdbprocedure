@@ -6,8 +6,8 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::Parti
 	SQL SECURITY INVOKER
 	DEFAULT SCHEMA SITREG
 AS
-lv_EventCounter     int := 0;
-lv_EventCounterMax  int := 0;
+lv_EventParticipants    int := 0;
+lv_EventMaxParticipants int := 0;
 BEGIN
 	DECLARE lv_Count            INT;
 	DECLARE lv_ID               STRING;
@@ -65,25 +65,18 @@ BEGIN
     
     IF (lv_Count <> 1) THEN
 
-  -- Event Count Yet
-    lt_result = SELECT * FROM  "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead"
-      WHERE "EventID" = lv_EventID;
-    select count(*) into lv_EventCounter from :lt_result;
-    --lt_EventCounter = SELECT COUNT(ID) as COUNTER
-    --  FROM "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead"
-    --  WHERE "EventID" = lv_EventID;
-    --SELECT COUNTER into lv_EventCounter from :lt_EventCounter;
+        -- Current Number of participants
+        SELECT COUNT(*) INTO lv_EventParticipants 
+          FROM  "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantsRead"
+          WHERE "EventID" = lv_EventID
+            AND "RSVP" = 'Y';
 
+        -- Event Max Participants
+        SELECT "MaxParticipants" INTO lv_EventMaxParticipants 
+          FROM "com.sap.sapmentors.sitreg.data::SITreg.Event" 
+          WHERE "ID" = lv_EventID;
 
-    -- Event Max Counter
-    lt_result2 = SELECT * FROM "com.sap.sapmentors.sitreg.data::SITreg.Event" WHERE "ID" = lv_EventID;
-    --select "MaxParticipants" into lv_EventCounterMax from :lt_result2;
-    --lt_EventCounterMax = SELECT TOP 1 "MaxParticipants" as COUNTER
-    --  FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
-    --  WHERE "ID" = lv_EventID;
-    --lv_EventCounterMax = SELECT TOP 1 COUNTER from :lt_EventCounterMax;
-
-    	IF ( lv_EventCounter > lv_EventCounterMax ) THEN
+    	IF ( lv_EventParticipants >= lv_EventMaxParticipants ) THEN
     	    lv_RSVP = 'W';
     	END IF;
 

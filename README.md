@@ -1,6 +1,14 @@
-# SAP Inside Track Registration app backend
+# SAP Event Registration app backend
 
-This repository contains the backend for the SITreg app. It is developed on SAP HANA native using XSODATA. For more details check out the information in the [Wiki](https://github.com/sapmentors/SITreg/wiki). You can find the frontend projects here:
+The SAP Event Registration app is a community project licensed under Apache License Version 2.0. The app provides organizers of SAP community events a platform for the participant registration. It's running already in production using the [SAP Mentors](http://sapmentors.sap.com) HANA Cloud Platform Account and can be accessed at:
+
+* [Public Participant List](https://sitregparticipantlist-a5a504e08.dispatcher.hana.ondemand.com/)
+* [Participant Registration (SCN Account required)](https://sitregparticipant-a5a504e08.dispatcher.hana.ondemand.com/)
+* [Organizer Backend (Additional authorization required)](https://sitregorganizer-a5a504e08.dispatcher.hana.ondemand.com/)
+ 
+If you're organizing a SAP community event please reach out to [Gregor Wolf](mailto:gregor.wolf@gmail.com) to get access to the Organizer Backend. If you want to contribute please check the open issues, fork the project and start coding.
+
+This repository contains the backend for the SITreg app. It is developed on SAP HANA XS Classic (XSC) using mainly XSODATA to expose an OData API. For more details check out the information in the [Wiki](https://github.com/sapmentors/SITreg/wiki). You can find the frontend projects here:
 
 * [SITregParticipant](https://github.com/sapmentors/SITregParticipant)
 * [SITregOrganizer](https://github.com/sapmentors/SITregOrganizer)

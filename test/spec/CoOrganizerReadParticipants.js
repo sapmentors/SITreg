@@ -45,6 +45,24 @@ describe("Try to read participant details of event 2", function() {
     });
 });
 
+describe("Update Participation to No", function() {
+    it("should change the registration status and confirm the first on the waiting list", function() {
+        var xhr = getParticipantDetailsForEvent(eventIDsmall);
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        var participantUrl = body.d.__metadata.uri;
+        xhr = prepareRequest("PATCH", participantUrl);
+        var change = {
+            "RSVP": "N"
+        };
+        xhr.send(JSON.stringify(change));
+        expect(xhr.status).toBe(204);
+        xhr = prepareRequest("GET", participantUrl);
+        xhr.send();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("N");
+    });
+});
+
 describe("Logout COORGANIZER", function() {
     it("should logout COORGANIZER", function() {
         logout(csrfToken);

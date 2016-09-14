@@ -41,6 +41,14 @@ describe("Change data of an event where the COORGANIZER is not listed as a co-or
     });
 });
 
+describe("Register as Participant MaxAttendees overflow routes to RSVP=W for waiting", function() {
+    it("should add Two users as Participants of a SmallEvent one made it, one needs to wait", function() {
+        var xhr = createParticipant(eventIDsmall , "Co Organizer Yeah", 3);
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+    });
+});
+
 describe("Logout COORGANIZER", function() {
     it("should logout COORGANIZER", function() {
         logout(csrfToken);

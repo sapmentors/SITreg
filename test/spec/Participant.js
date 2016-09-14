@@ -66,14 +66,6 @@ describe("Register as Participant", function() {
     });
 });
 
-describe("Register as Participant MaxAttendees overflow routes to RSVP=W for waiting", function() {
-    it("should add Two users as Participants of a SmallEvent one made it, one needs to wait", function() {
-        var xhr = createParticipant(eventIDsmall , "PARTICIPANTyeah", 3);
-        expect(xhr.status).toBe(201);
-        expect(xhr.statusText).toBe("Created");
-    });
-});
-
 describe("Try to read organizer OData service as participant", function() {
     it("should not be possible", function() {
         var xhr = prepareRequest("GET", eventUri + "/Participant");
@@ -118,6 +110,24 @@ describe("Read second event details where XSS was tried", function() {
         var xhr = getParticipantDetailsForEvent(eventID2);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.FirstName).toBe(xssScript);
+    });
+});
+
+
+describe("Register Participant to event so that MaxAttendees overflow sets RSVP=W for waiting", function() {
+    it("should add users as Participants of a SmallEvent, this one one needs to wait", function() {
+        var xhr = createParticipant(eventIDsmall , "Participant", 4);
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+    });
+});
+
+describe("Read Small-Event and check for waiting status", function() {
+    it("should return the created event, change the MaxParticipants and check the change", function() {
+        var xhr = getParticipantDetailsForEvent(eventIDsmall);
+        expect(xhr.status).toBe(200);
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("W");
     });
 });
 

@@ -145,3 +145,12 @@ function updateEvent(url) {
     xhr.send(JSON.stringify(change));
     return xhr;
 }
+
+function updateParticipant(_EventID, _change) {
+    var xhr = getParticipantDetailsForEvent(_EventID);
+    var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+    var participantUrl = body.d.__metadata.uri;
+    xhr = prepareRequest("PATCH", participantUrl);
+    xhr.send(JSON.stringify(_change));
+    return { "xhr": xhr, "participantUrl": participantUrl };
+}

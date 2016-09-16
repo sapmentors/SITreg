@@ -29,6 +29,20 @@ describe("Check that Participant is now confirmed for small event", function() {
     });
 });
 
+describe("Update Participant's participation to No", function() {
+    it("should change the registration status and not result into an error when no one is on the waiting list", function() {
+        var change = {
+            "RSVP": "N"
+        };
+        var updateResult = updateParticipant(eventIDsmall, change);
+        expect(updateResult.xhr.status).toBe(204);
+        var xhr = prepareRequest("GET", updateResult.participantUrl);
+        xhr.send();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("N");
+    });
+});
+
 describe("Logout PARTICIPANT", function() {
     it("should logout PARTICIPANT", function() {
         logout(csrfToken);

@@ -14,7 +14,8 @@
 --   limitations under the License.
 --
 PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate" ( 
-    IN inrow  "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant"
+    IN inrow  "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",
+    OUT error "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.error"
 )
    LANGUAGE SQLSCRIPT
    SQL SECURITY DEFINER
@@ -24,6 +25,7 @@ BEGIN
 
 	DECLARE lv_rank             INT;
 	DECLARE lv_Count            INT;
+	DECLARE lv_count_waiting    INT;
 	DECLARE lv_ID               STRING;
 	DECLARE lv_ID_Waiting       STRING;
 	DECLARE lv_EventID          STRING;
@@ -125,23 +127,32 @@ BEGIN
         THEN
         -- Update registration time of current participant
         SELECT CURRENT_TIMESTAMP INTO lv_RegistrationTime FROM DUMMY;
-        -- Check if there is a waiting list and read the first one
-        SELECT "ID" AS "ID_Waiting" INTO lv_ID_Waiting
-        FROM( 
-            SELECT "ID", 
-            RANK() OVER ( PARTITION BY "EventID" ORDER BY "RegistrationTime" ASC ) AS "Rank"
-                FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+        -- Check if there is a waiting list
+        
+        SELECT COUNT(*) INTO lv_count_waiting
+            FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
                 WHERE "EventID" = lv_EventID
-                  AND "RSVP" = 'W'
-            )
-        WHERE "Rank" = 1;
-        IF lv_ID_Waiting <> '' THEN
-            -- Confirm first waiting participant
-            UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Participant"
-                  SET   "RSVP"              = 'Y'
-                      , "History.ChangedBy" = lv_ChangedBy
-                      , "History.ChangedAt" = CURRENT_TIMESTAMP
-                  WHERE "ID" = lv_ID_Waiting;
+                  AND "RSVP" = 'W';
+        IF lv_count_waiting > 0 THEN
+            -- read the first one
+            SELECT "ID" AS "ID_Waiting" INTO lv_ID_Waiting
+            FROM( 
+                SELECT "ID", 
+                RANK() OVER ( PARTITION BY "EventID" ORDER BY "RegistrationTime" ASC ) AS "Rank"
+                    FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+                    WHERE "EventID" = lv_EventID
+                      AND "RSVP" = 'W'
+                )
+            WHERE "Rank" = 1;
+            
+            IF lv_ID_Waiting <> '' THEN
+                -- Confirm first waiting participant
+                UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+                      SET   "RSVP"              = 'Y'
+                          , "History.ChangedBy" = lv_ChangedBy
+                          , "History.ChangedAt" = CURRENT_TIMESTAMP
+                      WHERE "ID" = lv_ID_Waiting;
+            END IF;
         END IF;
     END IF;
     -- OData call can also contain just single attributes. We have to preserve the data
@@ -177,4 +188,11 @@ BEGIN
           , "History.ChangedBy" = lv_ChangedBy
           , "History.ChangedAt" = CURRENT_TIMESTAMP
       WHERE "ID" = lv_ID;
+
+    IF 1 = 2 THEN
+        error = select 400 as http_status_code, 
+                    'Update Executed' error_message, 
+                    '' detail from dummy;
+    END IF;
+    
 END

@@ -16,6 +16,8 @@ This repository contains the backend for the SITreg app. It is developed on SAP 
 
 ## Setup Guide
 
+In addition to the following expert guide you can check out the setup guide in the  [Wiki](https://github.com/sapmentors/SITreg/wiki/Setup:-1.-Create-MDC-Database-on-HCP).
+
 ### Backend
 
 You must have developer authorization in your HANA System. To try this project just spin up your own HANA Multitennant Database Container (MDC) on the [HANA Cloud Platform Trial (HCP)](https://hcp.sap.com/). Open the SAP HANA Web-based Development Workbench and create the package:

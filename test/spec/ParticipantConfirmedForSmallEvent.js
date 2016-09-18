@@ -40,6 +40,14 @@ describe("Update Participant's participation to No", function() {
         xhr.send();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.RSVP).toBe("N");
+        // Change back to Registered
+        change.RSVP = "Y";
+        updateResult = updateParticipant(eventIDsmall, change);
+        expect(updateResult.xhr.status).toBe(204);
+        xhr = prepareRequest("GET", updateResult.participantUrl);
+        xhr.send();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("Y");
     });
 });
 

@@ -40,6 +40,10 @@ describe("Update Participant's participation to No", function() {
         xhr.send();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.RSVP).toBe("N");
+        // Check free places
+        xhr = getRegistrationNumbersForEvent(eventIDsmall);
+        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.Free).toBe(1);
         // Change back to Registered
         change.RSVP = "Y";
         updateResult = updateParticipant(eventIDsmall, change);

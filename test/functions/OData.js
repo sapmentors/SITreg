@@ -130,6 +130,13 @@ function getParticipantDetailsForEvent(_EventID) {
     return xhr;
 }
 
+function getRegistrationNumbersForEvent(_EventID) {
+    var registrationNumbersUrl = getParticipantEventDetailsUrl(_EventID) + "/RegistrationNumbers";
+    var xhr = prepareRequest("GET", registrationNumbersUrl);
+    xhr.send();
+    return xhr;
+}
+
 function getRelationToSAP() {
     var RelationToSAPUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/RelationToSAP";
     var xhr = prepareRequest("GET", RelationToSAPUrl);

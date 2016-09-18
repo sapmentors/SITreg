@@ -1,0 +1,38 @@
+--
+--   Copyright 2016 SAP Mentors
+--
+--   Licensed under the Apache License, Version 2.0 (the "License");
+--   you may not use this file except in compliance with the License.
+--   You may obtain a copy of the License at
+--
+--       http://www.apache.org/licenses/LICENSE-2.0
+--
+--   Unless required by applicable law or agreed to in writing, software
+--   distributed under the License is distributed on an "AS IS" BASIS,
+--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--   See the License for the specific language governing permissions and
+--   limitations under the License.
+--
+PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::GetRSVPrespectingFreeSeats" ( 
+    IN in_EventID INTEGER,
+    IN in_RSVP    VARCHAR(1),
+    OUT out_RSVP  VARCHAR(1)
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   DEFAULT SCHEMA SITREG
+   AS
+lv_Free                 int := 0;
+BEGIN
+    out_RSVP = in_RSVP;
+    IF in_RSVP = 'Y' THEN
+        -- Read free seats
+        SELECT "Free" INTO lv_Free
+            FROM  "com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead"
+            WHERE "EventID" = in_EventID;
+        
+        IF ( lv_Free <= 0 ) THEN
+            out_RSVP = 'W';
+        END IF;
+    END IF;
+END

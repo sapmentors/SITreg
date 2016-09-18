@@ -6,8 +6,7 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::Parti
 	SQL SECURITY INVOKER
 	DEFAULT SCHEMA SITREG
 AS
-lv_EventParticipants    int := 0;
-lv_EventMaxParticipants int := 0;
+lv_Free                 int := 0;
 BEGIN
 	DECLARE lv_Count            INT;
 	DECLARE lv_ID               STRING;
@@ -65,18 +64,12 @@ BEGIN
     
     IF (lv_Count <> 1) THEN
 
-        -- Current Number of participants
-        SELECT COUNT(*) INTO lv_EventParticipants 
-          FROM  "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantsRead"
-          WHERE "EventID" = lv_EventID
-            AND "RSVP" = 'Y';
-
-        -- Event Max Participants
-        SELECT "MaxParticipants" INTO lv_EventMaxParticipants 
-          FROM "com.sap.sapmentors.sitreg.data::SITreg.Event" 
-          WHERE "ID" = lv_EventID;
-
-    	IF ( lv_EventParticipants >= lv_EventMaxParticipants ) THEN
+        -- Read free seats
+    	SELECT "Free" INTO lv_Free
+    	    FROM  "com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead"
+    	    WHERE "EventID" = lv_EventID;
+    	
+    	IF ( lv_Free <= 0 ) THEN
     	    lv_RSVP = 'W';
     	END IF;
 

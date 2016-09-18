@@ -44,11 +44,17 @@ describe("Update Participant's participation to No", function() {
         xhr = getRegistrationNumbersForEvent(eventIDsmall);
         body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.Free).toBe(1);
-        // Change back to Registered
-        change.RSVP = "Y";
-        updateResult = updateParticipant(eventIDsmall, change);
+    });
+});
+
+describe("Update Participant's back to Yes", function() {
+    it("should register the Participant again", function() {
+        var change = {
+            "RSVP": "Y"
+        };
+        var updateResult = updateParticipant(eventIDsmall, change);
         expect(updateResult.xhr.status).toBe(204);
-        xhr = prepareRequest("GET", updateResult.participantUrl);
+        var xhr = prepareRequest("GET", updateResult.participantUrl);
         xhr.send();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.RSVP).toBe("Y");

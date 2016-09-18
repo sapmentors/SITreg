@@ -93,6 +93,7 @@ describe("Add additional co-organizers to event", function() {
         expect(xhr.statusText).toBe("Created");
         xhr = addCoOrganizer(eventID, "GWOLF");
         xhr = addCoOrganizer(eventID, "S0001142741");
+        xhr = addCoOrganizer(eventIDsmall, "S0001142741");
     });
 });
 

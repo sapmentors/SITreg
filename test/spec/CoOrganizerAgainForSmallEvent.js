@@ -26,11 +26,11 @@ describe("Read number of free seats fro small event", function() {
     it("should return one free seat", function() {
         var xhr = getRegistrationNumbersForEvent(eventIDsmall);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
-        expect(body.d.Free).toBe(1);
+        expect(body.d.Free).toBe(0);
     });
 });
 
-xdescribe("Update Co-Organizers participation to Yes", function() {
+describe("Update Co-Organizers participation to Yes", function() {
     it("should change the registration status to waiting list", function() {
         var change = {
             "RSVP": "Y"

@@ -125,10 +125,11 @@ BEGIN
     IF      lv_RSVP_tmp = 'Y'
         AND lv_RSVP     = 'N' 
         THEN
+
         -- Update registration time of current participant
         SELECT CURRENT_TIMESTAMP INTO lv_RegistrationTime FROM DUMMY;
+
         -- Check if there is a waiting list
-        
         SELECT COUNT(*) INTO lv_count_waiting
             FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
                 WHERE "EventID" = lv_EventID
@@ -154,6 +155,11 @@ BEGIN
                       WHERE "ID" = lv_ID_Waiting;
             END IF;
         END IF;
+    ELSE
+        CALL "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::GetRSVPrespectingFreeSeats" (
+            in_EventID => :lv_EventID,
+            in_RSVP    => :lv_RSVP,
+            out_RSVP   => :lv_RSVP );
     END IF;
     -- OData call can also contain just single attributes. We have to preserve the data
     if lv_FirstName = ''        then lv_FirstName        = lv_FirstName_tmp;        end if;

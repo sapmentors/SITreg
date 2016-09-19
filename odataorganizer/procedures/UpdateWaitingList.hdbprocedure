@@ -3,9 +3,40 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateW
     IN in_MaxParticipants INTEGER
 )
    LANGUAGE SQLSCRIPT
-   SQL SECURITY INVOKER
+   SQL SECURITY DEFINER
    DEFAULT SCHEMA SITREG
    AS
 BEGIN
-
+-- Update all participants with RSVP = 'Y' OR 'W' that fit into the event and update RSVP to 'Y'
+    UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+      SET "RSVP"              = 'Y'
+          , "History.ChangedBy" = CURRENT_USER
+          , "History.ChangedAt" = CURRENT_TIMESTAMP
+        WHERE "ID" IN (
+            SELECT "ID"
+            FROM( 
+                SELECT "ID", 
+                RANK() OVER ( PARTITION BY "EventID" ORDER BY "RegistrationTime" ASC ) AS "Rank"
+                    FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+                    WHERE "EventID" = in_EventID
+                      AND "RSVP" = 'Y' OR "RSVP" = 'W'
+                )
+            WHERE "Rank" <= in_MaxParticipants
+        );
+-- Loop through all participants with RSVP <> 'N' that have to get RSVP = 'W'
+    UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+      SET "RSVP"              = 'W'
+          , "History.ChangedBy" = CURRENT_USER
+          , "History.ChangedAt" = CURRENT_TIMESTAMP
+        WHERE "ID" IN (
+            SELECT "ID"
+            FROM( 
+                SELECT "ID", 
+                RANK() OVER ( PARTITION BY "EventID" ORDER BY "RegistrationTime" ASC ) AS "Rank"
+                    FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+                    WHERE "EventID" = in_EventID
+                      AND "RSVP" = 'Y'
+                )
+            WHERE "Rank" > in_MaxParticipants
+        );
 END

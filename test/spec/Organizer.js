@@ -67,6 +67,7 @@ describe("Read event and change MaxParticipants", function() {
         eventUri2 = body.d.results[1].__metadata.uri;
         eventID2 = body.d.results[1].ID;
         eventIDsmall = body.d.results[2].ID;
+        eventUrismall = body.d.results[2].__metadata.uri;
         xhr = xhr = updateEvent(eventUri);
         expect(xhr.status).toBe(204);
         // Check MaxParticipants
@@ -94,6 +95,7 @@ describe("Add additional co-organizers to event", function() {
         xhr = addCoOrganizer(eventID, "GWOLF");
         xhr = addCoOrganizer(eventID, "S0001142741");
         xhr = addCoOrganizer(eventIDsmall, "S0001142741");
+        xhr = addCoOrganizer(eventIDsmall, "COORGANIZER");
     });
 });
 

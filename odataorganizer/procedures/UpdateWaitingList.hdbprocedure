@@ -1,0 +1,11 @@
+PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateWaitingList" ( 
+    IN in_EventID INTEGER,
+    IN in_MaxParticipants INTEGER
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   DEFAULT SCHEMA SITREG
+   AS
+BEGIN
+
+END

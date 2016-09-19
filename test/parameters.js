@@ -31,6 +31,8 @@ var eventIDsmall = 3;
 var participantID;
 var eventUri = "";
 var eventUri2 = "";
+var eventUrismall = "";
+var participantUrlSmall = "";
 var MaxParticipants = 90;
 var EMail = "PARTICIPANT@test.com";
 var SHA256HASH = "";

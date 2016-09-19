@@ -84,23 +84,19 @@ BEGIN
             FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
             WHERE "ID" = lv_ID;
         -- OData call can also contain just single attributes. We have to preserve the data
-        if lv_Location = '' then
-            lv_Location = lv_Location_tmp;
-        END IF;
-        if lv_EventDate = '' then
-            lv_EventDate = lv_EventDate_tmp;
-        END IF;
-        if lv_StartTime = '' then
-            lv_StartTime = lv_StartTime_tmp;
-        END IF;
-        if lv_EndTime = '' then
-            lv_EndTime = lv_EndTime_tmp;
-        END IF;
-        if lv_MaxParticipants = 0 then
-            lv_MaxParticipants = lv_MaxParticipants_tmp;
-        END IF;
-        if lv_HomepageURL = '' then
-            lv_HomepageURL = lv_HomepageURL_tmp;
+        if lv_Location = ''       then lv_Location = lv_Location_tmp;               END IF;
+        if lv_EventDate = ''      then lv_EventDate = lv_EventDate_tmp;             END IF;
+        if lv_StartTime = ''      then lv_StartTime = lv_StartTime_tmp;             END IF;
+        if lv_EndTime = ''        then lv_EndTime = lv_EndTime_tmp;                 END IF;
+        if lv_MaxParticipants = 0 then lv_MaxParticipants = lv_MaxParticipants_tmp; END IF;
+        if lv_HomepageURL = ''    then lv_HomepageURL = lv_HomepageURL_tmp;         END IF;
+        
+        IF lv_MaxParticipants <> lv_MaxParticipants_tmp THEN
+            -- When MaxParticipants is changed, the Waiting List must be updated
+            CALL "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateWaitingList" (
+                in_EventID            => :lv_ID,
+                in_MaxParticipants    => :lv_MaxParticipants
+            );
         END IF;
         
         UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Event"
@@ -114,11 +110,6 @@ BEGIN
               , "History.ChangedAt" = CURRENT_TIMESTAMP
           WHERE "ID" = lv_ID;
 
-        if 1 = 2 then 
-            error = select 400 as http_status_code, 
-                    'Update failed' error_message, 
-                    '' detail from dummy;
-        END IF;
     ELSE
         error = select 400 as http_status_code, 
                 'Event does not exist' error_message, 

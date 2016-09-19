@@ -37,10 +37,23 @@ describe("Update Co-Organizers participation to Yes", function() {
         };
         var updateResult = updateParticipant(eventIDsmall, change);
         expect(updateResult.xhr.status).toBe(204);
-        var xhr = prepareRequest("GET", updateResult.participantUrl);
+        participantUrlSmall = updateResult.participantUrl;
+        var xhr = prepareRequest("GET", participantUrlSmall);
         xhr.send();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.RSVP).toBe("W");
+    });
+});
+
+describe("Change MaxParticipants for Small Event", function() {
+    it("should confirm co-organizer on waiting list", function() {
+        MaxParticipants = 2;
+        var xhr = updateEvent(eventUrismall);
+        expect(xhr.status).toBe(204);
+        xhr = prepareRequest("GET", participantUrlSmall);
+        xhr.send();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("Y");
     });
 });
 

@@ -58,13 +58,51 @@ describe("Change MaxParticipants to 2 for Small Event", function() {
 });
 
 describe("Change MaxParticipants to 1 for Small Event", function() {
-    it("should put co-organizer on waiting list", function() {
+    it("should confirm co-organizer as he registered before participant list", function() {
         MaxParticipants = 1;
         var xhr = updateEvent(eventUrismall);
         expect(xhr.status).toBe(204);
         xhr = prepareRequest("GET", participantUrlSmall);
         xhr.send();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("Y");
+    });
+});
+
+describe("Change registration status to no", function() {
+    it("should change registration time to current time", function() {
+        var xhr = prepareRequest("GET", participantUrlSmall);
+        xhr.send();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        var registrationTime = body.d.RegistrationTime;
+        var change = {
+            "RSVP": "N"
+        };
+        var updateResult = updateParticipant(eventIDsmall, change);
+        expect(updateResult.xhr.status).toBe(204);
+        participantUrlSmall = updateResult.participantUrl;
+        xhr = prepareRequest("GET", participantUrlSmall);
+        xhr.send();
+        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("N");
+        expect(body.d.RegistrationTime).not.toBe(registrationTime);
+        // Change back to registered
+        change.RSVP = "Y";
+        updateResult = updateParticipant(eventIDsmall, change);
+        MaxParticipants = 2;
+        xhr = updateEvent(eventUrismall);
+        expect(xhr.status).toBe(204);
+        xhr = prepareRequest("GET", participantUrlSmall);
+        xhr.send();
+        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("Y");
+        // Change Number
+        MaxParticipants = 1;
+        xhr = updateEvent(eventUrismall);
+        expect(xhr.status).toBe(204);
+        xhr = prepareRequest("GET", participantUrlSmall);
+        xhr.send();
+        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.RSVP).toBe("W");
     });
 });

@@ -1,0 +1,23 @@
+PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataadmin.procedures::ParticipantUpdateWaitingList" ( 
+    OUT out_count INTEGER
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   DEFAULT SCHEMA SITREG
+   AS
+BEGIN
+
+    DECLARE CURSOR c_events FOR
+    SELECT "ID", 
+        "MaxParticipants"
+    FROM "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Event";
+    out_count = 0;
+
+    FOR cur_row as c_events DO
+        out_count = out_count + 1;
+        CALL "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateWaitingList" (
+            cur_row."ID",
+            cur_row."MaxParticipants"
+        );
+    END FOR;
+END

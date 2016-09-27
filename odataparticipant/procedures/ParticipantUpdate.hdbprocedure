@@ -154,7 +154,10 @@ BEGIN
                       WHERE "ID" = lv_ID_Waiting;
             END IF;
         END IF;
-    ELSE
+    ELSEIF    lv_RSVP_tmp = ''
+           AND lv_RSVP = 'N'
+           THEN
+           -- call search for free seats only if it's a new registration
         CALL "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::GetRSVPrespectingFreeSeats" (
             in_EventID => :lv_EventID,
             in_RSVP    => :lv_RSVP,

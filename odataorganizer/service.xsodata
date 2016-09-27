@@ -19,9 +19,10 @@ service  {
 
     "com.sap.sapmentors.sitreg.data::SITreg.Event" as "Events"
     navigates (
-        "Events_Participants" as "Participants",
-        "Events_CoOrganizers" as "CoOrganizers",
-        "Event_Changeable" as "EventChangeable"
+        "Events_Participants"       as "Participants",
+        "Events_CoOrganizers"       as "CoOrganizers",
+        "Event_Changeable"          as "EventChangeable", 
+        "Event_RegistrationNumbers" as "RegistrationNumbers"
     )
     create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate" 
     update using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUpdate"
@@ -50,5 +51,14 @@ service  {
     
     association "Events_Participants" principal "Events"("ID") multiplicity "1"
         dependent "Participants"("EventID") multiplicity "*";    
+
+    // Read RegistrationNumbers from View to restrict fields that can be read
+    "com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead" as "RegistrationNumbers" key ("EventID")
+    create forbidden 
+    update forbidden
+    delete forbidden;
+    
+    association "Event_RegistrationNumbers" principal "Events"("ID") multiplicity "1"
+        dependent "RegistrationNumbers"("EventID") multiplicity "1";
 
 }

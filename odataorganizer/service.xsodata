@@ -22,7 +22,8 @@ service  {
         "Events_Participants"       as "Participants",
         "Events_CoOrganizers"       as "CoOrganizers",
         "Event_Changeable"          as "EventChangeable", 
-        "Event_RegistrationNumbers" as "RegistrationNumbers"
+        "Event_RegistrationNumbers" as "RegistrationNumbers",
+        "Event_PrePostEveningEventNumbers" as "PrePostEveningEventNumbers"
     )
     create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate" 
     update using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUpdate"
@@ -61,4 +62,11 @@ service  {
     association "Event_RegistrationNumbers" principal "Events"("ID") multiplicity "1"
         dependent "RegistrationNumbers"("EventID") multiplicity "1";
 
+    "com.sap.sapmentors.sitreg.odataorganizer.procedures::PrePostEveningEventNumbersRead" as "PrePostEveningEventNumbers" key ("EventID")
+    create forbidden
+    update forbidden
+    delete forbidden;
+
+    association "Event_PrePostEveningEventNumbers" principal "Events"("ID") multiplicity "1"
+        dependent "PrePostEveningEventNumbers"("EventID") multiplicity "1";
 }

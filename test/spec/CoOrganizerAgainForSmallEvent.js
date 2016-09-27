@@ -58,11 +58,25 @@ describe("Change MaxParticipants to 2 for Small Event", function() {
 });
 
 describe("Change MaxParticipants to 1 for Small Event", function() {
-    it("should confirm co-organizer as he registered before participant list", function() {
+    it("should confirm co-organizer as he registered before the participant", function() {
         MaxParticipants = 1;
         var xhr = updateEvent(eventUrismall);
         expect(xhr.status).toBe(204);
         xhr = prepareRequest("GET", participantUrlSmall);
+        xhr.send();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("Y");
+    });
+});
+
+describe("Update pre-eventing event status", function() {
+    it("should not change RSVP", function() {
+        var change = {
+            "PreEveningEvent": "M"
+        };
+        var updateResult = updateParticipant(eventIDsmall, change);
+        expect(updateResult.xhr.status).toBe(204);
+        var xhr = prepareRequest("GET", participantUrlSmall);
         xhr.send();
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.RSVP).toBe("Y");
@@ -86,23 +100,44 @@ describe("Change registration status to no", function() {
         body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.RSVP).toBe("N");
         expect(body.d.RegistrationTime).not.toBe(registrationTime);
+    });
+});
+
+describe("Change COORGANIZER back to registered", function() {
+    it("should result in waiting list as registration time was reset", function() {
         // Change back to registered
-        change.RSVP = "Y";
-        updateResult = updateParticipant(eventIDsmall, change);
+        var change = {
+            "RSVP": "Y"
+        };
+        var updateResult = updateParticipant(eventIDsmall, change);
+        expect(updateResult.xhr.status).toBe(204);
+        var xhr = prepareRequest("GET", participantUrlSmall);
+        xhr.send();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.RSVP).toBe("W");
+    });
+});
+
+describe("Change MaxParticipants of small event to 2", function() {
+    it("should confirm the CoOrganizer again", function() {
         MaxParticipants = 2;
-        xhr = updateEvent(eventUrismall);
+        var xhr = updateEvent(eventUrismall);
         expect(xhr.status).toBe(204);
         xhr = prepareRequest("GET", participantUrlSmall);
         xhr.send();
-        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.RSVP).toBe("Y");
-        // Change Number
+    });
+});
+
+describe("Change MaxParticipants of small event to 1", function() {
+    it("should put CoOrganizer on waiting list", function() {
         MaxParticipants = 1;
-        xhr = updateEvent(eventUrismall);
+        var xhr = updateEvent(eventUrismall);
         expect(xhr.status).toBe(204);
         xhr = prepareRequest("GET", participantUrlSmall);
         xhr.send();
-        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.RSVP).toBe("W");
     });
 });

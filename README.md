@@ -10,9 +10,10 @@ If you're organizing a SAP community event please reach out to [Gregor Wolf](mai
 
 This repository contains the backend for the SITreg app. It is developed on SAP HANA XS Classic (XSC) using mainly XSODATA to expose an OData API. For more details check out the information in the [Wiki](https://github.com/sapmentors/SITreg/wiki). You can find the frontend projects here:
 
-* [SITregParticipant](https://github.com/sapmentors/SITregParticipant)
-* [SITregOrganizer](https://github.com/sapmentors/SITregOrganizer)
 * [SITRegParticipantList](https://github.com/sapmentors/SITRegParticipantList)
+* [SITregParticipant](https://github.com/sapmentors/SITregParticipant)
+* [SITregReceptionist](https://github.com/sapmentors/SITregReceptionist)
+* [SITregOrganizer](https://github.com/sapmentors/SITregOrganizer)
 
 ## Setup Guide
 
@@ -40,8 +41,6 @@ Assign the roles:
 * com.sap.sapmentors.sitreg.roles::admin (to SITREGADMIN)
 
 to be able to test the different services also according the correct implementation of the authorizations.
-
-
 
 ### Frontend Access to the Data
 

@@ -27,6 +27,7 @@ service  {
     
     // Read Participants from View to restrict fields that can be read
     "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantsRead" as "Participants" key ("ID")
+        navigates ("Participant_Ticket" as "EventTicket" )
     create forbidden 
     update forbidden
     delete forbidden;
@@ -49,4 +50,6 @@ service  {
         dependent "Participants"("EventID") multiplicity "*";
     association "Event_RegistrationNumbers" principal "Events"("ID") multiplicity "1"
         dependent "RegistrationNumbers"("EventID") multiplicity "1";
+    association "Participant_Ticket" principal "Participants"("ID") multiplicity "1"
+        dependent "Ticket"("ParticipantID") multiplicity "1"; 
 }

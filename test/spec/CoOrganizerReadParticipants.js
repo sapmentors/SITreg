@@ -24,13 +24,14 @@ describe("Login COORGANIZER", function() {
 
 describe("Read participant details of event 1", function() {
     it("should return participant details", function() {
-        var participantUri = eventUri + "/Participants";
+        var participantUri = eventUri + "/Participants?$expand=Ticket";
         var xhr = prepareRequest("GET", participantUri);
         xhr.send();
         expect(xhr.status).toBe(200);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.results.length).toBe(1);
         expect(body.d.results[0].EMail).toBe(EMail);
+        expect(body.d.results[0].Ticket.TicketUsed).toBe("N");
     });
 });
 

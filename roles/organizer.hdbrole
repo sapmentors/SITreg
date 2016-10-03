@@ -5,6 +5,7 @@ role com.sap.sapmentors.sitreg.roles::organizer {
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::PrePostEveningEventNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantsRead: SELECT;
+    sql object com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventChangeableRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerCreate: //Objecttype: PROCEDURE
     	EXECUTE;

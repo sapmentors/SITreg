@@ -46,6 +46,7 @@ service  {
         dependent "EventChangeable"("EventID") multiplicity "1";   
 
     "com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantsRead" as "Participants" key  ("ID")
+        navigates ("Participant_Ticket" as "Ticket" )
     create forbidden
     update forbidden 
     delete forbidden;
@@ -69,4 +70,13 @@ service  {
 
     association "Event_PrePostEveningEventNumbers" principal "Events"("ID") multiplicity "1"
         dependent "PrePostEveningEventNumbers"("EventID") multiplicity "1";
+
+    // Read Ticket from View to restrict fields that can be read
+    "com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead" as "Ticket" key ("ParticipantID")
+    create forbidden 
+    update forbidden
+    delete forbidden;
+
+    association "Participant_Ticket" principal "Participants"("ID") multiplicity "1"
+        dependent "Ticket"("ParticipantID") multiplicity "1"; 
 }

@@ -1,6 +1,8 @@
 role com.sap.sapmentors.sitreg.roles::receptionist {
-
     application privilege: "com.sap.sapmentors.sitreg.odatareceptionist::receptionist";
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::EventsRead: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantsRead: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketCheck: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketUpdate: EXECUTE;

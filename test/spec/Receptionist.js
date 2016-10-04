@@ -89,7 +89,7 @@ describe("Check that manual checkin was fullfilled", function() {
         var xhr = getParticipantEventTicketDetails(eventIDsmall, participantIDmanual);
         expect(xhr.status).toBe(200);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
-        expect(body.OUTC[0].TicketUsed).toBe('M');
+        expect(body.d.TicketUsed).toBe('M');
     });
 });
 

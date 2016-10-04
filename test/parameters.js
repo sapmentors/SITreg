@@ -29,6 +29,7 @@ var eventID = 1;
 var eventID2 = 2;
 var eventIDsmall = 3;
 var participantID;
+var participantIDmanual;
 var eventUri = "";
 var eventUri2 = "";
 var eventUrismall = "";

@@ -127,6 +127,7 @@ describe("Read Small-Event and check for waiting status", function() {
         var xhr = getParticipantDetailsForEvent(eventIDsmall);
         expect(xhr.status).toBe(200);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        participantIDmanual = body.d.ID;
         expect(body.d.RSVP).toBe("W");
     });
 });

@@ -86,11 +86,7 @@ describe("Check in participant manually", function() {
 
 describe("Check that manual checkin was fullfilled", function() {
     it("should return an M for manual checkin", function() {
-        var check = {
-            "ParticipantID": participantIDmanual
-        }; 
-        var xhr = prepareRequest("POST", TicketCodeURL);
-        xhr.send(JSON.stringify(check));
+        var xhr = getParticipantEventTicketDetails(eventIDsmall, participantIDmanual);
         expect(xhr.status).toBe(200);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.OUTC[0].TicketUsed).toBe('M');

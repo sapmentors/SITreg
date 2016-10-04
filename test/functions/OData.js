@@ -143,7 +143,6 @@ function getParticipantEventTicketDetails(_EventID, _ParticipantID) {
                          "Participants(" + _ParticipantID + ")/Ticket";
     var xhr = prepareRequest("GET", receptionistUrl);
     xhr.send();
-    console.log(xhr);
     return xhr;
 }
 

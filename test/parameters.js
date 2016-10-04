@@ -37,3 +37,5 @@ var participantUrlSmall = "";
 var MaxParticipants = 90;
 var EMail = "PARTICIPANT@test.com";
 var SHA256HASH = "";
+var deviceID = "3549d56f-3552-4d6a-bcec-57b61aedb6f1";
+

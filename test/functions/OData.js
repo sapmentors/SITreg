@@ -86,6 +86,17 @@ function addCoOrganizer(_EventID, _UserName) {
     return xhr;
 }
 
+function addDevice(_EventID, _DeviceID) {
+    var create = {
+        "EventID": _EventID,
+        "DeviceID": _DeviceID,
+        "Active": "Y"
+    };
+    var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Devices");
+    xhr.send(JSON.stringify(create));
+    return xhr;
+}
+
 function createParticipant(_EventID, _UserName, _ParticipantID = 1) {
     var participantUri =  "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Participant";
     var xhr = prepareRequest("POST", participantUri);

@@ -130,6 +130,13 @@ function getParticipantDetailsForEvent(_EventID) {
     return xhr;
 }
 
+function getAllParticipantsDetailsForEvent(_EventID) {
+    var participantUrl = getParticipantEventDetailsUrl(_EventID) + "/Participants";
+    var xhr = prepareRequest("GET", participantUrl);
+    xhr.send();
+    return xhr;
+}
+
 function getRegistrationNumbersForEvent(_EventID) {
     var registrationNumbersUrl = getParticipantEventDetailsUrl(_EventID) + "/RegistrationNumbers";
     var xhr = prepareRequest("GET", registrationNumbersUrl);

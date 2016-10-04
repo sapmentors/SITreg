@@ -73,6 +73,30 @@ describe("Check that provided ticket was used", function() {
     });
 });
 
+describe("Check in participant manually", function() {
+    it("should check in the participant manually", function() {
+        var xhr =  prepareRequest("PATCH", ReceptionistODataURL + "/Ticket(" + participantIDmanual + ")");
+        var change = {
+            "TicketUsed": "M"
+        };
+        xhr.send(JSON.stringify(change));
+        expect(xhr.status).toBe(204);
+    });
+});
+
+describe("Check that manual checkin was fullfilled", function() {
+    it("should return an M for manual checkin", function() {
+        var check = {
+            "ParticipantID": participantIDmanual
+        }; 
+        var xhr = prepareRequest("POST", TicketCodeURL);
+        xhr.send(JSON.stringify(check));
+        expect(xhr.status).toBe(200);
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.OUTC[0].TicketUsed).toBe('M');
+    });
+});
+
 describe("Logout RECEPTIONIST", function() {
     it("should logout RECEPTIONIST", function() {
         logout(csrfToken);

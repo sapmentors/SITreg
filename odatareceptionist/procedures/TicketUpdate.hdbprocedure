@@ -49,31 +49,31 @@ BEGIN
         , lv_ChangedAt
         FROM :inrow;
 
-    IF lv_TicketUsed = 'M' THEN
-    
-    SELECT "TicketUsed", "SHA256HASH"
-      INTO lv_TicketUsed_tmp, lv_SHA256HASH
-      FROM "com.sap.sapmentors.sitreg.data::SITreg.Ticket"
-      WHERE "ParticipantID" = lv_ParticipantID
-        AND "EventID"       = lv_EventID;
-        
-        lv_TicketUsed_upd = 'M';
-    ELSE
-    
     SELECT "TicketUsed"
       INTO lv_TicketUsed_tmp
-      FROM "com.sap.sapmentors.sitreg.data::SITreg.Ticket"
-      WHERE "SHA256HASH" = lv_SHA256HASH;
-      
-      lv_TicketUsed_upd = 'Y';
+      FROM "com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead"
+      WHERE "ParticipantID" = lv_ParticipantID;
+
+    IF lv_TicketUsed = 'M' THEN
+        lv_TicketUsed_upd = 'M';
+    ELSE
+        lv_TicketUsed_upd = 'Y';
     END IF;
     
     IF lv_TicketUsed_tmp = 'N' THEN
-        UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Ticket"
-          SET   "TicketUsed"        = lv_TicketUsed_upd
-              , "History.ChangedBy" = CURRENT_USER
-              , "History.ChangedAt" = CURRENT_TIMESTAMP
-          WHERE "SHA256HASH" = lv_SHA256HASH;
+        IF lv_TicketUsed_upd = 'M' THEN
+            UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Ticket"
+              SET   "TicketUsed"        = lv_TicketUsed_upd
+                  , "History.ChangedBy" = CURRENT_USER
+                  , "History.ChangedAt" = CURRENT_TIMESTAMP
+              WHERE "ParticipantID" = lv_ParticipantID;
+        ELSE
+            UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Ticket"
+              SET   "TicketUsed"        = lv_TicketUsed_upd
+                  , "History.ChangedBy" = CURRENT_USER
+                  , "History.ChangedAt" = CURRENT_TIMESTAMP
+              WHERE "SHA256HASH" = lv_SHA256HASH;        
+        END IF;
     ELSE
         error = select 400 as http_status_code, 
             'Update failed' error_message, 

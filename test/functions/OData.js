@@ -137,6 +137,16 @@ function getAllParticipantsDetailsForEvent(_EventID) {
     return xhr;
 }
 
+function getParticipantEventTicketDetails(_EventID, _ParticipantID) {
+    var receptionistUrl = "/com/sap/sapmentors/sitreg/odatareceptionist/service.xsodata/"+
+                         "Events(" + _EventID + ")/" +
+                         "Participants(" + _ParticipantID + ")/Ticket";
+    var xhr = prepareRequest("GET", receptionistUrl);
+    xhr.send();
+    console.log(xhr);
+    return xhr;
+}
+
 function getRegistrationNumbersForEvent(_EventID) {
     var registrationNumbersUrl = getParticipantEventDetailsUrl(_EventID) + "/RegistrationNumbers";
     var xhr = prepareRequest("GET", registrationNumbersUrl);

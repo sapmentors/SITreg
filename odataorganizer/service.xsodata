@@ -21,6 +21,7 @@ service  {
     navigates (
         "Events_Participants"       as "Participants",
         "Events_CoOrganizers"       as "CoOrganizers",
+        "Events_Devices"       as "Devices",
         "Event_Changeable"          as "EventChangeable", 
         "Event_RegistrationNumbers" as "RegistrationNumbers",
         "Event_PrePostEveningEventNumbers" as "PrePostEveningEventNumbers"
@@ -36,6 +37,14 @@ service  {
 
     association "Events_CoOrganizers" principal "Events"("ID") multiplicity "1"
         dependent "CoOrganizers"("EventID") multiplicity "*";   
+
+    "com.sap.sapmentors.sitreg.data::SITreg.Device" as "Devices"
+    create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceCreate" 
+    update using "com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceUpdate"
+    delete forbidden;
+
+    association "Events_Devices" principal "Events"("ID") multiplicity "1"
+        dependent "Devices"("EventID") multiplicity "*";   
 
     "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventChangeableRead" as "EventChangeable" key ("EventID")
     create forbidden

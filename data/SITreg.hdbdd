@@ -33,7 +33,7 @@ context SITreg {
     type TicketUsedT    : String(1) enum{ YES = 'Y'; NO = 'N'; };
     type HashT          : Binary(32);
     type RegisterAsOrganizerStatus : String(1) enum{ ACCEPTED = 'A'; REJECTED = 'R'; PENDING = 'P'; };
-
+    type DeviceT        : String(36);
     
     type HistoryT {
         CreatedBy : UserT;
@@ -67,6 +67,13 @@ context SITreg {
     entity CoOrganizer {
         key EventID  : BusinessKey;
         key UserName : UserT;
+            History  : HistoryT;
+            Active   : String(1); // Y = Yes / N = No
+    };
+
+    entity Device {
+        key EventID  : BusinessKey;
+        key DeviceID : DeviceT;
             History  : HistoryT;
             Active   : String(1); // Y = Yes / N = No
     };

@@ -111,6 +111,26 @@ describe("Read COORGANIZER's of event", function() {
     });
 });
 
+describe("Add device to event", function() {
+    it("should add a new device to event", function() {
+        var xhr = addDevice(eventID, deviceID);
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+    });
+});
+
+describe("Read device of event", function() {
+    it("should read list of device's of an event", function() {
+        var uri = eventUri + "/Devices";
+        var xhr = prepareRequest("GET", uri);
+        xhr.send();
+        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.results[0].EventID).toBe(eventID);
+        expect(body.d.results[0].DeviceID).toBe(deviceID);
+        expect(body.d.results[0].Active).toBe("Y");
+    });
+});
+
 describe("Logout ORGANIZER", function() {
     it("should logout ORGANIZER", function() {
         logout(csrfToken);

@@ -49,12 +49,14 @@ service  {
     "com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead" as "Ticket" key ("ParticipantID")
     create forbidden 
     update using "com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketUpdate"
+    events ( after "com.sap.sapmentors.sitreg.odatareceptionist.procedures:PrintQueue.xsjslib::PrintQueueUpdate" )
     delete forbidden;
     
     association "Event_Ticket" principal "Events"("ID") multiplicity "1"
         dependent "Ticket"("EventID") multiplicity "*";
     association "Participant_Ticket" principal "Participants"("ID") multiplicity "1"
         dependent "Ticket"("ParticipantID") multiplicity "1"; 
+
     // Read PrintQueue
     "com.sap.sapmentors.sitreg.data::SITreg.PrintQueue" as "PrintQueue"
     create forbidden

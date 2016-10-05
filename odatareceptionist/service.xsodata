@@ -20,7 +20,8 @@ service  {
     "com.sap.sapmentors.sitreg.odataparticipant.procedures::EventsRead" as "Events" key ("ID")
         navigates ("Event_Ticket"              as "Tickets", 
                    "Event_Participants"        as "Participants", 
-                   "Event_RegistrationNumbers" as "RegistrationNumbers")
+                   "Event_RegistrationNumbers" as "RegistrationNumbers",
+                   "Event_PrintQueue"          as "PrintQueue")
     create forbidden 
     update forbidden
     delete forbidden;
@@ -32,11 +33,17 @@ service  {
     update forbidden
     delete forbidden;
 
+    association "Event_Participants" principal "Events"("ID") multiplicity "1"
+        dependent "Participants"("EventID") multiplicity "*";
+
     // Read RegistrationNumbers from View to restrict fields that can be read
     "com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead" as "RegistrationNumbers" key ("EventID")
     create forbidden 
     update forbidden
     delete forbidden;
+
+    association "Event_RegistrationNumbers" principal "Events"("ID") multiplicity "1"
+        dependent "RegistrationNumbers"("EventID") multiplicity "1";
 
     // Read Ticket from View to restrict fields that can be read
     "com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead" as "Ticket" key ("ParticipantID")
@@ -46,10 +53,13 @@ service  {
     
     association "Event_Ticket" principal "Events"("ID") multiplicity "1"
         dependent "Ticket"("EventID") multiplicity "*";
-    association "Event_Participants" principal "Events"("ID") multiplicity "1"
-        dependent "Participants"("EventID") multiplicity "*";
-    association "Event_RegistrationNumbers" principal "Events"("ID") multiplicity "1"
-        dependent "RegistrationNumbers"("EventID") multiplicity "1";
     association "Participant_Ticket" principal "Participants"("ID") multiplicity "1"
         dependent "Ticket"("ParticipantID") multiplicity "1"; 
+    // Read PrintQueue
+    "com.sap.sapmentors.sitreg.data::SITreg.PrintQueue" as "PrintQueue"
+    create forbidden
+    update using "com.sap.sapmentors.sitreg.odatareceptionist.procedures::PrintQueueUpdate"
+    delete forbidden;   
+    association "Event_PrintQueue" principal "Events"("ID") multiplicity "1"
+        dependent "PrintQueue"("EventID") multiplicity "*";
 }

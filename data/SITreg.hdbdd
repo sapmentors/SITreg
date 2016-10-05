@@ -143,7 +143,17 @@ context SITreg {
             StatusSetTimeStamp  : UTCTimestamp;         
             History           	: HistoryT;
     }
-    
+
+    entity PrintQueue {
+        key ParticipantID    : BusinessKey;
+            EventID          : BusinessKey not null;
+            FirstName        : String(100) not null;
+            LastName         : String(100) not null;
+            Twitter          : String(15);
+            PrintStatus      : String(1) not null; // Q = queued, S = sent, P = printed
+            History          : HistoryT;
+    };
+
     entity RegisterAsOrganizerQueue {
         key EventID             : BusinessKey not null default 0;
         key UserName            : UserT;

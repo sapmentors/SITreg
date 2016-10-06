@@ -43,17 +43,42 @@ function isParticipantInPrintQueue(_ParticipantID) {
         pStmt.close();
     } catch (e) {
         $.trace.debug("Error: exception caught: <br />" + e.toString());
-    }   
-    return count;
+    }
+    if(count === 0) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function getDevicesForEvent(_EventID) {
+    var conn;
+    var devices = [];
+    try {
+        conn = $.db.getConnection();
+        var select = 'SELECT "DeviceID" '
+            + 'FROM "com.sap.sapmentors.sitreg.data::SITreg.Device" '
+            + 'WHERE "EventID" = ?';
+        var pStmt = conn.prepareStatement(select);
+        pStmt.setInteger(1, _EventID);
+        var rs = pStmt.executeQuery();
+        if (rs.next()) {
+            devices.push(rs.getString(1));
+        }
+        pStmt.close();
+    } catch (e) {
+        $.trace.debug("Error: exception caught: <br />" + e.toString());
+    }
+    return devices;
 }
 
 function addParticipantToPrintQueue(_participant) {
     var conn;
     var status = {};
     try {
-        conn = $.db.getConnection();
-        status.count = isParticipantInPrintQueue(_participant.ParticipantID);
-        if(status.count === 0) {
+        var devices = getDevicesForEvent(_participant.EventID);
+        if(!isParticipantInPrintQueue(_participant.EventID)) {
+            conn = $.db.getConnection();
             var select = 'INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.PrintQueue" '
         	    + 'VALUES(?, ?, ?, ?, ?, ?, ' 
         	    + 'CURRENT_USER, CURRENT_TIMESTAMP, CURRENT_USER, CURRENT_TIMESTAMP )';
@@ -62,6 +87,9 @@ function addParticipantToPrintQueue(_participant) {
             pStmt.setInteger(2, _participant.EventID);
             pStmt.setString(3,  _participant.FirstName);
             pStmt.setString(4,  _participant.LastName);
+            if(!_participant.Twitter) {
+                _participant.Twitter = "";
+            }
             pStmt.setString(5,  _participant.Twitter);
             pStmt.setString(6,  _participant.PrintStatus);
             pStmt.executeUpdate();

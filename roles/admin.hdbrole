@@ -4,6 +4,7 @@ role com.sap.sapmentors.sitreg.roles::admin {
     sql object com.sap.sapmentors.sitreg.data::SITreg.Participant: SELECT, INSERT, UPDATE, DELETE;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Organizer: SELECT, INSERT, UPDATE, DELETE;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Ticket: SELECT, INSERT, UPDATE, DELETE;
+    sql object com.sap.sapmentors.sitreg.data::SITreg.PrintQueue: SELECT, INSERT, UPDATE, DELETE;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketCreate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataadmin.procedures::TicketCreateMissing: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataadmin.procedures::ParticipantUpdateWaitingList: EXECUTE;

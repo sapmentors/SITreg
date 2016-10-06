@@ -6,5 +6,5 @@ role com.sap.sapmentors.sitreg.roles::receptionist {
     sql object com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketCheck: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketUpdate: EXECUTE;
-    sql object com.sap.sapmentors.sitreg.data::SITreg.PrintQueue: SELECT, UPDATE;
+    sql object com.sap.sapmentors.sitreg.data::SITreg.PrintQueue: SELECT, INSERT, UPDATE;
 }

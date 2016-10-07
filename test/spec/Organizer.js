@@ -116,6 +116,8 @@ describe("Add device to event", function() {
         var xhr = addDevice(eventID, deviceID);
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
+        var xhr = addDevice(eventID2, deviceID);
+        var xhr = addDevice(eventIDsmall, deviceID);
     });
 });
 

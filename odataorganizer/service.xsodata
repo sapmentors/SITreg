@@ -24,7 +24,8 @@ service  {
         "Events_Devices"       as "Devices",
         "Event_Changeable"          as "EventChangeable", 
         "Event_RegistrationNumbers" as "RegistrationNumbers",
-        "Event_PrePostEveningEventNumbers" as "PrePostEveningEventNumbers"
+        "Event_PrePostEveningEventNumbers" as "PrePostEveningEventNumbers",
+        "Event_ParticipantNumbers" as "ParticipantNumbers"
     )
     create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate" 
     update using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUpdate"
@@ -79,6 +80,14 @@ service  {
 
     association "Event_PrePostEveningEventNumbers" principal "Events"("ID") multiplicity "1"
         dependent "PrePostEveningEventNumbers"("EventID") multiplicity "1";
+
+    "com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantNumbersRead" as "ParticipantNumbers" key ("EventID")
+    create forbidden
+    update forbidden
+    delete forbidden;
+
+    association "Event_ParticipantNumbers" principal "Events"("ID") multiplicity "1"
+        dependent "ParticipantNumbers"("EventID") multiplicity "1";
 
     // Read Ticket from View to restrict fields that can be read
     "com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead" as "Ticket" key ("ParticipantID")

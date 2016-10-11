@@ -4,6 +4,7 @@ role com.sap.sapmentors.sitreg.roles::organizer {
     sql object com.sap.sapmentors.sitreg.data::SITreg.Device: SELECT, INSERT, UPDATE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceCreate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceUpdate: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::PrePostEveningEventNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantsRead: SELECT;

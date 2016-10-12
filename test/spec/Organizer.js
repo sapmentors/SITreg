@@ -89,13 +89,12 @@ describe("Add COORGANIZER to event", function() {
 
 describe("Add additional co-organizers to event", function() {
     it("should add additional co-organizers to event", function() {
-        var xhr = addCoOrganizer(eventID, "XSA_DEV");
+        xhr = addCoOrganizer(eventIDsmall, "COORGANIZER");
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
         xhr = addCoOrganizer(eventID, "GWOLF");
         xhr = addCoOrganizer(eventID, "S0001142741");
         xhr = addCoOrganizer(eventIDsmall, "S0001142741");
-        xhr = addCoOrganizer(eventIDsmall, "COORGANIZER");
     });
 });
 

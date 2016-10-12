@@ -1,6 +1,9 @@
 role com.sap.sapmentors.sitreg.roles::organizer {
     // catalog schema "SITREG": SELECT;
+    sql object com.sap.sapmentors.sitreg.data::eventId: SELECT;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Event: SELECT, INSERT, UPDATE;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUpdate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Device: SELECT, INSERT, UPDATE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceCreate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceUpdate: EXECUTE;
@@ -13,9 +16,8 @@ role com.sap.sapmentors.sitreg.roles::organizer {
     sql object com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer: SELECT, INSERT, UPDATE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerCreate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerUpdate: EXECUTE;
-    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate: EXECUTE;
-    sql object com.sap.sapmentors.sitreg.data::eventId: SELECT;
-    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUpdate: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerUpdate: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::GrantOrganizerRoleToUser: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateWaitingList: EXECUTE;
     	
     application privilege: "com.sap.sapmentors.sitreg.odataorganizer::organizer";

@@ -28,7 +28,8 @@ describe("Create event", function() {
             "München",
             "/Date(1475798400000)/",
             "/Date(1475910000000)/",
-            "/Date(1475942400000)/"
+            "/Date(1475942400000)/",
+            "SAP Inside Track"
         );
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
@@ -37,7 +38,8 @@ describe("Create event", function() {
             "Bern",
             "/Date(1472774400000)/",
             "/Date(1472889600000)/",
-            "/Date(1472911200000)/"
+            "/Date(1472911200000)/",
+            "早上好"
         );
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
@@ -62,6 +64,8 @@ describe("Read event and change MaxParticipants", function() {
         expect(xhr.statusText).toBe("OK");
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.results[0].Location).toBe("München");
+        expect(body.d.results[0].Description).toBe("SAP Inside Track");
+        expect(body.d.results[1].Description).toBe("早上好");
         // Change MaxParticipants
         eventUri = body.d.results[0].__metadata.uri;
         eventUri2 = body.d.results[1].__metadata.uri;

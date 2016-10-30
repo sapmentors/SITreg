@@ -1,5 +1,4 @@
 role com.sap.sapmentors.sitreg.roles::organizer {
-    // catalog schema "SITREG": SELECT;
     sql object com.sap.sapmentors.sitreg.data::eventId: SELECT;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Event: SELECT, INSERT, UPDATE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate: EXECUTE;

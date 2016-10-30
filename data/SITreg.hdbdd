@@ -28,6 +28,7 @@ context SITreg {
     type BusinessKey    : Integer;
     type UserT          : String(256);
     type RelationToSAPT : String(1);
+    type EventTypeT     : String(1);
     type SDate          : LocalDate;
     type URL            : String(256);
     type TicketUsedT    : String(1) enum{ YES = 'Y'; NO = 'N'; };
@@ -62,6 +63,8 @@ context SITreg {
             MaxParticipants : Integer not null;
             HomepageURL     : URL;
             History         : HistoryT;
+            Description     : String(100);
+            Type            : EventTypeT;
     };
     
     entity CoOrganizer {

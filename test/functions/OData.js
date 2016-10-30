@@ -25,7 +25,9 @@ function prepareRequest(method, url) {
     return xhr;
 }
 
-function createEvent(Location, EventDate, StartTime, EndTime) {
+function createEvent(Location, EventDate, StartTime, EndTime, Description, Type) {
+    Description = Description || "SAP Inside Track";
+    Type = Type || "I";
     var create = {
         "ID": eventID,
         "Location": Location,
@@ -33,7 +35,9 @@ function createEvent(Location, EventDate, StartTime, EndTime) {
         "StartTime": StartTime,
         "EndTime": EndTime,
         "MaxParticipants": 80,
-        "HomepageURL": null
+        "HomepageURL": null,
+        "Description": Description,
+        "Type": Type
     };
     var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events");
     xhr.send(JSON.stringify(create));

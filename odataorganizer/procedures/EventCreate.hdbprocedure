@@ -37,6 +37,7 @@ BEGIN
     DECLARE lv_ChangedAt       string;
     DECLARE lv_Description     string;
     DECLARE lv_Type            string;
+    DECLARE lv_Visible         string;
 
     SELECT * INTO lv_ID             
             , lv_Location       
@@ -51,6 +52,7 @@ BEGIN
             , lv_ChangedAt
             , lv_Description
             , lv_Type
+            , lv_Visible
         FROM :inrow;
     
     -- Don't trust the provided Username. we read it from the current user
@@ -76,6 +78,7 @@ BEGIN
         , CURRENT_TIMESTAMP
         , lv_Description
         , lv_Type
+        , lv_Visible
 	    );
 	-- Procedures for XSODATA are expected to fill the error sturcture
 	-- TODO: Find a better solution for 1 = 2

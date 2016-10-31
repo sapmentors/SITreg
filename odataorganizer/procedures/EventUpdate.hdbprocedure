@@ -39,6 +39,7 @@ BEGIN
     DECLARE lv_ChangedAt       DATE;
     DECLARE lv_Description     string;
     DECLARE lv_Type            string;
+    DECLARE lv_Visible         string;
 
     DECLARE lv_Location_tmp        string;
     DECLARE lv_EventDate_tmp       DATE;
@@ -48,6 +49,7 @@ BEGIN
     DECLARE lv_HomepageURL_tmp     string;
     DECLARE lv_Description_tmp     string;
     DECLARE lv_Type_tmp            string;
+    DECLARE lv_Visible_tmp         string;
 
     SELECT * INTO lv_ID             
             , lv_Location       
@@ -62,6 +64,7 @@ BEGIN
             , lv_ChangedAt
             , lv_Description
             , lv_Type
+            , lv_Visible
         FROM :inrow;
     -- Don't trust the provided Username. We read it from the current user
     SELECT CURRENT_USER INTO lv_ChangedBy FROM DUMMY;
@@ -82,7 +85,7 @@ BEGIN
         SELECT "Location", "EventDate", 
             "StartTime", "EndTime", 
             "MaxParticipants", "HomepageURL",
-            "Description", "Type"
+            "Description", "Type", "Visible"
             INTO lv_Location_tmp      
                 , lv_EventDate_tmp      
                 , lv_StartTime_tmp      
@@ -91,6 +94,7 @@ BEGIN
                 , lv_HomepageURL_tmp
                 , lv_Description_tmp
                 , lv_Type_tmp
+                , lv_Visible_tmp
             FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
             WHERE "ID" = lv_ID;
         -- OData call can also contain just single attributes. We have to preserve the data
@@ -102,7 +106,8 @@ BEGIN
         if lv_HomepageURL = ''    then lv_HomepageURL = lv_HomepageURL_tmp;         END IF;
         if lv_Description = ''    then lv_Description = lv_Description_tmp;         END IF;
         if lv_Type = ''           then lv_Type = lv_Type_tmp;                       END IF;
-        
+        if lv_Visible = ''        then lv_Visible = lv_Visible_tmp;                 END IF;
+
         IF lv_MaxParticipants <> lv_MaxParticipants_tmp THEN
             -- When MaxParticipants is changed, the Waiting List must be updated
             CALL "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateWaitingList" (
@@ -122,6 +127,7 @@ BEGIN
               , "History.ChangedAt" = CURRENT_TIMESTAMP
               , "Description"       = lv_Description
               , "Type"              = lv_Type
+              , "Visible"              = lv_Visible
           WHERE "ID" = lv_ID;
 
     ELSE

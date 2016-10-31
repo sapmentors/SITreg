@@ -87,6 +87,12 @@ context SITreg {
         key Language : String(2);
         Description  : String(250);
     };
+
+    entity EventType {
+        key EventType : EventTypeT;
+        key Language : String(2);
+        Description  : String(250);
+    };    
     
     type ParticipantT {
             ID               : BusinessKey;

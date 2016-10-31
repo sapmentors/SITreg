@@ -127,7 +127,7 @@ BEGIN
               , "History.ChangedAt" = CURRENT_TIMESTAMP
               , "Description"       = lv_Description
               , "Type"              = lv_Type
-              , "Visible"              = lv_Visible
+              , "Visible"           = lv_Visible
           WHERE "ID" = lv_ID;
 
     ELSE

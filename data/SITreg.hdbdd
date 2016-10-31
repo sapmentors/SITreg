@@ -65,7 +65,7 @@ context SITreg {
             History         : HistoryT;
             Description     : String(100);
             Type            : EventTypeT;
-            Visible         : String(1); // Y = Yes / N = No
+            Visible         : String(1); // Y = Yes / N = No 
     };
     
     entity CoOrganizer {

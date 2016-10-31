@@ -1,7 +1,7 @@
 role com.sap.sapmentors.sitreg.roles::admin {
     catalog schema "SITREG": SELECT;
-    sql object com.sap.sapmentors.sitreg.data::SITreg.Event: SELECT, INSERT, UPDATE, DELETE;
-    sql object com.sap.sapmentors.sitreg.data::SITreg.Participant: SELECT, INSERT, UPDATE, DELETE;
+    sql object com.sap.sapmentors.sitreg.data::SITreg.Event: SELECT, INSERT, UPDATE, DELETE, ALTER;
+    sql object com.sap.sapmentors.sitreg.data::SITreg.Participant: SELECT, INSERT, UPDATE, DELETE, ALTER;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Organizer: SELECT, INSERT, UPDATE, DELETE;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Ticket: SELECT, INSERT, UPDATE, DELETE;
     sql object com.sap.sapmentors.sitreg.data::SITreg.PrintQueue: SELECT, INSERT, UPDATE, DELETE;

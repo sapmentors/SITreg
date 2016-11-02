@@ -1,25 +1,30 @@
 role com.sap.sapmentors.sitreg.roles::organizer {
+    // Event
     sql object com.sap.sapmentors.sitreg.data::eventId: SELECT;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Event: SELECT, INSERT, UPDATE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUpdate: EXECUTE;
-    sql object com.sap.sapmentors.sitreg.data::SITreg.EventType: SELECT;
-    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventTypeView: SELECT;
-    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventType: EXECUTE;
-    sql object com.sap.sapmentors.sitreg.data::SITreg.Device: SELECT, INSERT, UPDATE;
-    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceCreate: EXECUTE;
-    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceUpdate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::PrePostEveningEventNumbersRead: SELECT;
-    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantsRead: SELECT;
-    sql object com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventChangeableRead: SELECT;
+    // CoOrganizer
     sql object com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer: SELECT, INSERT, UPDATE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerCreate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerUpdate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerUpdate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::GrantOrganizerRoleToUser: EXECUTE;
+    // EventType
+    sql object com.sap.sapmentors.sitreg.data::SITreg.EventType: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventTypeView: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventType: EXECUTE;
+    // Device
+    sql object com.sap.sapmentors.sitreg.data::SITreg.Device: SELECT, INSERT, UPDATE;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceCreate: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceUpdate: EXECUTE;
+    // Participants
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantsRead: SELECT;
+    sql object com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateWaitingList: EXECUTE;
     	
     application privilege: "com.sap.sapmentors.sitreg.odataorganizer::organizer";

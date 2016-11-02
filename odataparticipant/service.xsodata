@@ -18,14 +18,25 @@
 service  { 
 
     "com.sap.sapmentors.sitreg.data::SITreg.Event" as "Events"
-        navigates ("Event_Participant"         as "Participant", 
-                   "Event_Ticket"              as "Ticket", 
-                   "Event_Participants"        as "Participants", 
-                   "Event_RegistrationNumbers" as "RegistrationNumbers")
+        navigates (
+            "Event_Participant"         as "Participant", 
+            "Event_Ticket"              as "Ticket", 
+            "Event_Participants"        as "Participants", 
+            "Event_RegistrationNumbers" as "RegistrationNumbers",
+            "Event_Type"                as "EventType"
+        )
     create forbidden 
     update forbidden
     delete forbidden;
     
+    // EventType
+    "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventTypeView" as "EventType" key ("EventType")
+    create forbidden 
+    update forbidden
+    delete forbidden;
+    association "Event_Type" principal "Events"("Type") multiplicity "0..1"
+        dependent "EventType"("EventType") multiplicity "1";
+        
     // Read Participant from View to restrict to logged on user
     "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead" as "Participant" key ("ID")
     create using "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantCreate"

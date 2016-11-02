@@ -2,6 +2,10 @@ role com.sap.sapmentors.sitreg.roles::participant {
     // Event
     sql object com.sap.sapmentors.sitreg.data::SITreg.Event: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::EventsRead: SELECT;
+    // EventType
+    sql object com.sap.sapmentors.sitreg.data::SITreg.EventType: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventTypeView: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventType: EXECUTE;
     // RelationToSAP
     sql object com.sap.sapmentors.sitreg.data::SITreg.RelationToSAP: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RelationToSAPView: SELECT;

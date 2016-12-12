@@ -25,9 +25,10 @@ function prepareRequest(method, url) {
     return xhr;
 }
 
-function createEvent(Location, EventDate, StartTime, EndTime, Description, Type) {
+function createEvent(Location, EventDate, StartTime, EndTime, Description, Type, Visible) {
     Description = Description || "SAP Inside Track";
     Type = Type || "I";
+    Visible = Visible || "Y";
     var create = {
         "ID": eventID,
         "Location": Location,
@@ -37,7 +38,8 @@ function createEvent(Location, EventDate, StartTime, EndTime, Description, Type)
         "MaxParticipants": 80,
         "HomepageURL": null,
         "Description": Description,
-        "Type": Type
+        "Type": Type,
+        "Visible": Visible
     };
     var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events");
     xhr.send(JSON.stringify(create));
@@ -45,6 +47,7 @@ function createEvent(Location, EventDate, StartTime, EndTime, Description, Type)
 }
 
 function createVerySmallEvent(Location, EventDate, StartTime, EndTime) {
+    var Visible = "Y";
     var create = {
         "ID": eventIDsmall,
         "Location": Location,
@@ -52,7 +55,8 @@ function createVerySmallEvent(Location, EventDate, StartTime, EndTime) {
         "StartTime": StartTime,
         "EndTime": EndTime,
         "MaxParticipants": 1,
-        "HomepageURL": null
+        "HomepageURL": null,
+        "Visible": Visible
     };
     var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events");
     xhr.send(JSON.stringify(create));

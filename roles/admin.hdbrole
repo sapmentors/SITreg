@@ -12,4 +12,6 @@ role com.sap.sapmentors.sitreg.roles::admin {
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateWaitingList: EXECUTE;
     sql object com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer: SELECT, INSERT, UPDATE, DELETE;
     sql object com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue: SELECT, INSERT, UPDATE, DELETE;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerCreate: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::GrantOrganizerRoleToUser: EXECUTE;
 }

@@ -1,3 +1,5 @@
+[![Build Status](http://ci.computerservice-wolf.com/buildStatus/icon?job=CI_SITreg_master_build)](http://ci.computerservice-wolf.com/job/CI_SITreg_master_build)
+
 # SAP Event Registration app backend
 
 The SAP Event Registration app is a community project licensed under Apache License Version 2.0. The app provides organizers of SAP community events a platform for the participant registration. It's running already in production using the [SAP Mentors](http://sapmentors.sap.com) HANA Cloud Platform Account and can be accessed at:

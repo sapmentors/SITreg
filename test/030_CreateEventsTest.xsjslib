@@ -1,4 +1,5 @@
 var helper = $.import("com.sap.sapmentors.sitreg.test.lib", "TestHelper");
+var parameters = $.import("com.sap.sapmentors.sitreg.test", "parameters");
 
 var loginResult;
 var header;
@@ -89,8 +90,7 @@ describe("Create Events", function() {
     });
 
     it("should read the created events, change the MaxParticipants and check the change", function() {
-        var service = encodeURI("/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events?$filter=History.CreatedBy eq 'ORGANIZER'");
-        var response = jasmine.callHTTPService(service, $.net.http.GET, undefined, header, loginResult.cookies);
+        var response = jasmine.callHTTPService(parameters.readEventsService, $.net.http.GET, undefined, header, loginResult.cookies);
         expect(response.status).toBe($.net.http.OK);
         /*
         for (var i = 0; i < response.headers.length; ++i) {

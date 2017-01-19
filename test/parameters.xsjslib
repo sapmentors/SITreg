@@ -1,0 +1,1 @@
+var readEventsService = encodeURI("/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events?$filter=History.CreatedBy eq 'ORGANIZER'");

@@ -54,9 +54,9 @@ BEGIN
         AND "History.CreatedBy" = lv_CreatedBy;
       
     IF lv_Count = 1 THEN
-    	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer" 
-    	    VALUES(
-    	        lv_EventID
+        INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer" 
+            VALUES(
+                lv_EventID
                 , UCASE( lv_UserName )
                 , lv_CreatedBy
                 , CURRENT_TIMESTAMP
@@ -64,6 +64,9 @@ BEGIN
                 , CURRENT_TIMESTAMP
                 , lv_Active
             );
+        CALL "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::GrantOrganizerRoleToUser" ( 
+            USERNAME => UCASE( lv_UserName ) 
+        );
 	ELSE
 		error = SELECT 400 AS http_status_code, 
 					'Event does not belong to you' AS error_message, 

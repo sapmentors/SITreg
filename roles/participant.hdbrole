@@ -1,6 +1,11 @@
 role com.sap.sapmentors.sitreg.roles::participant {
     // Event
     sql object com.sap.sapmentors.sitreg.data::SITreg.Event: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::EventsRead: SELECT;
+    // EventType
+    sql object com.sap.sapmentors.sitreg.data::SITreg.EventType: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventTypeView: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::EventType: EXECUTE;
     // RelationToSAP
     sql object com.sap.sapmentors.sitreg.data::SITreg.RelationToSAP: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RelationToSAPView: SELECT;
@@ -13,9 +18,15 @@ role com.sap.sapmentors.sitreg.roles::participant {
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantReadFunc: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantCreate: EXECUTE;
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::GetRSVPrespectingFreeSeats: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdatePrepare: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.data::participantId: SELECT;
+    // Ticket
+    sql object com.sap.sapmentors.sitreg.data::SITreg.Ticket: INSERT, UPDATE;
+    // SELECT only via views
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketRead: SELECT;
+    sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketCreate: EXECUTE;
     
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc: EXECUTE;

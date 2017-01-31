@@ -14,7 +14,8 @@
 --   limitations under the License.
 --
 PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate" ( 
-    IN inrow  "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant"
+    IN inrow  "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant",
+    OUT error "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.error"
 )
    LANGUAGE SQLSCRIPT
    SQL SECURITY DEFINER
@@ -22,8 +23,11 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::Parti
    AS
 BEGIN
 
+	DECLARE lv_rank             INT;
 	DECLARE lv_Count            INT;
+	DECLARE lv_count_waiting    INT;
 	DECLARE lv_ID               STRING;
+	DECLARE lv_ID_Waiting       STRING;
 	DECLARE lv_EventID          STRING;
 	DECLARE lv_RegistrationTime TIMESTAMP;
 	DECLARE lv_FirstName        STRING;
@@ -82,8 +86,9 @@ BEGIN
         , lv_ChangedAt          
         FROM :inrow;
 
-    SELECT 
-          "FirstName"
+    SELECT "EventID"
+        , "RegistrationTime"
+        , "FirstName"
         , "LastName"
         , "EMail"
         , "MobilePhone"
@@ -97,7 +102,9 @@ BEGIN
         , "ReceiptCompany"
         , "ReceiptAddress"
         , "History.CreatedBy"
-        INTO lv_FirstName_tmp       
+        INTO lv_EventID
+            , lv_RegistrationTime
+            , lv_FirstName_tmp       
             , lv_LastName_tmp        
             , lv_EMail_tmp           
             , lv_MobilePhone_tmp     
@@ -113,7 +120,49 @@ BEGIN
             , lv_ChangedBy
         FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
         WHERE "ID" = lv_ID;
-        
+    
+    -- Handle change from registered to can't make it
+    IF      lv_RSVP_tmp = 'Y'
+        AND lv_RSVP     = 'N' 
+        THEN
+        -- Update registration time of current participant
+        SELECT CURRENT_TIMESTAMP INTO lv_RegistrationTime FROM DUMMY;
+
+        -- Check if there is a waiting list
+        SELECT COUNT(*) INTO lv_count_waiting
+            FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+                WHERE "EventID" = lv_EventID
+                  AND "RSVP" = 'W';
+        IF lv_count_waiting > 0 THEN
+            -- read the first one
+            SELECT "ID" AS "ID_Waiting" INTO lv_ID_Waiting
+            FROM( 
+                SELECT "ID", 
+                RANK() OVER ( PARTITION BY "EventID" ORDER BY "RegistrationTime" ASC ) AS "Rank"
+                    FROM "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+                    WHERE "EventID" = lv_EventID
+                      AND "RSVP" = 'W'
+                )
+            WHERE "Rank" = 1;
+            
+            IF lv_ID_Waiting <> '' THEN
+                -- Confirm first waiting participant
+                UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Participant"
+                      SET   "RSVP"              = 'Y'
+                          , "History.ChangedBy" = lv_ChangedBy
+                          , "History.ChangedAt" = CURRENT_TIMESTAMP
+                      WHERE "ID" = lv_ID_Waiting;
+            END IF;
+        END IF;
+    ELSEIF lv_RSVP     <> ''
+       AND lv_RSVP_tmp <> lv_RSVP
+        THEN
+        CALL "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::GetRSVPrespectingFreeSeats" (
+            in_EventID => :lv_EventID,
+            in_RSVP    => :lv_RSVP,
+            out_RSVP   => :lv_RSVP
+        );
+    END IF;
     -- OData call can also contain just single attributes. We have to preserve the data
     if lv_FirstName = ''        then lv_FirstName        = lv_FirstName_tmp;        end if;
     if lv_LastName = ''         then lv_LastName         = lv_LastName_tmp;         end if;
@@ -121,6 +170,7 @@ BEGIN
     if lv_MobilePhone = ''      then lv_MobilePhone      = lv_MobilePhone_tmp;      end if;
     if lv_BioURL = ''           then lv_BioURL           = lv_BioURL_tmp;           end if;
     if lv_Twitter = ''          then lv_Twitter          = lv_Twitter_tmp;          end if;
+    if lv_RSVP = ''             then lv_RSVP             = lv_RSVP_tmp;             end if;
     if lv_PreEveningEvent = ''  then lv_PreEveningEvent  = lv_PreEveningEvent_tmp;  end if;
     if lv_PostEveningEvent = '' then lv_PostEveningEvent = lv_PostEveningEvent_tmp; end if;
     if lv_RelationToSAP = ''    then lv_RelationToSAP    = lv_RelationToSAP_tmp;    end if;
@@ -129,7 +179,8 @@ BEGIN
     if lv_ReceiptAddress = ''   then lv_ReceiptAddress   = lv_ReceiptAddress_tmp;   end if;
 
     UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Participant"
-      SET   "FirstName"         = lv_FirstName
+      SET   "RegistrationTime"  = lv_RegistrationTime
+          , "FirstName"         = lv_FirstName
           , "LastName"          = lv_LastName
           , "EMail"             = lv_EMail
           , "MobilePhone"       = lv_MobilePhone
@@ -145,4 +196,11 @@ BEGIN
           , "History.ChangedBy" = lv_ChangedBy
           , "History.ChangedAt" = CURRENT_TIMESTAMP
       WHERE "ID" = lv_ID;
+
+    IF 1 = 2 THEN
+        error = select 400 as http_status_code, 
+                    'Update Executed' error_message, 
+                    '' detail from dummy;
+    END IF;
+    
 END

@@ -28,13 +28,24 @@ describe("Create event", function() {
             "München",
             "/Date(1475798400000)/",
             "/Date(1475910000000)/",
-            "/Date(1475942400000)/"
+            "/Date(1475942400000)/",
+            "SAP Inside Track"
         );
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
         xhr = createEvent("");
         var xhr = createEvent(
             "Bern",
+            "/Date(1472774400000)/",
+            "/Date(1472889600000)/",
+            "/Date(1472911200000)/",
+            "早上好"
+        );
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+        
+        var xhr = createVerySmallEvent(
+            "SmallTown",
             "/Date(1472774400000)/",
             "/Date(1472889600000)/",
             "/Date(1472911200000)/"
@@ -46,16 +57,21 @@ describe("Create event", function() {
 
 describe("Read event and change MaxParticipants", function() {
     it("should return the created event, change the MaxParticipants and check the change", function() {
-        var xhr = prepareRequest("GET", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events");
+        var url = "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events?$filter=History.CreatedBy eq 'ORGANIZER'";
+        var xhr = prepareRequest("GET", url);
         xhr.send();
         expect(xhr.status).toBe(200);
         expect(xhr.statusText).toBe("OK");
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.results[0].Location).toBe("München");
+        expect(body.d.results[0].Description).toBe("SAP Inside Track");
+        expect(body.d.results[1].Description).toBe("早上好");
         // Change MaxParticipants
         eventUri = body.d.results[0].__metadata.uri;
         eventUri2 = body.d.results[1].__metadata.uri;
         eventID2 = body.d.results[1].ID;
+        eventIDsmall = body.d.results[2].ID;
+        eventUrismall = body.d.results[2].__metadata.uri;
         xhr = xhr = updateEvent(eventUri);
         expect(xhr.status).toBe(204);
         // Check MaxParticipants
@@ -77,11 +93,12 @@ describe("Add COORGANIZER to event", function() {
 
 describe("Add additional co-organizers to event", function() {
     it("should add additional co-organizers to event", function() {
-        var xhr = addCoOrganizer(eventID, "XSA_DEV");
+        xhr = addCoOrganizer(eventIDsmall, "COORGANIZER");
         expect(xhr.status).toBe(201);
         expect(xhr.statusText).toBe("Created");
         xhr = addCoOrganizer(eventID, "GWOLF");
         xhr = addCoOrganizer(eventID, "S0001142741");
+        xhr = addCoOrganizer(eventIDsmall, "S0001142741");
     });
 });
 
@@ -93,6 +110,28 @@ describe("Read COORGANIZER's of event", function() {
         body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.results[0].EventID).toBe(eventID);
         expect(body.d.results[0].UserName).toBe("COORGANIZER");
+        expect(body.d.results[0].Active).toBe("Y");
+    });
+});
+
+describe("Add device to event", function() {
+    it("should add a new device to event", function() {
+        var xhr = addDevice(eventID, deviceID);
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+        var xhr = addDevice(eventID2, deviceID);
+        var xhr = addDevice(eventIDsmall, deviceID);
+    });
+});
+
+describe("Read device of event", function() {
+    it("should read list of device's of an event", function() {
+        var uri = eventUri + "/Devices";
+        var xhr = prepareRequest("GET", uri);
+        xhr.send();
+        body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.results[0].EventID).toBe(eventID);
+        expect(body.d.results[0].DeviceID).toBe(deviceID);
         expect(body.d.results[0].Active).toBe("Y");
     });
 });

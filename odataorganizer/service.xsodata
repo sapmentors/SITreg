@@ -16,16 +16,28 @@
 
 */
 service  { 
-
     "com.sap.sapmentors.sitreg.data::SITreg.Event" as "Events"
     navigates (
-        "Events_Participants" as "Participants",
-        "Events_CoOrganizers" as "CoOrganizers",
-        "Event_Changeable" as "EventChangeable"
+        "Events_Participants"               as "Participants",
+        "Events_CoOrganizers"               as "CoOrganizers",
+        "Events_Devices"                    as "Devices",
+        "Event_Changeable"                  as "EventChangeable", 
+        "Event_RegistrationNumbers"         as "RegistrationNumbers",
+        "Event_PrePostEveningEventNumbers"  as "PrePostEveningEventNumbers",
+        "Event_ParticipantNumbers"          as "ParticipantNumbers",
+        "Event_Type"                        as "EventType"
     )
     create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate" 
     update using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUpdate"
     delete forbidden;
+
+    // EventType
+    "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventTypeView" as "EventType" key ("EventType")
+    create forbidden 
+    update forbidden
+    delete forbidden;
+    association "Event_Type" principal "Events"("Type") multiplicity "0..1"
+        dependent "EventType"("EventType") multiplicity "1";
 
     "com.sap.sapmentors.sitreg.data::SITreg.CoOrganizer" as "CoOrganizers"
     create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerCreate" 
@@ -33,7 +45,15 @@ service  {
     delete forbidden;
 
     association "Events_CoOrganizers" principal "Events"("ID") multiplicity "1"
-        dependent "CoOrganizers"("EventID") multiplicity "*";   
+        dependent "CoOrganizers"("EventID") multiplicity "*";
+
+    "com.sap.sapmentors.sitreg.data::SITreg.Device" as "Devices"
+    create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceCreate" 
+    update using "com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceUpdate"
+    delete forbidden;
+
+    association "Events_Devices" principal "Events"("ID") multiplicity "1"
+        dependent "Devices"("EventID") multiplicity "*";   
 
     "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventChangeableRead" as "EventChangeable" key ("EventID")
     create forbidden
@@ -44,6 +64,7 @@ service  {
         dependent "EventChangeable"("EventID") multiplicity "1";   
 
     "com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantsRead" as "Participants" key  ("ID")
+        navigates ("Participant_Ticket" as "Ticket" )
     create forbidden
     update forbidden 
     delete forbidden;
@@ -51,4 +72,37 @@ service  {
     association "Events_Participants" principal "Events"("ID") multiplicity "1"
         dependent "Participants"("EventID") multiplicity "*";    
 
+    // Read RegistrationNumbers from View to restrict fields that can be read
+    "com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersRead" as "RegistrationNumbers" key ("EventID")
+    create forbidden 
+    update forbidden
+    delete forbidden;
+    
+    association "Event_RegistrationNumbers" principal "Events"("ID") multiplicity "1"
+        dependent "RegistrationNumbers"("EventID") multiplicity "1";
+
+    "com.sap.sapmentors.sitreg.odataorganizer.procedures::PrePostEveningEventNumbersRead" as "PrePostEveningEventNumbers" key ("EventID")
+    create forbidden
+    update forbidden
+    delete forbidden;
+
+    association "Event_PrePostEveningEventNumbers" principal "Events"("ID") multiplicity "1"
+        dependent "PrePostEveningEventNumbers"("EventID") multiplicity "1";
+
+    "com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantNumbersRead" as "ParticipantNumbers" key ("EventID")
+    create forbidden
+    update forbidden
+    delete forbidden;
+
+    association "Event_ParticipantNumbers" principal "Events"("ID") multiplicity "1"
+        dependent "ParticipantNumbers"("EventID") multiplicity "1";
+
+    // Read Ticket from View to restrict fields that can be read
+    "com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead" as "Ticket" key ("ParticipantID")
+    create forbidden 
+    update forbidden
+    delete forbidden;
+
+    association "Participant_Ticket" principal "Participants"("ID") multiplicity "1"
+        dependent "Ticket"("ParticipantID") multiplicity "1"; 
 }

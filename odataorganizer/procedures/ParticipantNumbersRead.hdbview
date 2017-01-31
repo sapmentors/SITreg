@@ -1,0 +1,30 @@
+//
+//   Copyright 2016 SAP Mentors
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+//
+
+//
+// Thanks to the Blog: OData read exits - a delightful solution
+// http://scn.sap.com/community/developer-center/hana/blog/2016/01/14/odata-read-exits--an-ingenious-solution
+//
+schema = "SITREG";
+query = "SELECT \"Event\".\"ID\" AS \"EventID\", 
+        CAST( IFNULL (\"Ticket\".\"Participated\", 0) AS Integer ) AS \"Participated\"
+        FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Event\" AS \"Event\"
+        LEFT OUTER JOIN ( 
+            SELECT \"EventID\", COUNT(*) AS \"Participated\" 
+              FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Ticket\"
+              WHERE \"TicketUsed\" = 'Y' OR \"TicketUsed\" = 'M'
+              GROUP BY \"EventID\" ) AS \"Ticket\"
+          ON \"Event\".\"ID\" = \"Ticket\".\"EventID\"
+        GROUP BY \"Ticket\".\"Participated\", \"Event\".\"ID\";";

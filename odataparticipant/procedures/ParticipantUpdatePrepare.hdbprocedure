@@ -92,11 +92,14 @@ BEGIN
     -- Check if provided Event ID belongs to the User
     SELECT COUNT(ID) INTO lv_Count 
       FROM "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead"
-      WHERE "ID" = lv_ID AND "History.CreatedBy" = lv_ChangedBy;
+      WHERE "ID" = lv_ID 
+        AND "History.CreatedBy" = lv_ChangedBy;
      
     IF lv_Count = 1 THEN
-        CALL "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate" ( :inrow );
-    else
+        CALL "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdate" (
+            INROW => :inrow,
+            ERROR => :lv_error );
+    ELSE
         SELECT CONCAT( 'Registration ', lv_ID ) INTO lv_msg FROM DUMMY;
         SELECT CONCAT( lv_msg, ' does not exist' ) INTO lv_msg FROM DUMMY;
         SELECT CONCAT( lv_msg, '. Current User: ' ) INTO lv_msg FROM DUMMY;
@@ -104,5 +107,5 @@ BEGIN
         error = select 400 as http_status_code, 
                 lv_msg error_message, 
                 '' detail from dummy;
-    end if;
+    END IF;
 END

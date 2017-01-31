@@ -1,0 +1,74 @@
+--
+--   Copyright 2016 SAP Mentors
+--
+--   Licensed under the Apache License, Version 2.0 (the "License");
+--   you may not use this file except in compliance with the License.
+--   You may obtain a copy of the License at
+--
+--       http://www.apache.org/licenses/LICENSE-2.0
+--
+--   Unless required by applicable law or agreed to in writing, software
+--   distributed under the License is distributed on an "AS IS" BASIS,
+--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--   See the License for the specific language governing permissions and
+--   limitations under the License.
+--
+
+PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceCreate" ( 
+    IN inrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Device",
+    OUT error "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.error"
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   DEFAULT SCHEMA SITREG
+   AS
+BEGIN
+
+    DECLARE lv_Count           INT;
+    DECLARE lv_EventID         string;
+    DECLARE lv_DeviceID        string;
+    DECLARE lv_Active          string;
+    DECLARE lv_CreatedBy       string;
+    DECLARE lv_CreatedAt       string;
+    DECLARE lv_ChangedBy       string;
+    DECLARE lv_ChangedAt       string;
+
+    SELECT * INTO lv_EventID
+            , lv_DeviceID
+            , lv_CreatedBy
+            , lv_CreatedAt
+            , lv_ChangedBy
+            , lv_ChangedAt
+            , lv_Active
+        FROM :inrow;
+    
+    -- Don't trust the provided Username. we read it from the current user
+	SELECT CURRENT_USER
+		INTO lv_CreatedBy
+		FROM DUMMY;
+
+    -- Check if provided Event ID belongs to the User
+    SELECT COUNT(ID) INTO lv_Count 
+      FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
+      WHERE "ID" = lv_EventID 
+        AND "History.CreatedBy" = lv_CreatedBy;
+      
+    IF lv_Count = 1 THEN
+    	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Device" 
+    	    VALUES(
+    	        lv_EventID
+                , lv_DeviceID
+                , lv_CreatedBy
+                , CURRENT_TIMESTAMP
+                , lv_CreatedBy
+                , CURRENT_TIMESTAMP
+                , lv_Active
+            );
+	ELSE
+		error = SELECT 400 AS http_status_code, 
+					'Event does not belong to you' AS error_message, 
+					'' AS detail
+				FROM dummy;
+	END IF;
+    
+END;

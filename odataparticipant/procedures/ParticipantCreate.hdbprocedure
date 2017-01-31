@@ -6,6 +6,7 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::Parti
 	SQL SECURITY INVOKER
 	DEFAULT SCHEMA SITREG
 AS
+lv_Free                 int := 0;
 BEGIN
 	DECLARE lv_Count            INT;
 	DECLARE lv_ID               STRING;
@@ -28,7 +29,7 @@ BEGIN
     DECLARE lv_CreatedAt        string;
     DECLARE lv_ChangedBy        string;
     DECLARE lv_ChangedAt        string;
-    
+
 	SELECT * INTO lv_ID              
         , lv_EventID         
         , lv_RegistrationTime
@@ -63,6 +64,12 @@ BEGIN
     
     IF (lv_Count <> 1) THEN
 
+        CALL "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::GetRSVPrespectingFreeSeats" (
+            in_EventID => :lv_EventID,
+            in_RSVP    => :lv_RSVP,
+            out_RSVP   => :lv_RSVP 
+        );
+
     	SELECT "com.sap.sapmentors.sitreg.data::participantId".NEXTVAL
     		INTO lv_ID
     		FROM dummy;
@@ -89,10 +96,19 @@ BEGIN
             , lv_ChangedBy      
             , CURRENT_TIMESTAMP
             );
-	ELSE
+    
+        CALL "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::TicketCreate" ( 
+            lv_ID,
+            lv_EventID,
+            lv_FirstName,
+            lv_LastName,
+            lv_EMail,
+            lv_CreatedBy
+        );
+    ELSE
 		error = SELECT 400 AS http_status_code, 
 					'Insert failed' AS error_message, 
-					'' AS detail
+					'Participant is already registered for this event' AS detail
 				FROM dummy;
 	END IF;
 END;

@@ -17,7 +17,7 @@
 */
 service  { 
 
-    "com.sap.sapmentors.sitreg.data::SITreg.Event" as "Events"
+    "com.sap.sapmentors.sitreg.odataparticipant.procedures::EventsRead" as "Events" key ("ID")
         navigates ("Event_Participants" as "Participants")
     create forbidden 
     update forbidden

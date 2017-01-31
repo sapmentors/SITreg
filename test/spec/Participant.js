@@ -94,11 +94,41 @@ describe("Read event details and update pre-eventing event", function() {
     });
 });
 
+describe("Read ticket for event", function() {
+    it("should return the hashed ticket code", function() {
+        var xhr = prepareRequest("GET", getParticipantEventDetailsUrl(eventID) + "/Ticket");
+        xhr.send();
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        expect(body.d.EventID).toBe(eventID);
+        participantID = body.d.ParticipantID;
+        SHA256HASH = body.d.SHA256HASH;
+    });
+});
+
 describe("Read second event details where XSS was tried", function() {
     it("should provide participation details and XSS script should been escaped", function() {
         var xhr = getParticipantDetailsForEvent(eventID2);
         var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
         expect(body.d.FirstName).toBe(xssScript);
+    });
+});
+
+
+describe("Register Participant to event so that MaxAttendees overflow sets RSVP=W for waiting", function() {
+    it("should add users as Participants of a SmallEvent, this one one needs to wait", function() {
+        var xhr = createParticipant(eventIDsmall , "Participant", 4);
+        expect(xhr.status).toBe(201);
+        expect(xhr.statusText).toBe("Created");
+    });
+});
+
+describe("Read Small-Event and check for waiting status", function() {
+    it("should return the created event, change the MaxParticipants and check the change", function() {
+        var xhr = getParticipantDetailsForEvent(eventIDsmall);
+        expect(xhr.status).toBe(200);
+        var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+        participantIDmanual = body.d.ID;
+        expect(body.d.RSVP).toBe("W");
     });
 });
 

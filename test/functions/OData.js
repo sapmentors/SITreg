@@ -25,7 +25,10 @@ function prepareRequest(method, url) {
     return xhr;
 }
 
-function createEvent(Location, EventDate, StartTime, EndTime) {
+function createEvent(Location, EventDate, StartTime, EndTime, Description, Type, Visible) {
+    Description = Description || "SAP Inside Track";
+    Type = Type || "I";
+    Visible = Visible || "Y";
     var create = {
         "ID": eventID,
         "Location": Location,
@@ -33,7 +36,27 @@ function createEvent(Location, EventDate, StartTime, EndTime) {
         "StartTime": StartTime,
         "EndTime": EndTime,
         "MaxParticipants": 80,
-        "HomepageURL": null
+        "HomepageURL": null,
+        "Description": Description,
+        "Type": Type,
+        "Visible": Visible
+    };
+    var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events");
+    xhr.send(JSON.stringify(create));
+    return xhr;
+}
+
+function createVerySmallEvent(Location, EventDate, StartTime, EndTime) {
+    var Visible = "Y";
+    var create = {
+        "ID": eventIDsmall,
+        "Location": Location,
+        "EventDate": EventDate,
+        "StartTime": StartTime,
+        "EndTime": EndTime,
+        "MaxParticipants": 1,
+        "HomepageURL": null,
+        "Visible": Visible
     };
     var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Events");
     xhr.send(JSON.stringify(create));
@@ -71,8 +94,35 @@ function addCoOrganizer(_EventID, _UserName) {
     return xhr;
 }
 
-function createParticipant(_EventID, _UserName) {
+function addDevice(_EventID, _DeviceID) {
+    var create = {
+        "EventID": _EventID,
+        "DeviceID": _DeviceID,
+        "Active": "Y"
+    };
+    var xhr = prepareRequest("POST", "/com/sap/sapmentors/sitreg/odataorganizer/service.xsodata/Devices");
+    xhr.send(JSON.stringify(create));
+    return xhr;
+}
+
+function createParticipant(_EventID, _UserName, _ParticipantID = 1) {
     var participantUri =  "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Participant";
+    var xhr = prepareRequest("POST", participantUri);
+    var register = {
+		ID: _ParticipantID,
+		EventID: _EventID,
+		FirstName: _UserName,
+		LastName: _UserName + "LastName",
+		EMail: _UserName + "@test.com",
+		RSVP: "Y",
+		"History.CreatedBy" : _UserName + "CreatedBy"
+    };
+    xhr.send(JSON.stringify(register));
+    return xhr;
+}
+
+function readParticipant(_EventID, _UserName) {
+    var participantUri =  "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/ParticipantRead";
     var xhr = prepareRequest("POST", participantUri);
     var register = {
 		ID: 1,
@@ -87,9 +137,37 @@ function createParticipant(_EventID, _UserName) {
     return xhr;
 }
 
+function getParticipantEventDetailsUrl(_EventID) {
+    var eventDetailsUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + _EventID + ")";
+    return eventDetailsUrl;
+}
+
 function getParticipantDetailsForEvent(_EventID) {
-    var participantUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + _EventID + ")/Participant";
+    var participantUrl = getParticipantEventDetailsUrl(_EventID) + "/Participant";
     var xhr = prepareRequest("GET", participantUrl);
+    xhr.send();
+    return xhr;
+}
+
+function getAllParticipantsDetailsForEvent(_EventID) {
+    var participantUrl = getParticipantEventDetailsUrl(_EventID) + "/Participants";
+    var xhr = prepareRequest("GET", participantUrl);
+    xhr.send();
+    return xhr;
+}
+
+function getParticipantEventTicketDetails(_EventID, _ParticipantID) {
+    var receptionistUrl = "/com/sap/sapmentors/sitreg/odatareceptionist/service.xsodata/"+
+                         "Events(" + _EventID + ")/" +
+                         "Participants(" + _ParticipantID + ")/Ticket";
+    var xhr = prepareRequest("GET", receptionistUrl);
+    xhr.send();
+    return xhr;
+}
+
+function getRegistrationNumbersForEvent(_EventID) {
+    var registrationNumbersUrl = getParticipantEventDetailsUrl(_EventID) + "/RegistrationNumbers";
+    var xhr = prepareRequest("GET", registrationNumbersUrl);
     xhr.send();
     return xhr;
 }
@@ -108,4 +186,13 @@ function updateEvent(url) {
     };
     xhr.send(JSON.stringify(change));
     return xhr;
+}
+
+function updateParticipant(_EventID, _change) {
+    var xhr = getParticipantDetailsForEvent(_EventID);
+    var body = xhr.responseText ? JSON.parse(xhr.responseText) : "";
+    var participantUrl = body.d.__metadata.uri;
+    xhr = prepareRequest("PATCH", participantUrl);
+    xhr.send(JSON.stringify(_change));
+    return { "xhr": xhr, "participantUrl": participantUrl };
 }

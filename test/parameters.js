@@ -19,14 +19,23 @@
 var users = [
         "ORGANIZER",
         "COORGANIZER",
-        "PARTICIPANT"
+        "PARTICIPANT",
+        "RECEPTIONIST"
     ];
 var initpwd  = "Init1234";
 var password = "Test1234";
 var csrfToken = "";
 var eventID = 1;
 var eventID2 = 2;
+var eventIDsmall = 3;
+var participantID;
+var participantIDmanual;
 var eventUri = "";
 var eventUri2 = "";
+var eventUrismall = "";
+var participantUrlSmall = "";
 var MaxParticipants = 90;
 var EMail = "PARTICIPANT@test.com";
+var SHA256HASH = "";
+var deviceID = "3549d56f-3552-4d6a-bcec-57b61aedb6f1";
+

@@ -1,0 +1,6 @@
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>{group ID of your Application}</groupId>
+  <artifactId>SITREG</artifactId>
+  <version>{version number}</version>
+</project>

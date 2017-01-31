@@ -35,6 +35,9 @@ BEGIN
     DECLARE lv_CreatedAt       string;
     DECLARE lv_ChangedBy       string;
     DECLARE lv_ChangedAt       string;
+    DECLARE lv_Description     string;
+    DECLARE lv_Type            string;
+    DECLARE lv_Visible         string;
 
     SELECT * INTO lv_ID             
             , lv_Location       
@@ -46,7 +49,10 @@ BEGIN
             , lv_CreatedBy      
             , lv_CreatedAt      
             , lv_ChangedBy      
-            , lv_ChangedAt 
+            , lv_ChangedAt
+            , lv_Description
+            , lv_Type
+            , lv_Visible
         FROM :inrow;
     
     -- Don't trust the provided Username. we read it from the current user
@@ -59,17 +65,20 @@ BEGIN
 		FROM dummy;
 	
 	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Event" 
-	    VALUES(lv_ID
-	    , lv_Location
-	    , lv_EventDate
-	    , lv_StartTime
-	    , lv_EndTime
-	    , lv_MaxParticipants
-	    , lv_HomepageURL
-	    , lv_CreatedBy
-	    , CURRENT_TIMESTAMP
-	    , lv_CreatedBy
-	    , CURRENT_TIMESTAMP
+        VALUES(lv_ID
+        , lv_Location
+        , lv_EventDate
+        , lv_StartTime
+        , lv_EndTime
+        , lv_MaxParticipants
+        , lv_HomepageURL
+        , lv_CreatedBy
+        , CURRENT_TIMESTAMP
+        , lv_CreatedBy
+        , CURRENT_TIMESTAMP
+        , lv_Description
+        , lv_Type
+        , lv_Visible
 	    );
 	-- Procedures for XSODATA are expected to fill the error sturcture
 	-- TODO: Find a better solution for 1 = 2

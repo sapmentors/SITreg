@@ -19,13 +19,17 @@
 //
 schema = "SITREG";
 query = "SELECT 
-        \"Event\".\"ID\"                                          AS \"EventID\", 
-        \"Event\".\"MaxParticipants\" - COUNT(\"Participant\".\"ID\") AS \"Free\", 
-        COUNT(\"Participant\".\"ID\")                             AS \"Participants\"
-        FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Event\" AS \"Event\"
-        LEFT OUTER JOIN \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\" AS \"Participant\"
+        \"Event\".\"ID\"                                                                       AS \"EventID\", 
+        CAST( \"Event\".\"MaxParticipants\" - IFNULL (\"Participant\".\"Yes\", 0) AS Integer ) AS \"Free\", 
+        CAST( IFNULL (\"Participant\".\"Yes\", 0) AS Integer )                                 AS \"Participants\"
+        FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Event\"                       AS \"Event\"
+        LEFT OUTER JOIN ( 
+            SELECT \"EventID\", COUNT(*) AS \"Yes\" 
+              FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\"
+              WHERE \"RSVP\" = 'Y'
+              GROUP BY \"EventID\" ) AS \"Participant\"
           ON \"Event\".\"ID\" = \"Participant\".\"EventID\"
-        GROUP BY \"Event\".\"MaxParticipants\", \"Event\".\"ID\";";
+        GROUP BY \"Participant\".\"Yes\", \"Event\".\"MaxParticipants\", \"Event\".\"ID\";";
 // Using an hdbtablefunction does not work as it would need SELECT authorization on the Participant table
 // query = "select * from \"com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc\"()";
 // depends_on_view=["com.sap.sapmentors.sitreg.odataparticipant.procedures::RegistrationNumbersReadFunc"];

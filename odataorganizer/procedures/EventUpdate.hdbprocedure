@@ -37,6 +37,9 @@ BEGIN
     DECLARE lv_CreatedAt       DATE;
     DECLARE lv_ChangedBy       string;
     DECLARE lv_ChangedAt       DATE;
+    DECLARE lv_Description     string;
+    DECLARE lv_Type            string;
+    DECLARE lv_Visible         string;
 
     DECLARE lv_Location_tmp        string;
     DECLARE lv_EventDate_tmp       DATE;
@@ -44,7 +47,9 @@ BEGIN
     DECLARE lv_EndTime_tmp         TIMESTAMP;
     DECLARE lv_MaxParticipants_tmp INTEGER;
     DECLARE lv_HomepageURL_tmp     string;
-
+    DECLARE lv_Description_tmp     string;
+    DECLARE lv_Type_tmp            string;
+    DECLARE lv_Visible_tmp         string;
 
     SELECT * INTO lv_ID             
             , lv_Location       
@@ -57,6 +62,9 @@ BEGIN
             , lv_CreatedAt      
             , lv_ChangedBy      
             , lv_ChangedAt
+            , lv_Description
+            , lv_Type
+            , lv_Visible
         FROM :inrow;
     -- Don't trust the provided Username. We read it from the current user
     SELECT CURRENT_USER INTO lv_ChangedBy FROM DUMMY;
@@ -74,33 +82,38 @@ BEGIN
     END IF;
       
     IF lv_Count = 1 THEN
-        SELECT "Location", "EventDate", "StartTime", "EndTime", "MaxParticipants", "HomepageURL"
+        SELECT "Location", "EventDate", 
+            "StartTime", "EndTime", 
+            "MaxParticipants", "HomepageURL",
+            "Description", "Type", "Visible"
             INTO lv_Location_tmp      
                 , lv_EventDate_tmp      
                 , lv_StartTime_tmp      
                 , lv_EndTime_tmp        
                 , lv_MaxParticipants_tmp
-                , lv_HomepageURL_tmp    
+                , lv_HomepageURL_tmp
+                , lv_Description_tmp
+                , lv_Type_tmp
+                , lv_Visible_tmp
             FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
             WHERE "ID" = lv_ID;
         -- OData call can also contain just single attributes. We have to preserve the data
-        if lv_Location = '' then
-            lv_Location = lv_Location_tmp;
-        END IF;
-        if lv_EventDate = '' then
-            lv_EventDate = lv_EventDate_tmp;
-        END IF;
-        if lv_StartTime = '' then
-            lv_StartTime = lv_StartTime_tmp;
-        END IF;
-        if lv_EndTime = '' then
-            lv_EndTime = lv_EndTime_tmp;
-        END IF;
-        if lv_MaxParticipants = 0 then
-            lv_MaxParticipants = lv_MaxParticipants_tmp;
-        END IF;
-        if lv_HomepageURL = '' then
-            lv_HomepageURL = lv_HomepageURL_tmp;
+        if lv_Location = ''       then lv_Location = lv_Location_tmp;               END IF;
+        if lv_EventDate = ''      then lv_EventDate = lv_EventDate_tmp;             END IF;
+        if lv_StartTime = ''      then lv_StartTime = lv_StartTime_tmp;             END IF;
+        if lv_EndTime = ''        then lv_EndTime = lv_EndTime_tmp;                 END IF;
+        if lv_MaxParticipants = 0 then lv_MaxParticipants = lv_MaxParticipants_tmp; END IF;
+        if lv_HomepageURL = ''    then lv_HomepageURL = lv_HomepageURL_tmp;         END IF;
+        if lv_Description = ''    then lv_Description = lv_Description_tmp;         END IF;
+        if lv_Type = ''           then lv_Type = lv_Type_tmp;                       END IF;
+        if lv_Visible = ''        then lv_Visible = lv_Visible_tmp;                 END IF;
+
+        IF lv_MaxParticipants <> lv_MaxParticipants_tmp THEN
+            -- When MaxParticipants is changed, the Waiting List must be updated
+            CALL "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateWaitingList" (
+                in_EventID            => :lv_ID,
+                in_MaxParticipants    => :lv_MaxParticipants
+            );
         END IF;
         
         UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Event"
@@ -112,13 +125,11 @@ BEGIN
               , "HomepageURL"     = lv_HomepageURL
               , "History.ChangedBy" = lv_ChangedBy
               , "History.ChangedAt" = CURRENT_TIMESTAMP
+              , "Description"       = lv_Description
+              , "Type"              = lv_Type
+              , "Visible"           = lv_Visible
           WHERE "ID" = lv_ID;
 
-        if 1 = 2 then 
-            error = select 400 as http_status_code, 
-                    'Update failed' error_message, 
-                    '' detail from dummy;
-        END IF;
     ELSE
         error = select 400 as http_status_code, 
                 'Event does not exist' error_message, 

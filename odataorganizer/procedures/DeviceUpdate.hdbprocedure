@@ -1,0 +1,82 @@
+--
+--   Copyright 2016 SAP Mentors
+--
+--   Licensed under the Apache License, Version 2.0 (the "License");
+--   you may not use this file except in compliance with the License.
+--   You may obtain a copy of the License at
+--
+--       http://www.apache.org/licenses/LICENSE-2.0
+--
+--   Unless required by applicable law or agreed to in writing, software
+--   distributed under the License is distributed on an "AS IS" BASIS,
+--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--   See the License for the specific language governing permissions and
+--   limitations under the License.
+--
+
+PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::DeviceUpdate" ( 
+    IN inrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Device",
+    IN oldrow "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Device",
+    OUT error "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.error"
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   DEFAULT SCHEMA SITREG
+   AS
+BEGIN
+
+    DECLARE lv_Count           INT;
+    DECLARE lv_EventID         string;
+    DECLARE lv_DeviceID        string;
+    DECLARE lv_Active          string;
+    DECLARE lv_CreatedBy       string;
+    DECLARE lv_CreatedAt       string;
+    DECLARE lv_ChangedBy       string;
+    DECLARE lv_ChangedAt       string;
+
+    DECLARE lv_Active_tmp      string;
+
+    SELECT * INTO lv_EventID
+            , lv_DeviceID
+            , lv_CreatedBy
+            , lv_CreatedAt
+            , lv_ChangedBy
+            , lv_ChangedAt
+            , lv_Active
+        FROM :inrow;
+
+    -- Don't trust the provided Username. We read it from the current user
+    SELECT CURRENT_USER INTO lv_ChangedBy FROM DUMMY;
+    -- Check if provided Event ID belongs to the User
+    SELECT COUNT(ID) INTO lv_Count 
+      FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
+      WHERE "ID" = lv_EventID AND "History.CreatedBy" = lv_ChangedBy;
+      
+    IF lv_Count = 1 THEN
+        SELECT "Active"
+            INTO lv_Active_tmp
+            FROM "com.sap.sapmentors.sitreg.data::SITreg.Device"
+            WHERE "EventID" = lv_EventID AND "DeviceID" = lv_DeviceID;
+        -- OData call can also contain just single attributes. We have to preserve the data
+        if lv_Active = '' then
+            lv_Active = lv_Active_tmp;
+        end if;
+
+        UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Device"
+          SET   "Active"        = lv_Active
+              , "History.ChangedBy" = lv_ChangedBy
+              , "History.ChangedAt" = CURRENT_TIMESTAMP
+          WHERE "EventID" = lv_EventID AND "DeviceID" = lv_DeviceID;
+
+        if 1 = 2 then 
+            error = select 400 as http_status_code, 
+                    'Update failed' error_message, 
+                    '' detail from dummy;
+        end if;
+    else
+        error = select 400 as http_status_code, 
+                'Event does not exist' error_message, 
+                '' detail from dummy;
+    end if;
+    
+END;

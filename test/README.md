@@ -26,6 +26,7 @@ The following step will enable a service that automatically creates users, assig
 * sap.hana.xs.admin.roles::SQLCCAdministrator
 * sap.hana.xs.admin.roles::RuntimeConfAdministrator
 * sap.hana.xs.admin.roles::SAMLAdministrator
+* sap.hana.xs.lm.roles::Administrator
 
 Now you should be able to execute the following steps:
 
@@ -41,6 +42,15 @@ Now you should be able to execute the following steps:
 * Click the **Edit** button
 * Tick the checkbox **Active**
 * Click **Save**
+* Open SAP HANA Coockpit via the Link Administration Tools in the SAP HANA Cockpit -> Persistence -> MDC (see image below)
+![Image of SAP HANA Coockpit](http://i.imgur.com/Pc6eiUO.png)
+* Click on the Install Products and Software Components tile
+![Image of Install Products tile](http://i.imgur.com/BSohUFJ.png)
+* Select HANATESTTOOLS10_11-70000164.zip from your local machine
+* Press Install
+![Image of Install](http://i.imgur.com/TgvwjI7.png)
+* After some time you should see success message "Installation Finished Successfully"
+
 
 ## Test execution
 

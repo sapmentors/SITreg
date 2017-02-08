@@ -75,7 +75,7 @@ function getRelationToSAP(_header, _cookies) {
     var response = jasmine.callHTTPService(
         RelationToSAPUrl, 
         $.net.http.GET, 
-        "", 
+        undefined, 
         _header, 
         _cookies
     );
@@ -83,11 +83,29 @@ function getRelationToSAP(_header, _cookies) {
 }
 
 function getUserProfile(_header, _cookies) {
-    var getUserProfileUrl = "/sap/hana/xs/formLogin/profile/manageUserProfile.xsjs?action=getUserProfile"
+    var getUserProfileUrl = "/sap/hana/xs/formLogin/profile/manageUserProfile.xsjs?action=getUserProfile";
     var response = jasmine.callHTTPService(
         getUserProfileUrl, 
         $.net.http.GET, 
-        "", 
+        undefined, 
+        _header, 
+        _cookies
+    );
+    return response;
+}
+
+function getParticipantEventDetailsUrl(_EventID) {
+    var eventDetailsUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + _EventID + ")";
+    return eventDetailsUrl;
+}
+
+function getParticipantDetailsForEvent(_EventID, _header, _cookies) {
+    var participantUrl = getParticipantEventDetailsUrl(_EventID) + "/Participant";
+    // jasmine.log("participantUrl: " + participantUrl);
+    var response = jasmine.callHTTPService(
+        participantUrl, 
+        $.net.http.GET, 
+        undefined, 
         _header, 
         _cookies
     );

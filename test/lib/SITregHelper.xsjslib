@@ -30,3 +30,66 @@ function createParticipant(_EventID, _UserName, _ParticipantID, _header, _cookie
     );
     return response;
 }
+
+function registerAsOrganizer(_UserName, _header, _cookies) {
+    var register = {
+        "UserName"           : _UserName,
+        "FirstName"			 : "Hello",
+        "LastName"			 : "InsideTrack Munic",
+        "EMail"			 	 : "hello@sitmuc.de",
+        "MobilePhone"		 : "0123456789",
+        "Status"             : "P", 
+	    "RequestTimeStamp"   : "/Date(1475942400000)/",
+	    "StatusSetTimeStamp" : "/Date(1475942400000)/",
+	    "History.CreatedBy"  : _UserName,
+	    "History.CreatedAt"  : "/Date(1475942400000)/",
+	    "History.ChangedBy"  : _UserName,
+	    "History.ChangedAt"  : "/Date(1475942400000)/"
+    };
+    var response = jasmine.callHTTPService(
+        "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/RegisterAsOrganizer", 
+        $.net.http.POST, 
+        JSON.stringify(register), 
+        _header, 
+        _cookies
+    );
+    return response;
+}
+
+function setLocale(_locale, _header, _cookies) {
+    var locale = {
+        "locale": _locale
+    };
+    var response = jasmine.callHTTPService(
+        "/sap/hana/xs/formLogin/locale.xscfunc", 
+        $.net.http.POST, 
+        JSON.stringify(locale), 
+        _header, 
+        _cookies
+    );
+    return response;
+}
+
+function getRelationToSAP(_header, _cookies) {
+    var RelationToSAPUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/RelationToSAP";
+    var response = jasmine.callHTTPService(
+        RelationToSAPUrl, 
+        $.net.http.GET, 
+        "", 
+        _header, 
+        _cookies
+    );
+    return response;
+}
+
+function getUserProfile(_header, _cookies) {
+    var getUserProfileUrl = "/sap/hana/xs/formLogin/profile/manageUserProfile.xsjs?action=getUserProfile"
+    var response = jasmine.callHTTPService(
+        getUserProfileUrl, 
+        $.net.http.GET, 
+        "", 
+        _header, 
+        _cookies
+    );
+    return response;
+}

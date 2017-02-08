@@ -49,6 +49,10 @@ BEGIN
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::organizer',   'ORGANIZER'   );
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::participant', 'COORGANIZER' );
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::participant', 'PARTICIPANT' );
+    -- To read the user profile using the URL:
+    -- /sap/hana/xs/formLogin/profile/manageUserProfile.xsjs?action=getUserProfile
+    -- this role is needed
+    CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('sap.hana.xs.formLogin.profile::ProfileOwner',  'PARTICIPANT' );
     CALL _SYS_REPO.GRANT_ACTIVATED_ROLE ('com.sap.sapmentors.sitreg.roles::receptionist','RECEPTIONIST');
 
 END

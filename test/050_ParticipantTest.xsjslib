@@ -4,6 +4,7 @@ var parameters = $.import("com.sap.sapmentors.sitreg.test", "parameters");
 
 var loginResult;
 var header;
+var eventUri
 
 describe("Participant", function() {
 
@@ -68,11 +69,17 @@ describe("Participant", function() {
 
     it("should try to update the MaxParticipants and register for all events", function() {
         var newMaxParticipants = 85;
-        var response = jasmine.callHTTPService(parameters.readEventsServiceParticipant, $.net.http.GET, undefined, header, loginResult.cookies);
+        var response = jasmine.callHTTPService(
+            parameters.readEventsServiceParticipant, 
+            $.net.http.GET, 
+            undefined, 
+            header, 
+            loginResult.cookies
+        );
         expect(response.status).toBe($.net.http.OK);
 		var body = helper.getResponseBody(response);
 		for (var i = 0; i < body.d.results.length; ++i) {
-		    var eventUri = body.d.results[i].__metadata.uri;
+		    eventUri = body.d.results[i].__metadata.uri;
 		    response = sitRegHelper.updateEvent(
 		        eventUri, 
 		        newMaxParticipants,
@@ -91,6 +98,19 @@ describe("Participant", function() {
             );
 	        expect(response.status).toBe($.net.http.CREATED);
 		}
+    });
+
+    it("should try to read organizer OData service as participant", function() {
+        var eventUriOrganizer = eventUri.replace("odataparticipant", "odataorganizer");
+        
+        var response = jasmine.callHTTPService(
+            eventUriOrganizer, 
+            $.net.http.GET, 
+            undefined, 
+	        header, 
+            loginResult.cookies
+        );
+	    expect(response.status).toBe(403);
     });
 
     it("should logout PARTICIPANT", function() {

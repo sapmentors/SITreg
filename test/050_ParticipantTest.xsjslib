@@ -166,6 +166,20 @@ describe("Participant", function() {
         */
     });
 
+    it("should read Small-Event and check for waiting status", function() {
+        var response = sitRegHelper.getParticipantDetailsForEvent(
+            eventID, 
+            header, 
+            loginResult.cookies
+        );
+        expect(response.status).toBe(200);
+        var body = helper.getResponseBody(response);
+        expect(body.d.RSVP).toBe("W");
+        /*
+        participantIDmanual = body.d.ID;
+        */
+    });
+
     it("should logout PARTICIPANT", function() {
         helper.logout(loginResult.csrf, loginResult.cookies);
         helper.checkSession();

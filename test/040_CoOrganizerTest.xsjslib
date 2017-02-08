@@ -1,16 +1,9 @@
 var helper = $.import("com.sap.sapmentors.sitreg.test.lib", "TestHelper");
+var sitRegHelper = $.import("com.sap.sapmentors.sitreg.test.lib", "SITregHelper");
 var parameters = $.import("com.sap.sapmentors.sitreg.test", "parameters");
 
 var loginResult;
 var header;
-
-function updateEvent(_service, _MaxParticipants) {
-    var change = {
-        "MaxParticipants": _MaxParticipants
-    };
-    var response = jasmine.callHTTPService(_service, $.net.http.PATCH, JSON.stringify(change), header, loginResult.cookies);
-    return response;
-}
 
 describe("Co-Organizer", function() {
 
@@ -26,7 +19,12 @@ describe("Co-Organizer", function() {
 		var body = helper.getResponseBody(response);
 		for (var i = 0; i < body.d.results.length; ++i) {
 		    var eventUri = body.d.results[i].__metadata.uri;
-		    response = updateEvent(eventUri, newMaxParticipants);
+		    response = sitRegHelper.updateEvent(
+		        eventUri, 
+		        newMaxParticipants,
+		        header, 
+                loginResult.cookies
+            );
 		    if(i === 0) {
 		        expect(response.status).toBe(204);
                 response = jasmine.callHTTPService(eventUri, $.net.http.GET, undefined, header, loginResult.cookies);
@@ -35,6 +33,15 @@ describe("Co-Organizer", function() {
 		    } else if (i === 1) {
 		        // For this event we're not the Co-Organizer
 		        expect(response.status).toBe(400);
+		    } else if (body.d.results[i].MaxParticipants < 10) {
+		        response = sitRegHelper.createParticipant(
+		            body.d.results[i].ID, 
+		            "Co Organizer Yeah", 
+		            3,
+    		        header, 
+                    loginResult.cookies
+                );
+		        expect(response.status).toBe($.net.http.CREATED);
 		    }
 		}
     });

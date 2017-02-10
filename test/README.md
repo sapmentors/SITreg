@@ -50,7 +50,21 @@ Now you should be able to execute the following steps:
 * Press Install
 ![Image of Install](http://i.imgur.com/TgvwjI7.png)
 * After some time you should see success message "Installation Finished Successfully"
-
+* In order to run XSUnits via HANA Test Tools you need to configure localhost.xshttpdest file
+* Open SAP HANA Web-based Development Workbench and navigate to /sap/hana/testtools/unit/jasminexs/lib/
+* Open in edit mode file localhost.xshttpdest and adjust as shown below. Dont forget to activate your changes.
+```
+description = "HTTP connection to own system";
+// change host to your HCP trial instance
+host = "xxxtrial.hanatrial.ondemand.com";
+port = 443;
+pathPrefix = "";
+useProxy = false;
+authType = none;
+useSSL = true;
+sslAuth = anonymous;
+sslHostCheck = false;
+```
 
 ## Test execution
 

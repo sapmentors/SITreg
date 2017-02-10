@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" 
+     xmlns:xlink="http://www.w3.org/1999/xlink" 
+     width="468"
+     height="65">
+    <text x="10" y="27" 
+          style="font-family: Arial, Helvetica, sans-serif; font-size:30px; font-weight:bold"
+          fill="#6b6B6B">SAP</text>
+	<text x="80" y="27" 
+          style="font-family: Arial, Helvetica, sans-serif; font-size:30px;"
+          fill="#6b6B6B">INSIDE TRACK YEAR</text>
+	<text x="10" y="60" 
+          style="font-family: Arial, Helvetica, sans-serif; font-size:30px; font-weight:bold"
+          fill="#F0AB00">LOCATION</text>	
+</svg>

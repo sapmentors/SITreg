@@ -111,3 +111,15 @@ function getParticipantDetailsForEvent(_EventID, _header, _cookies) {
     );
     return response;
 }
+
+function getCalendarFile(_EventID, _header, _cookies) {
+    var service = "/com/sap/sapmentors/sitreg/odataparticipant/ExportCalendar.xsjs";
+    service = [service, "?ID=", _EventID].join("");
+    return jasmine.callHTTPService(
+        service, 
+        $.net.http.GET, 
+        undefined, 
+        _header, 
+        _cookies
+    );
+}

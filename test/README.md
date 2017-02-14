@@ -1,8 +1,12 @@
 # Tests
 
-As manual testing of an API with 4 different user roles can become quite tedious automated tests are the way to go. SAP is using Jasmine also in the DU HANA_TEST_TOOLS we stick with that. The test is fully automated and will create the users, assigns roles, deletes the content of the DB tables and deletes the users after execution of the test.
+As manual testing of an API with 4 different user roles can become quite tedious automated tests are the way to go. SAP is using Jasmine also in the DU HANA_TEST_TOOLS so we stick with that. The test is fully automated and will create the users, assigns roles, deletes the content of the DB tables and deletes the users after execution of the test.
 
-## Setup Guide
+In the moment we try to migrate the tests from the browser invoked Jasmie tests to Jasmine tests running on HANA directly. But for that the HANATESTTOOLS which are currently not part of the SAP HANA Trial MDC or the SAP HANA Express edition must be installed.
+
+## Browser based testing
+
+### Setup Guide
 
 To run the tests you have to install [Jasmine](https://jasmine.github.io/) into the HANA repository. Do that by executing the following steps in the SAP HANA Web-based Development Workbench (Path: /sap/hana/ide/editor/):
 
@@ -42,6 +46,17 @@ Now you should be able to execute the following steps:
 * Click the **Edit** button
 * Tick the checkbox **Active**
 * Click **Save**
+
+### Test execution
+
+Open an **Incognito Window** (Chrome) or **Private Window** (Firefox) and call the path /com/sap/sapmentors/sitreg/test/ on your HANA System.
+Note **run the test twice** first run creates data and second run then can verify tests
+
+## Backend based testing
+
+### Setup Guide
+
+* Get the current version of HANATESTTOOLS from the [SAP Service Marketplace Softwarecenter](https://launchpad.support.sap.com/#/softwarecenter)
 * Open SAP HANA Coockpit via the Link Administration Tools in the SAP HANA Cockpit -> Persistence -> MDC (see image below)
 ![Image of SAP HANA Coockpit](http://i.imgur.com/Pc6eiUO.png)
 * Click on the Install Products and Software Components tile
@@ -65,8 +80,6 @@ useSSL = true;
 sslAuth = anonymous;
 sslHostCheck = false;
 ```
+### Test execution
 
-## Test execution
-
-Open an **Incognito Window** (Chrome) or **Private Window** (Firefox) and call the path /com/sap/sapmentors/sitreg/test/ on your HANA System.
-Note **run the test twice** first run creates data and second run then can verify tests
+Open the URL /sap/hana/testtools/unit/jasminexs/TestRunner.xsjs?package=com.sap.sapmentors.sitreg.test on your HANA System. To use this for an automated test you can add the URL parameter format=json to get the output as JSON.

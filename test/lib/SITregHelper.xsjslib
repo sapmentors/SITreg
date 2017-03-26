@@ -31,6 +31,39 @@ function createParticipant(_EventID, _UserName, _ParticipantID, _header, _cookie
     return response;
 }
 
+function getParticipantEventDetailsUrl(_EventID) {
+    var eventDetailsUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + _EventID + ")";
+    return eventDetailsUrl;
+}
+
+function getParticipantDetailsForEvent(_EventID, _header, _cookies) {
+    var participantUrl = getParticipantEventDetailsUrl(_EventID) + "/Participant";
+    // jasmine.log("participantUrl: " + participantUrl);
+    var response = jasmine.callHTTPService(
+        participantUrl, 
+        $.net.http.GET, 
+        undefined, 
+        _header, 
+        _cookies
+    );
+    return response;
+}
+
+function updateParticipant(_EventID, _change, _header, _cookies) {
+    var xhr = getParticipantDetailsForEvent(_EventID, _header, _cookies);
+    var body = xhr.body ? xhr.body.asString() : "";
+    body = JSON.parse(body);
+    var participantUrl = body.d.__metadata.uri;
+
+    var response = jasmine.callHTTPService(participantUrl, 
+        $.net.http.PATCH, 
+        JSON.stringify(_change), 
+        _header, 
+        _cookies
+    );
+    return { "response": response, "participantUrl": participantUrl };
+}
+
 function registerAsOrganizer(_UserName, _header, _cookies) {
     var register = {
         "UserName"           : _UserName,
@@ -86,24 +119,6 @@ function getUserProfile(_header, _cookies) {
     var getUserProfileUrl = "/sap/hana/xs/formLogin/profile/manageUserProfile.xsjs?action=getUserProfile";
     var response = jasmine.callHTTPService(
         getUserProfileUrl, 
-        $.net.http.GET, 
-        undefined, 
-        _header, 
-        _cookies
-    );
-    return response;
-}
-
-function getParticipantEventDetailsUrl(_EventID) {
-    var eventDetailsUrl = "/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Events(" + _EventID + ")";
-    return eventDetailsUrl;
-}
-
-function getParticipantDetailsForEvent(_EventID, _header, _cookies) {
-    var participantUrl = getParticipantEventDetailsUrl(_EventID) + "/Participant";
-    // jasmine.log("participantUrl: " + participantUrl);
-    var response = jasmine.callHTTPService(
-        participantUrl, 
         $.net.http.GET, 
         undefined, 
         _header, 

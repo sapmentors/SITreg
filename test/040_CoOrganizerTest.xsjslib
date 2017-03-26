@@ -34,6 +34,7 @@ describe("Co-Organizer", function() {
 		        // For this event we're not the Co-Organizer
 		        expect(response.status).toBe(400);
 		    } else if (body.d.results[i].MaxParticipants < 10) {
+		        // Register for the small event
 		        response = sitRegHelper.createParticipant(
 		            body.d.results[i].ID, 
 		            "Co Organizer Yeah", 

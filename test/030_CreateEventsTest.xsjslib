@@ -4,8 +4,8 @@ var parameters = $.import("com.sap.sapmentors.sitreg.test", "parameters");
 var loginResult;
 var header;
 
-var eventID;
-var eventUri;
+var eventIDcoOrganizer;
+var eventUricoOrganizer;
 var deviceID = "3549d56f-3552-4d6a-bcec-57b61aedb6f1";
 
 function createEvent(Location, EventDate, StartTime, EndTime, Description, Type, Visible, MaxParticipants) {
@@ -85,7 +85,7 @@ describe("Create Events", function() {
             "",
             "",
             "Y",
-            1
+            2
         );
     });
 
@@ -100,11 +100,13 @@ describe("Create Events", function() {
         */
 		var body = helper.getResponseBody(response);
 		for (var i = 0; i < body.d.results.length; ++i) {
-		    // jasmine.log(body.d.results[i].ID);
-		    addCoOrganizer(body.d.results[i].ID, "GWOLF");
-		    addCoOrganizer(body.d.results[i].ID, "S0001142741");
+            // jasmine.log(body.d.results[i].ID);
+            addCoOrganizer(body.d.results[i].ID, "GWOLF");
+            addCoOrganizer(body.d.results[i].ID, "S0001142741");
             response = addDevice(body.d.results[i].ID, deviceID);
             expect(response.status).toBe($.net.http.CREATED);
+            eventIDcoOrganizer = body.d.results[i].ID;
+            eventUricoOrganizer = body.d.results[i].__metadata.uri;
 		}
         expect(body.d.results[0].Description).toBe("SAP Inside Track");
         /*
@@ -119,7 +121,7 @@ describe("Create Events", function() {
         expect(body.d.results[1].Description).toBe("早上好");
         */
         // Change MaxParticipants
-        eventUri = body.d.results[0].__metadata.uri;
+        var eventUri = body.d.results[0].__metadata.uri;
         var MaxParticipants = 90;
         var change = {
             "MaxParticipants": MaxParticipants
@@ -131,19 +133,19 @@ describe("Create Events", function() {
         expect(response.status).toBe($.net.http.OK);
 		body = helper.getResponseBody(response);
         expect(body.d.MaxParticipants).toBe(MaxParticipants);
-        eventID = body.d.ID;
     });
 
     it("should add COORGANIZER to event", function() {
-        var response = addCoOrganizer(eventID, "COORGANIZER");
+        // jasmine.log("Add CoOrganizer to EventID: " + eventIDcoOrganizer);
+        var response = addCoOrganizer(eventIDcoOrganizer, "COORGANIZER");
         expect(response.status).toBe($.net.http.CREATED);
     });
 
     it("should read list of COORGANIZER's of an event", function() {
-        var uri = eventUri + "/CoOrganizers";
+        var uri = eventUricoOrganizer + "/CoOrganizers";
         var response = jasmine.callHTTPService(uri, $.net.http.GET, undefined, header, loginResult.cookies);
 		var body = helper.getResponseBody(response);
-        expect(body.d.results[0].EventID).toBe(eventID);
+        expect(body.d.results[0].EventID).toBe(eventIDcoOrganizer);
         expect(body.d.results[0].UserName).toBe("COORGANIZER");
         expect(body.d.results[0].Active).toBe("Y");
     });

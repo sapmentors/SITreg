@@ -44,6 +44,26 @@ describe("Participant", function() {
         */
 	});
 
+    it("should change the registration status and not result into an error when no one is on the waiting list", function() {
+        var change = {
+            "RSVP": "N"
+        };
+        var result = sitRegHelper.updateParticipant(eventID, change, header, loginResult.cookies);
+        var response = jasmine.callHTTPService(result.participantUrl, $.net.http.GET, undefined, header, loginResult.cookies);
+		var body = helper.getResponseBody(response);
+        expect(body.d.RSVP).toBe("N");
+    });
+    
+    it("should register the Participant again", function() {
+        var change = {
+            "RSVP": "Y"
+        };
+        var result = sitRegHelper.updateParticipant(eventID, change, header, loginResult.cookies);
+        var response = jasmine.callHTTPService(result.participantUrl, $.net.http.GET, undefined, header, loginResult.cookies);
+		var body = helper.getResponseBody(response);
+        expect(body.d.RSVP).toBe("Y");
+    });
+
 	it("should logout PARTICIPANT", function() {
 		helper.logout(loginResult.csrf, loginResult.cookies);
 		helper.checkSession();

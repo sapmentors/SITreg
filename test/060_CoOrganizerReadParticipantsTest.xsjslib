@@ -7,9 +7,9 @@ var header;
 var eventUri;
 var eventID;
 
-describe("Co-Organizer read participants", function() {
+describe("Co-Organizer", function() {
 
-    it("should login COORGANIZER and get csrfToken", function() {
+    it("should login and get csrfToken", function() {
         loginResult = helper.getCSRFtokenAndLogin("COORGANIZER", helper.newpwd);
         header = helper.prepareRequestHeader(loginResult.csrf);
     });
@@ -22,16 +22,14 @@ describe("Co-Organizer read participants", function() {
 		for (var i = 0; i < body.d.results.length; ++i) {
 			eventUri = body.d.results[i].__metadata.uri;
 			eventID = body.d.results[i].ID;
-		    if(i === 0) {
-		        for (var j = 0; j < body.d.results[i].Participants.results.length; ++j) {
-                    expect(body.d.results[i].Participants.results[j].EMail).toBe("PARTICIPANT@test.com");
+            if(i === 0) {
+                expect(body.d.results[i].Participants.results.length).toBe(0);
+            } 
+            else if (i > 0) {
+                for (var j = 0; j < body.d.results[i].Participants.results.length; ++j) {
                     expect(body.d.results[i].Participants.results[j].Ticket.TicketUsed).toBe("N");
-		        }
-		    } 
-		    else if (i > 0) {
-		        // For this event we're not the Co-Organizer and should not see participants
-		        expect(body.d.results[i].Participants.results.length).toBe(0);
-		    }
+                }
+            }
 		}
     });
     
@@ -45,7 +43,7 @@ describe("Co-Organizer read participants", function() {
         expect(body.d.RSVP).toBe("N");
     });
 
-    it("should logout COORGANIZER", function() {
+    it("should logout", function() {
         helper.logout(loginResult.csrf, loginResult.cookies);
         helper.checkSession();
     });

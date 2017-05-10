@@ -154,25 +154,8 @@ describe("Participant", function() {
 		expect(body.d.PreEveningEvent).toBe("Y");
 	});
 
-	it("should read ticket for event and return the hashed ticket code", function() {
-		var response = jasmine.callHTTPService(
-			sitRegHelper.getParticipantEventDetailsUrl(eventID) + "/Ticket",
-			$.net.http.GET,
-			undefined,
-			header,
-			loginResult.cookies
-		);
-		expect(response.status).toBe(200);
-		var body = helper.getResponseBody(response);
-		expect(body.d.EventID).toBe(eventID);
-		expect(body.d.SHA256HASH).not.toBe(undefined);
-		/*
-        participantID = body.d.ParticipantID;
-        SHA256HASH = body.d.SHA256HASH;
-        */
-	});
-
 	it("should read Small-Event and check for waiting status", function() {
+        // jasmine.log("Read participant details for EventID: " + eventID);
 		var response = sitRegHelper.getParticipantDetailsForEvent(
 			eventID,
 			header,

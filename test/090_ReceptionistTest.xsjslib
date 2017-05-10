@@ -10,6 +10,7 @@ var participantID;
 var eventID;
 var TicketCodeURL = "/com/sap/sapmentors/sitreg/odatareceptionist/checkTicket.xsjs";
 var ReceptionistODataURL = "/com/sap/sapmentors/sitreg/odatareceptionist/service.xsodata";
+var participantIDmanual;
 
 describe("Participant", function() {
 
@@ -41,6 +42,25 @@ describe("Participant", function() {
 		expect(body.d.SHA256HASH).not.toBe(undefined);
         SHA256HASH = body.d.SHA256HASH;
         participantID = body.d.ParticipantID;
+	});
+
+	it("should read participant ID for manual ticket", function() {
+		var response = jasmine.callHTTPService(
+			"/com/sap/sapmentors/sitreg/odataparticipant/service.xsodata/Ticket",
+			$.net.http.GET,
+			undefined,
+			header,
+			loginResult.cookies
+		);
+		expect(response.status).toBe(200);
+		var body = helper.getResponseBody(response);
+		// jasmine.log(response.body.asString());
+		for (var j = 0; j < body.d.results.length; ++j) {
+		    // jasmine.log(j + " EventID: " + body.d.results[j].EventID + ", ParticipantID: " + body.d.results[j].ParticipantID);
+		    if(body.d.results[j].EventID !== eventID) {
+		        participantIDmanual = body.d.results[j].ParticipantID;
+		    }
+		}
 	});
 
 	it("should logout PARTICIPANT", function() {
@@ -86,11 +106,13 @@ describe("Receptionist", function() {
     });
 
     it("should check in participant ticket and check in the participant", function() {
+        var url = ReceptionistODataURL + "/Ticket(" + participantID + ")";
+        // jasmine.log("Service URL: " + url);
         var check = {
             "SHA256HASH": SHA256HASH
         };
 		var response = jasmine.callHTTPService(
-            ReceptionistODataURL + "/Ticket(" + participantID + ")", 
+            url, 
             $.net.http.PATCH, 
             JSON.stringify(check), 
             header, 
@@ -115,13 +137,14 @@ describe("Receptionist", function() {
         expect(body.OUTC[0].TicketUsed).toBe('Y');
     });
 
-    /*
     it("should check in the participant manually", function() {
+        var url = ReceptionistODataURL + "/Ticket(" + participantIDmanual + ")";
+        // jasmine.log("Service URL: " + url);
         var check = {
             "TicketUsed": "M"
         };
 		var response = jasmine.callHTTPService(
-            ReceptionistODataURL + "/Ticket(" + participantIDmanual + ")", 
+            url,
             $.net.http.PATCH, 
             JSON.stringify(check), 
             header, 
@@ -129,7 +152,6 @@ describe("Receptionist", function() {
         );        
         expect(response.status).toBe(204);
     });
-    */
 
     it("should logout RECEPTIONIST", function() {
         helper.logout(loginResult.csrf, loginResult.cookies);

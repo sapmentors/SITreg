@@ -34,12 +34,14 @@ To test the different services with the correct authorizations setup the users:
 * PARTICIPANT 
 * ORGANIZER
 * COORGANIZER
+* RECEPTIONIST
 * SITREGADMIN
  
 Assign the roles:
 
 * com.sap.sapmentors.sitreg.roles::participant (to PARTICIPANT)
 * com.sap.sapmentors.sitreg.roles::organizer (to ORGANIZER and COORGANIZER)
+* com.sap.sapmentors.sitreg.roles::receptionist (to RECEPTIONIST)
 * com.sap.sapmentors.sitreg.roles::admin (to SITREGADMIN)
 
 to be able to test the different services also according the correct implementation of the authorizations.
@@ -50,9 +52,12 @@ To be able to test the two frontend apps with the backend you have to create a d
 
 For the application sapmentors/SITregParticipantList you need the destination HANAMDC_PUBLIC. The steps of creation are the same as already described.
 
-The user stored in this destination is used for accessing the HANA database in the backend. In order to use the needed OData services the user needs to own the roles 
-* "com.sap.sapmentors.sitreg.odataparticipant::participant" and 
-* "com.sap.sapmentors.sitreg.odataparticipant::organizer". 
+The user stored in this destination is used for accessing the HANA database in the backend. In order to use the needed OData services the user needs to have the following roles assigned:
+
+* com.sap.sapmentors.sitreg.roles::public
+* com.sap.sapmentors.sitreg.roles::participant
+* com.sap.sapmentors.sitreg.roles::organizer
+* com.sap.sapmentors.sitreg.roles::receptionist
 
 Roles are assigned in the Security part of the SAP HANA Web-based Development Workbench.
 

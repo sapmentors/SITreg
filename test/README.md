@@ -83,3 +83,21 @@ sslHostCheck = false;
 ### Test execution
 
 Open the URL /sap/hana/testtools/unit/jasminexs/TestRunner.xsjs?package=com.sap.sapmentors.sitreg.test on your HANA System. To use this for an automated test you can add the URL parameter format=json to get the output as JSON.
+
+It can happen that you will see the following error:
+
+Error: HttpClient.request: Max open outbound sockets per request reached. in /sap/hana/testtools/unit/jasminexs/lib/http.xsjslib (line 20)
+
+This is caused by a bug in the SAP Standard (Bug is reported with a fix since March 13, 2017 in incident 71681 / 2017). To fix it yourself you need to replace the line:
+
+```
+return client.getResponse();
+```
+**/sap/hana/testtools/unit/jasminexs/lib/http.xsjslib** with:
+
+```
+    var response =  client.getResponse();
+    // close the connection
+    client.close();
+    return response;
+```

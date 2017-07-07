@@ -82,4 +82,4 @@ sslHostCheck = false;
 ```
 ### Test execution
 
-Open the URL /sap/hana/testtools/unit/jasminexs/TestRunner.xsjs?package=com.sap.sapmentors.sitreg.test on your HANA System. To use this for an automated test you can add the URL parameter format=json to get the output as JSON.
+Open the URL /sap/hana/testtools/unit/jasminexs/TestRunner.xsjs?package=de.linuxdozent.gittest.test on your HANA System. To use this for an automated test you can add the URL parameter format=json to get the output as JSON.

@@ -58,7 +58,7 @@ Note **run the test twice** first run creates data and second run then can verif
 
 * Get the current version of HANATESTTOOLS from the [SAP Service Marketplace Softwarecenter](https://launchpad.support.sap.com/#/softwarecenter)
 * Open SAP HANA Coockpit via the Link Administration Tools in the SAP HANA Cockpit -> Persistence -> MDC (see image below)
-![Image of SAP HANA Coockpit](http://i.imgur.com/Pc6eiUO.png)
+![Image of SAP HANA Coockpit](http://i.imgur.com/Pc6eiUO.png). If you don't see this tile you have to assign your user the hana role **sap.hana.xs.lm.roles::Administrator**
 * Click on the Install Products and Software Components tile
 ![Image of Install Products tile](http://i.imgur.com/BSohUFJ.png)
 * Select HANATESTTOOLS10_11-70000164.zip from your local machine

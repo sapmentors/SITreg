@@ -3,5 +3,8 @@
     "force_ssl" : true,
     "prevent_xsrf" : true,
     "anonymous_connection" : "com.sap.sapmentors.sitreg.odatapublic::public",
-    "default_file": "EventsRead.xsjs"
+    "default_file": "EventsRead.xsjs",
+    "cors": {
+        "enabled" : true
+    }
 }

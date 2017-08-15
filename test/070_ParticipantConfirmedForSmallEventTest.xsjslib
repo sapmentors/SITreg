@@ -14,7 +14,7 @@ describe("Participant", function() {
 		loginResult = helper.getCSRFtokenAndLogin(username, helper.newpwd);
 		header = helper.prepareRequestHeader(loginResult.csrf);
 	});
-
+	
 	it("should read Small-Event and check for waiting status", function() {
 		var response = jasmine.callHTTPService(
 			parameters.readEventsServiceParticipant,
@@ -63,6 +63,19 @@ describe("Participant", function() {
 		var body = helper.getResponseBody(response);
         expect(body.d.RSVP).toBe("Y");
     });
+
+	it("should try to read organizer OData service as he is now also an organizer", function() {
+		var eventUriOrganizer = eventUri.replace("odataparticipant", "odataorganizer");
+
+		var response = jasmine.callHTTPService(
+			eventUriOrganizer,
+			$.net.http.GET,
+			undefined,
+			header,
+			loginResult.cookies
+		);
+		expect(response.status).toBe(200);
+	});
 
 	it("should logout PARTICIPANT", function() {
 		helper.logout(loginResult.csrf, loginResult.cookies);

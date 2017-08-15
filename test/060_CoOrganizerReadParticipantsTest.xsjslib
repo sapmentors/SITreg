@@ -6,6 +6,7 @@ var loginResult;
 var header;
 var eventUri;
 var eventID;
+var UserName;
 
 describe("Co-Organizer", function() {
 
@@ -41,6 +42,38 @@ describe("Co-Organizer", function() {
         var response = jasmine.callHTTPService(result.participantUrl, $.net.http.GET, undefined, header, loginResult.cookies);
 		var body = helper.getResponseBody(response);
         expect(body.d.RSVP).toBe("N");
+    });
+
+    it("should read participants that requested the organizer role", function() {
+        var url = parameters.odataOrganizer + "Organizer?$filter=Status eq 'P'";
+        var response = jasmine.callHTTPService(
+            encodeURI(url),
+            $.net.http.GET,
+			undefined,
+			header,
+			loginResult.cookies
+		);
+		var body = helper.getResponseBody(response);
+		// jasmine.log(JSON.stringify(body));
+		expect(response.status).toBe(200);
+		UserName = body.d.results[0].UserName;
+		expect(UserName).not.toBe(null);
+    });
+
+    it("should confirm the participant that sent an organizer request", function() {
+        var check = {
+            "UserName": UserName
+        };
+		var response = jasmine.callHTTPService(
+            "/com/sap/sapmentors/sitreg/odataorganizer/confirmOrganizer.xsjs", 
+            $.net.http.POST,
+            JSON.stringify(check),
+            header,
+            loginResult.cookies
+        );
+		expect(response.status).toBe($.net.http.OK);
+		var body = helper.getResponseBody(response);
+		// jasmine.log(JSON.stringify(body));
     });
 
     it("should logout", function() {

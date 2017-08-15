@@ -41,8 +41,6 @@ BEGIN
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Device" 
         WHERE "History.CreatedBy" = 'ORGANIZER'
            OR "History.CreatedBy" = 'COORGANIZER';
-    DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.RegisterAsOrganizerQueue"
-        WHERE "History.CreatedBy" = 'PARTICIPANT';
     DELETE FROM "com.sap.sapmentors.sitreg.data::SITreg.Organizer"
         WHERE "History.CreatedBy" = 'PARTICIPANT';
     

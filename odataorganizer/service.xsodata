@@ -105,4 +105,9 @@ service  {
 
     association "Participant_Ticket" principal "Participants"("ID") multiplicity "1"
         dependent "Ticket"("ParticipantID") multiplicity "1"; 
+        
+    "com.sap.sapmentors.sitreg.data::SITreg.Organizer" as "Organizer"
+    create forbidden 
+    update forbidden
+    delete forbidden;    
 }

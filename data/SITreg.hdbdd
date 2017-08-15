@@ -163,15 +163,4 @@ context SITreg {
             PrintStatus      : String(1) not null; // Q = queued, S = sent, P = printed
             History          : HistoryT;
     };
-
-    entity RegisterAsOrganizerQueue {
-        key EventID             : BusinessKey not null default 0;
-        key UserName            : UserT;
-            Organizer           : association to SITreg.Organizer {UserName};
-            Status              : String(1); // See enum RegisterAsOrganizerStatus // A = Accepted / R = Rejected / P = Pending
-            RequestTimeStamp    : UTCTimestamp;
-            StatusSetTimeStamp  : UTCTimestamp;
-            History             : HistoryT;
-    };
-  
 };

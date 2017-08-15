@@ -26,6 +26,8 @@ role com.sap.sapmentors.sitreg.roles::organizer {
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantsRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odatareceptionist.procedures::TicketRead: SELECT;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateWaitingList: EXECUTE;
+    // Organizer
+    sql object com.sap.sapmentors.sitreg.data::SITreg.Organizer: SELECT, UPDATE;
     	
     application privilege: "com.sap.sapmentors.sitreg.odataorganizer::organizer";
 }

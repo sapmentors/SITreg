@@ -20,7 +20,13 @@ describe("Participant", function() {
 	});
 
 	it("should read the event ID", function() {
-		var response = jasmine.callHTTPService(parameters.readEventsServiceParticipant, $.net.http.GET, undefined, header, loginResult.cookies);
+		var response = jasmine.callHTTPService(
+                parameters.readEventsServiceParticipant, 
+                $.net.http.GET,
+                undefined,
+                header,
+                loginResult.cookies
+            );
 		expect(response.status).toBe($.net.http.OK);
 		var body = helper.getResponseBody(response);
 		var smallEventIndex = body.d.results.length - 1;

@@ -7,6 +7,7 @@ The SAP Event Registration app is a community project licensed under Apache Lice
 * [Public Participant List](https://sitregparticipantlist-a5a504e08.dispatcher.hana.ondemand.com/)
 * [Participant Registration (SCN Account required)](https://sitregparticipant-a5a504e08.dispatcher.hana.ondemand.com/)
 * [Organizer Backend (Additional authorization required)](https://sitregorganizer-a5a504e08.dispatcher.hana.ondemand.com/)
+* [Receptionist](https://sitregreceptionist-a5a504e08.dispatcher.hana.ondemand.com)
  
 If you're organizing a SAP community event please reach out to [Gregor Wolf](mailto:gregor.wolf@gmail.com) to get access to the Organizer Backend. If you want to contribute please check the open issues, fork the project and start coding.
 

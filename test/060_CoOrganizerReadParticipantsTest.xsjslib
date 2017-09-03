@@ -20,6 +20,7 @@ describe("Co-Organizer", function() {
         var response = jasmine.callHTTPService(participantUri, $.net.http.GET, undefined, header, loginResult.cookies);
         expect(response.status).toBe($.net.http.OK);
 		var body = helper.getResponseBody(response);
+		// jasmine.log(JSON.stringify(body));
 		for (var i = 0; i < body.d.results.length; ++i) {
 			eventUri = body.d.results[i].__metadata.uri;
 			eventID = body.d.results[i].ID;

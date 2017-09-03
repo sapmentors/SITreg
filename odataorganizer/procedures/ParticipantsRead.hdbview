@@ -21,7 +21,7 @@
 schema = "SITREG";
 query = "SELECT \"ParticipantList\".* 
     FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\" AS \"ParticipantList\"
-    LEFT JOIN ( 
+    JOIN ( 
     SELECT DISTINCT \"Participant\".\"ID\" AS \"ID\"
     FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Event\" AS \"Event\"
     JOIN \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\" AS \"Participant\"

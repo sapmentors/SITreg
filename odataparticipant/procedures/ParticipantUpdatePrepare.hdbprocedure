@@ -24,64 +24,12 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataparticipant.procedures::Parti
    AS
 BEGIN
 
-	DECLARE lv_Count            INT;
 	DECLARE lv_ID               STRING;
-	DECLARE lv_EventID          STRING;
-	DECLARE lv_RegistrationTime TIMESTAMP;
-	DECLARE lv_FirstName        STRING;
-	DECLARE lv_LastName         STRING;
-	DECLARE lv_EMail            STRING;
-	DECLARE lv_MobilePhone      STRING;
-	DECLARE lv_BioURL           STRING;
-	DECLARE lv_Twitter          STRING;
-	DECLARE lv_RSVP             STRING;
-	DECLARE lv_PreEveningEvent  STRING;
-	DECLARE lv_PostEveningEvent STRING;
-	DECLARE lv_RelationToSAP    STRING;
-	DECLARE lv_Receipt          STRING;
-	DECLARE lv_ReceiptCompany   STRING;
-	DECLARE lv_ReceiptAddress   STRING;
-    DECLARE lv_CreatedBy        string;
-    DECLARE lv_CreatedAt        string;
-    DECLARE lv_ChangedBy        string;
-    DECLARE lv_ChangedAt        string;
-
-	DECLARE lv_FirstName_tmp        STRING;
-	DECLARE lv_LastName_tmp         STRING;
-	DECLARE lv_EMail_tmp            STRING;
-	DECLARE lv_MobilePhone_tmp      STRING;
-	DECLARE lv_BioURL_tmp           STRING;
-	DECLARE lv_Twitter_tmp          STRING;
-	DECLARE lv_RSVP_tmp             STRING;
-	DECLARE lv_PreEveningEvent_tmp  STRING;
-	DECLARE lv_PostEveningEvent_tmp STRING;
-	DECLARE lv_RelationToSAP_tmp    STRING;
-	DECLARE lv_Receipt_tmp          STRING;
-	DECLARE lv_ReceiptCompany_tmp   STRING;
-	DECLARE lv_ReceiptAddress_tmp   STRING;
-
-    DECLARE lv_msg                  STRING;
+	DECLARE lv_Count            INT;
+    DECLARE lv_ChangedBy        STRING;
+    DECLARE lv_msg              STRING;
     
-	SELECT * INTO lv_ID              
-        , lv_EventID         
-        , lv_RegistrationTime
-        , lv_FirstName       
-        , lv_LastName        
-        , lv_EMail           
-        , lv_MobilePhone     
-        , lv_BioURL          
-        , lv_Twitter         
-        , lv_RSVP            
-        , lv_PreEveningEvent 
-        , lv_PostEveningEvent
-        , lv_RelationToSAP   
-        , lv_Receipt         
-        , lv_ReceiptCompany  
-        , lv_ReceiptAddress
-        , lv_CreatedBy
-        , lv_CreatedAt
-        , lv_ChangedBy      
-        , lv_ChangedAt          
+	SELECT "ID" INTO lv_ID  
         FROM :inrow;
 
     -- Don't trust the provided Username. we read it from the current user

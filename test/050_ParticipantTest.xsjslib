@@ -7,6 +7,7 @@ var header;
 var eventUri;
 var eventID;
 var username = "PARTICIPANT";
+var participantUrl;
 
 describe("Participant", function() {
 
@@ -132,9 +133,10 @@ describe("Participant", function() {
 		expect(response.status).toBe(200);
 		var body = helper.getResponseBody(response);
 		expect(body.d.FirstName).toBe(username);
-		var participantUrl = body.d.__metadata.uri;
+		participantUrl = body.d.__metadata.uri;
 		var change = {
-			"PreEveningEvent": "Y"
+			"PreEveningEvent": "Y",
+			"Twitter": username
 		};
 		response = jasmine.callHTTPService(
 			participantUrl,
@@ -152,6 +154,28 @@ describe("Participant", function() {
 		expect(response.status).toBe(200);
 		body = helper.getResponseBody(response);
 		expect(body.d.PreEveningEvent).toBe("Y");
+	});
+
+	it("should remove Twitter handle", function() {
+		var change = {
+			"Twitter": ""
+		};
+		var response = jasmine.callHTTPService(
+			participantUrl,
+			$.net.http.PATCH,
+			JSON.stringify(change),
+			header,
+			loginResult.cookies
+		);
+		expect(response.status).toBe(204);
+		response = sitRegHelper.getParticipantDetailsForEvent(
+			eventID,
+			header,
+			loginResult.cookies
+		);
+		expect(response.status).toBe(200);
+		var body = helper.getResponseBody(response);
+		expect(body.d.Twitter).toBe("");
 	});
 
 	it("should read Small-Event and check for waiting status", function() {

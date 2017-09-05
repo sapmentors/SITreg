@@ -39,8 +39,10 @@ service  {
         
     // Read Participant from View to restrict to logged on user
     "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantRead" as "Participant" key ("ID")
-    create using "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantCreate"
+    create 
+        using "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantCreate"
     update using "com.sap.sapmentors.sitreg.odataparticipant.procedures::ParticipantUpdatePrepare" 
+        events ( before "com.sap.sapmentors.sitreg.odataparticipant:participant.xsjslib::participantUpdate" )
     delete forbidden;
     
     // RelationToSAP

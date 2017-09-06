@@ -2,7 +2,10 @@
 
 # SAP Event Registration app backend
 
-The SAP Event Registration app is a community project licensed under Apache License Version 2.0. The app provides organizers of SAP community events a platform for the participant registration. It's running already in production using the [SAP Mentors](http://sapmentors.sap.com) SAP Cloud Platform Account and can be accessed at:
+The SAP Event Registration app is a community project licensed under Apache License Version 2.0. 
+The app provides organizers of SAP community events a platform for the participant registration. 
+It's running already in production using the [SAP Mentors](http://sapmentors.sap.com) 
+SAP Cloud Platform Account sponsored by SAP IT and can be accessed at:
 
 * [Public Participant List](https://sitregparticipantlist-a5a504e08.dispatcher.hana.ondemand.com/)
 * [Participant Registration (SCN Account required)](https://sitregparticipant-a5a504e08.dispatcher.hana.ondemand.com/)

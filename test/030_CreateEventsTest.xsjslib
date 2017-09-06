@@ -117,9 +117,10 @@ describe("Create Events", function() {
         // 早上好 as æ©ä¸å¥½
         // But the actual content was created correctly in the DB
         //
+        // Fixed by adding "; charset=utf-8" to the Content-Type header
+        */
         expect(body.d.results[0].Location).toBe("München");
         expect(body.d.results[1].Description).toBe("早上好");
-        */
         // Change MaxParticipants
         var eventUri = body.d.results[0].__metadata.uri;
         var MaxParticipants = 90;

@@ -15,4 +15,5 @@ role com.sap.sapmentors.sitreg.roles::admin {
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::UpdateWaitingList: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::CoOrganizerCreate: EXECUTE;
     sql object com.sap.sapmentors.sitreg.odataorganizer.procedures::GrantOrganizerRoleToUser: EXECUTE;
+    application privilege: "com.sap.sapmentors.sitreg.odataadmin::admin";
 }

@@ -19,7 +19,6 @@ service  {
 
     "com.sap.sapmentors.sitreg.data::SITreg.Event" as "Events"
     create forbidden
-    update forbidden 
     delete forbidden;
 
     "com.sap.sapmentors.sitreg.odataorganizer.procedures::ParticipantsRead" as "Participants" key  ("ID")

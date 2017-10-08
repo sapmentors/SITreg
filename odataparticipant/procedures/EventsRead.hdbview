@@ -21,6 +21,5 @@
 
 schema = "SITREG";
 query = "SELECT \"ID\", \"Location\", \"EventDate\"
-, \"StartTime\", \"EndTime\", \"MaxParticipants\", \"HomepageURL\", \"Type\", \"Description\"
-    FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Event\"
-    WHERE \"Visible\" = 'Y'";
+, \"StartTime\", \"EndTime\", \"MaxParticipants\", \"HomepageURL\", \"Type\", \"Description\", \"Visible\"
+    FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Event\"";

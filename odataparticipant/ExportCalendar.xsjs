@@ -26,7 +26,6 @@ function dateToUTCString(date, time) {
            addZ(oTime.getUTCMinutes()) + 
            addZ(oTime.getUTCSeconds()) +
            'Z';
- 
 }
   
 function isGETRequest() {
@@ -46,7 +45,7 @@ function getEventId() {
 	}
 }
 
-function ExportToCalendar() {
+function exportToCalendar() {
     var sBody;
     
 	if (!isGETRequest() || !getEventId()) {
@@ -107,4 +106,4 @@ function ExportToCalendar() {
 	$.response.setBody(sBody);
 }
 
-ExportToCalendar();
+exportToCalendar();

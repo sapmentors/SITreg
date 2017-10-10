@@ -55,17 +55,17 @@ context SITreg {
     };
 
     entity Event {
-        key ID              : BusinessKey; 
-            Location        : String(100) not null;
-            EventDate       : SDate not null;
-            StartTime       : UTCTimestamp;
-            EndTime         : UTCTimestamp;
-            MaxParticipants : Integer not null;
-            HomepageURL     : URL;
-            History         : HistoryT;
-            Description     : String(100);
-            Type            : EventTypeT;
-            Visible         : String(1); // Y = Yes / N = No 
+        key ID                  : BusinessKey; 
+            Location            : String(100) not null;
+            EventDate           : SDate not null;
+            StartTime           : UTCTimestamp;
+            EndTime             : UTCTimestamp;
+            MaxParticipants     : Integer not null;
+            HomepageURL         : URL;
+            History             : HistoryT;
+            Description         : String(100);
+            Type                : EventTypeT;
+            Visible             : String(1); // Y = Yes / N = No 
             HasPreEveningEvent  : String(1); // Y = Yes / N = No 
             HasPostEveningEvent : String(1); // Y = Yes / N = No 
     };

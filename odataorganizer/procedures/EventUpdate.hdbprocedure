@@ -25,21 +25,23 @@ PROCEDURE "SITREG"."com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUp
    AS
 BEGIN
 
-    DECLARE lv_Count           INT;
-    DECLARE lv_ID              string;
-    DECLARE lv_Location        string;
-    DECLARE lv_EventDate       DATE;
-    DECLARE lv_StartTime       TIMESTAMP;
-    DECLARE lv_EndTime         TIMESTAMP;
-    DECLARE lv_MaxParticipants INTEGER;
-    DECLARE lv_HomepageURL     string;
-    DECLARE lv_CreatedBy       string;
-    DECLARE lv_CreatedAt       DATE;
-    DECLARE lv_ChangedBy       string;
-    DECLARE lv_ChangedAt       DATE;
-    DECLARE lv_Description     string;
-    DECLARE lv_Type            string;
-    DECLARE lv_Visible         string;
+    DECLARE lv_Count               INT;
+    DECLARE lv_ID                  string;
+    DECLARE lv_Location            string;
+    DECLARE lv_EventDate           DATE;
+    DECLARE lv_StartTime           TIMESTAMP;
+    DECLARE lv_EndTime             TIMESTAMP;
+    DECLARE lv_MaxParticipants     INTEGER;
+    DECLARE lv_HomepageURL         string;
+    DECLARE lv_CreatedBy           string;
+    DECLARE lv_CreatedAt           DATE;
+    DECLARE lv_ChangedBy           string;
+    DECLARE lv_ChangedAt           DATE;
+    DECLARE lv_Description         string;
+    DECLARE lv_Type                string;
+    DECLARE lv_Visible             string;
+    DECLARE lv_HasPreEveningEvent  string;
+    DECLARE lv_HasPostEveningEvent string;
 
     DECLARE lv_Location_tmp        string;
     DECLARE lv_EventDate_tmp       DATE;
@@ -50,6 +52,8 @@ BEGIN
     DECLARE lv_Description_tmp     string;
     DECLARE lv_Type_tmp            string;
     DECLARE lv_Visible_tmp         string;
+    DECLARE lv_HasPreEveningEvent_tmp  string;
+    DECLARE lv_HasPostEveningEvent_tmp string;
 
     SELECT * INTO lv_ID             
             , lv_Location       
@@ -65,6 +69,8 @@ BEGIN
             , lv_Description
             , lv_Type
             , lv_Visible
+            , lv_HasPreEveningEvent
+            , lv_HasPostEveningEvent
         FROM :inrow;
     -- Don't trust the provided Username. We read it from the current user
     SELECT CURRENT_USER INTO lv_ChangedBy FROM DUMMY;
@@ -85,7 +91,8 @@ BEGIN
         SELECT "Location", "EventDate", 
             "StartTime", "EndTime", 
             "MaxParticipants", "HomepageURL",
-            "Description", "Type", "Visible"
+            "Description", "Type", "Visible", 
+            "HasPreEveningEvent", "HasPostEveningEvent"
             INTO lv_Location_tmp      
                 , lv_EventDate_tmp      
                 , lv_StartTime_tmp      
@@ -95,18 +102,22 @@ BEGIN
                 , lv_Description_tmp
                 , lv_Type_tmp
                 , lv_Visible_tmp
+                , lv_HasPreEveningEvent_tmp
+                , lv_HasPostEveningEvent_tmp
             FROM "com.sap.sapmentors.sitreg.data::SITreg.Event"
             WHERE "ID" = lv_ID;
         -- OData call can also contain just single attributes. We have to preserve the data
-        if lv_Location = ''       then lv_Location = lv_Location_tmp;               END IF;
-        if lv_EventDate = ''      then lv_EventDate = lv_EventDate_tmp;             END IF;
-        if lv_StartTime = ''      then lv_StartTime = lv_StartTime_tmp;             END IF;
-        if lv_EndTime = ''        then lv_EndTime = lv_EndTime_tmp;                 END IF;
-        if lv_MaxParticipants = 0 then lv_MaxParticipants = lv_MaxParticipants_tmp; END IF;
-        if lv_HomepageURL = ''    then lv_HomepageURL = lv_HomepageURL_tmp;         END IF;
-        if lv_Description = ''    then lv_Description = lv_Description_tmp;         END IF;
-        if lv_Type = ''           then lv_Type = lv_Type_tmp;                       END IF;
-        if lv_Visible = ''        then lv_Visible = lv_Visible_tmp;                 END IF;
+        if lv_Location = ''            then lv_Location = lv_Location_tmp;                END IF;
+        if lv_EventDate = ''           then lv_EventDate = lv_EventDate_tmp;              END IF;
+        if lv_StartTime = ''           then lv_StartTime = lv_StartTime_tmp;              END IF;
+        if lv_EndTime = ''             then lv_EndTime = lv_EndTime_tmp;                  END IF;
+        if lv_MaxParticipants = 0      then lv_MaxParticipants = lv_MaxParticipants_tmp;  END IF;
+        if lv_HomepageURL = ''         then lv_HomepageURL = lv_HomepageURL_tmp;          END IF;
+        if lv_Description = ''         then lv_Description = lv_Description_tmp;          END IF;
+        if lv_Type = ''                then lv_Type = lv_Type_tmp;                        END IF;
+        if lv_Visible = ''             then lv_Visible = lv_Visible_tmp;                  END IF;
+        if lv_HasPreEveningEvent = ''  then lv_Visible = lv_HasPreEveningEvent_tmp;       END IF;
+        if lv_HasPostEveningEvent = '' then lv_Visible = lv_HasPostEveningEvent_tmp;      END IF;
 
         IF lv_MaxParticipants <> lv_MaxParticipants_tmp THEN
             -- When MaxParticipants is changed, the Waiting List must be updated
@@ -117,17 +128,19 @@ BEGIN
         END IF;
         
         UPDATE "com.sap.sapmentors.sitreg.data::SITreg.Event"
-          SET   "Location"        = lv_Location
-              , "EventDate"       = lv_EventDate
-              , "StartTime"       = lv_StartTime
-              , "EndTime"         = lv_EndTime
-              , "MaxParticipants" = lv_MaxParticipants
-              , "HomepageURL"     = lv_HomepageURL
-              , "History.ChangedBy" = lv_ChangedBy
-              , "History.ChangedAt" = CURRENT_TIMESTAMP
-              , "Description"       = lv_Description
-              , "Type"              = lv_Type
-              , "Visible"           = lv_Visible
+          SET   "Location"           = lv_Location
+              , "EventDate"          = lv_EventDate
+              , "StartTime"          = lv_StartTime
+              , "EndTime"            = lv_EndTime
+              , "MaxParticipants"    = lv_MaxParticipants
+              , "HomepageURL"        = lv_HomepageURL
+              , "History.ChangedBy"  = lv_ChangedBy
+              , "History.ChangedAt"  = CURRENT_TIMESTAMP
+              , "Description"        = lv_Description
+              , "Type"               = lv_Type
+              , "Visible"            = lv_Visible
+              , "HasPreEveningEvent" = lv_HasPreEveningEvent
+              , "HasPostEveningEvent" = lv_HasPostEveningEvent
           WHERE "ID" = lv_ID;
 
     ELSE

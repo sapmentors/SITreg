@@ -66,6 +66,8 @@ context SITreg {
             Description     : String(100);
             Type            : EventTypeT;
             Visible         : String(1); // Y = Yes / N = No 
+            HasPreEveningEvent  : String(1); // Y = Yes / N = No 
+            HasPostEveningEvent : String(1); // Y = Yes / N = No 
     };
     
     entity CoOrganizer {

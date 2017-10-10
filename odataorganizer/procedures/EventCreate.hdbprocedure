@@ -38,6 +38,8 @@ BEGIN
     DECLARE lv_Description     string;
     DECLARE lv_Type            string;
     DECLARE lv_Visible         string;
+    DECLARE lv_HasPreEveningEvent  string;
+    DECLARE lv_HasPostEveningEvent string;
 
     SELECT * INTO lv_ID             
             , lv_Location       
@@ -53,6 +55,8 @@ BEGIN
             , lv_Description
             , lv_Type
             , lv_Visible
+            , lv_HasPreEveningEvent
+            , lv_HasPostEveningEvent
         FROM :inrow;
     
     -- Don't trust the provided Username. we read it from the current user
@@ -65,7 +69,8 @@ BEGIN
 		FROM dummy;
 	
 	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Event" 
-        VALUES(lv_ID
+        VALUES(
+          lv_ID
         , lv_Location
         , lv_EventDate
         , lv_StartTime
@@ -79,7 +84,9 @@ BEGIN
         , lv_Description
         , lv_Type
         , lv_Visible
-	    );
+        , lv_HasPreEveningEvent
+        , lv_HasPostEveningEvent
+	);
 	-- Procedures for XSODATA are expected to fill the error sturcture
 	-- TODO: Find a better solution for 1 = 2
 	IF (1 = 2) THEN

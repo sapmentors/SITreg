@@ -60,15 +60,11 @@ BEGIN
         FROM :inrow;
     
     -- Don't trust the provided Username. we read it from the current user
-	SELECT CURRENT_USER
-		INTO lv_CreatedBy
-		FROM DUMMY;
-	
-	SELECT "com.sap.sapmentors.sitreg.data::eventId".NEXTVAL
-		INTO lv_ID
-		FROM dummy;
-	
-	INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Event" 
+    SELECT CURRENT_USER
+        INTO lv_CreatedBy
+        FROM DUMMY;
+    
+    INSERT INTO "com.sap.sapmentors.sitreg.data::SITreg.Event" 
         VALUES(
           lv_ID
         , lv_Location
@@ -86,14 +82,14 @@ BEGIN
         , lv_Visible
         , lv_HasPreEveningEvent
         , lv_HasPostEveningEvent
-	);
-	-- Procedures for XSODATA are expected to fill the error sturcture
-	-- TODO: Find a better solution for 1 = 2
-	IF (1 = 2) THEN
-		error = SELECT 400 AS http_status_code, 
-					'Insert failed' AS error_message, 
-					'' AS detail
-				FROM dummy;
-	END IF;
+    );
+    -- Procedures for XSODATA are expected to fill the error sturcture
+    -- TODO: Find a better solution for 1 = 2
+    IF (1 = 2) THEN
+        error = SELECT 400 AS http_status_code, 
+                    'Insert failed' AS error_message, 
+                    '' AS detail
+                FROM dummy;
+    END IF;
     
 END;

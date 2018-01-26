@@ -28,6 +28,7 @@ service  {
         "Event_Type"                        as "EventType"
     )
     create using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventCreate" 
+            events ( before "com.sap.sapmentors.sitreg.odataorganizer:service.xsjslib::EventsCreateBefore" ) //before create operation this exit will be trigger
     update using "com.sap.sapmentors.sitreg.odataorganizer.procedures::EventUpdate"
     delete forbidden;
 

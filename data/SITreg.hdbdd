@@ -57,7 +57,7 @@ context SITreg {
     entity Event {
         key ID                  : BusinessKey; 
             Location            : String(100) not null;
-            EventDate           : SDate not null;
+            EventDate           : UTCTimestamp not null;
             StartTime           : UTCTimestamp;
             EndTime             : UTCTimestamp;
             MaxParticipants     : Integer not null;

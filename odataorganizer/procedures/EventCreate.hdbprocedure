@@ -84,6 +84,8 @@ BEGIN
         , lv_HasPostEveningEvent
     );
     -- Procedures for XSODATA are expected to fill the error sturcture
+    -- otherwise the activation returns the following error
+    -- Could not create catalog object: some out table variable is not assigned; ERROR
     -- TODO: Find a better solution for 1 = 2
     IF (1 = 2) THEN
         error = SELECT 400 AS http_status_code, 

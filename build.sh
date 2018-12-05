@@ -26,8 +26,8 @@ regi activate
 # Unassign the DU to get a proper state
 regi unassign ${PACKAGE}
 
-# Run tests
-curl -u ${HANA_USER}:${HANA_PASSWORD} --cacert /etc/ssl/certs/hxehostqa.mooo.com.crt "https://${HANA_HOST}:${XS_PORT}/sap/hana/testtools/unit/jasminexs/TestRunner.xsjs?package=com.sap.sapmentors.sitreg.test&format=json" -o test.json
+# Run tests --cacert /etc/ssl/certs/hxehostqa.mooo.com.crt 
+curl -u ${HANA_USER}:${HANA_PASSWORD} "https://${HANA_HOST}:${XS_PORT}/sap/hana/testtools/unit/jasminexs/TestRunner.xsjs?package=com.sap.sapmentors.sitreg.test&format=json" -o test.json
 # Output the test suites that where run
 jq .suites test.json
 # Check test result

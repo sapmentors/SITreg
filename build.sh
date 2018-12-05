@@ -27,7 +27,7 @@ regi activate
 regi unassign ${PACKAGE}
 
 # Run tests --cacert /etc/ssl/certs/hxehostqa.mooo.com.crt 
-curl -u ${HANA_USER}:${HANA_PASSWORD} "https://${HANA_HOST}:${XS_PORT}/sap/hana/testtools/unit/jasminexs/TestRunner.xsjs?package=com.sap.sapmentors.sitreg.test&format=json" -o test.json
+curl -u ${HANA_USER}:${HANA_PASSWORD} "https://${XS_HOST}:${XS_PORT}/sap/hana/testtools/unit/jasminexs/TestRunner.xsjs?package=com.sap.sapmentors.sitreg.test&format=json" -o test.json
 # Output the test suites that where run
 jq .suites test.json
 # Check test result

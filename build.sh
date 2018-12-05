@@ -40,7 +40,7 @@ fi
 regi show du ${DELIVERY_UNIT} || regi create du ${DELIVERY_UNIT} --vendor=sapmentors.sap.com --key=HXECIKEY
 
 # Add BUILD_ID as Version Patch Number
-regi update du ${DELIVERY_UNIT} --versionPatch=${BUILD_ID} --key=KEY
+regi update du ${DELIVERY_UNIT} --versionPatch=${BUILD_ID} --key=HXECIKEY
 
 # assign the package to the DU
 regi assign ${PACKAGE} ${DELIVERY_UNIT} --key=HXECIKEY

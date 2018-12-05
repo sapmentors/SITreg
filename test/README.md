@@ -88,7 +88,7 @@ It can happen that you will see the following error:
 
 Error: HttpClient.request: Max open outbound sockets per request reached. in /sap/hana/testtools/unit/jasminexs/lib/http.xsjslib (line 20)
 
-This is caused by a bug in the SAP Standard (Bug is reported with a fix since March 13, 2017 in incident 71681 / 2017). To fix it yourself you need to replace the line:
+This is caused by a bug in the SAP Standard (Bug is reported with a suggested fix since 13th March 2017 in incident 71681 / 2017 and was fixed with HANATESTTOOLS SP12 Patch12 released on 19th April 2018). To fix it yourself you need to replace the line:
 
 ```
 return client.getResponse();

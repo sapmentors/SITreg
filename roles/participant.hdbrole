@@ -35,5 +35,8 @@ role com.sap.sapmentors.sitreg.roles::participant {
     sql object com.sap.sapmentors.sitreg.odataparticipant.procedures::RegisterAsOrganizerRead: SELECT;
     sql object com.sap.sapmentors.sitreg.data::SITreg.Organizer: INSERT, UPDATE;
     
+    // SELECT for SYS.DUMMY
+    catalog sql object "SYS"."DUMMY" : SELECT;
+
     application privilege: "com.sap.sapmentors.sitreg.odataparticipant::participant";
 }

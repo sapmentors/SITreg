@@ -1,6 +1,9 @@
 -- Read Participants
 SELECT *
 FROM "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant" AS "Participant";
+-- Read Tickets
+SELECT *
+FROM "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Ticket" AS "Ticket";
 -- Delete Participants of a specific Event
 DELETE FROM "SITREG"."com.sap.sapmentors.sitreg.data::SITreg.Participant" AS "Participant"
 WHERE "Participant"."EventID" = '93';

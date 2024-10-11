@@ -16,10 +16,10 @@
 
 //
 // Thanks to the Blog: OData read exits - a delightful solution
-// http://scn.sap.com/community/developer-center/hana/blog/2016/01/15/odata-read-exits--an-ingenious-solution
+// https://community.sap.com/t5/technology-blogs-BY-members/odata-read-exits-a-delightful-solution/ba-p/13170353
 //
 schema = "SITREG";
-query = "SELECT \"ParticipantList\".* 
+query = "SELECT \"ParticipantList\".*, \"Ticket\".\"TicketUsed\" AS \"TicketUsed\" 
     FROM \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Participant\" AS \"ParticipantList\"
     JOIN ( 
     SELECT DISTINCT \"Participant\".\"ID\" AS \"ID\"
@@ -31,5 +31,7 @@ query = "SELECT \"ParticipantList\".*
     WHERE ( \"Event\".\"History.CreatedBy\" = CURRENT_USER
        OR \"CoOrganizer\".\"UserName\" = CURRENT_USER 
     )
-        
-    ) AS \"Participant\" ON \"ParticipantList\".\"ID\" = \"Participant\".\"ID\";";
+    ) AS \"Participant\" ON \"ParticipantList\".\"ID\" = \"Participant\".\"ID\"
+    LEFT OUTER JOIN \"SITREG\".\"com.sap.sapmentors.sitreg.data::SITreg.Ticket\" AS \"Ticket\"
+      ON \"Participant\".\"ID\" = \"Ticket\".\"ParticipantID\"
+    ;";
